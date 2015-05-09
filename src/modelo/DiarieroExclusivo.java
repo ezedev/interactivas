@@ -1,12 +1,12 @@
-package Modelo;
+package modelo;
 
 import java.util.Vector;
 
-public class RevisteroExclusivo extends Vendedor {
+public class DiarieroExclusivo extends Vendedor {
 
 
-	
-	public RevisteroExclusivo(String direccion,
+
+	public DiarieroExclusivo(String direccion,
 			Vector<Publicacion> publicaciones, Zona zona) {
 		super(direccion, publicaciones, zona);
 		// TODO Auto-generated constructor stub

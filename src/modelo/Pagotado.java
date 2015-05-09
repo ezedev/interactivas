@@ -1,11 +1,11 @@
-package Modelo;
+package modelo;
 
-public class Pexeso extends Pauta {
+public class Pagotado extends Pauta {
 
-	public Pexeso() {
+	public Pagotado() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public int getCantidad(Edicion edicion, Vendedor vendedor) {
 		// TODO Auto-generated method stub
