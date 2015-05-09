@@ -1,6 +1,6 @@
 package modelo;
 
-public class Pzona extends Pauta {
+public class PautaZona extends Pauta {
 
 	private String nombre;
 	private String codPostal;
@@ -8,7 +8,7 @@ public class Pzona extends Pauta {
 	
 	
 
-	public Pzona(String nombre, String codPostal, int codZona) {
+	public PautaZona(String nombre, String codPostal, int codZona) {
 		super();
 		this.nombre = nombre;
 		this.codPostal = codPostal;
