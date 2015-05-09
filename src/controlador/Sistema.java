@@ -28,5 +28,13 @@ public class Sistema {
 		return edicionesBuscadas;
 	}
 	
+	public Edicion buscarEdicion (int codigo){
+		for(Edicion edicion: ediciones){
+			if (edicion.getCodigo()==codigo)
+				return edicion;
+		}
+		return null;
+	}
+	
 }
 
