@@ -10,7 +10,6 @@ public abstract class Publicacion {
 	private String tema;
 	private String subtema;
 	private String publico;
-	private Vector <Vendedor> periocidad;
 	private Vector <Edicion> ediciones;
 	private String idioma;
 	private String paisDeOrigen;
@@ -23,7 +22,6 @@ public abstract class Publicacion {
 		this.tema = tema;
 		this.subtema = subtema;
 		this.publico = publico;
-		this.periocidad = new Vector <Vendedor> ();
 		this.ediciones = new Vector <Edicion> ();
 		this.idioma = idioma;
 		this.paisDeOrigen = paisDeOrigen;
@@ -83,14 +81,6 @@ public abstract class Publicacion {
 
 	public void setPublico(String publico) {
 		this.publico = publico;
-	}
-
-	public Vector<Vendedor> getPeriocidad() {
-		return periocidad;
-	}
-
-	public void setPeriocidad(Vector<Vendedor> periocidad) {
-		this.periocidad = periocidad;
 	}
 
 	public String getIdioma() {
