@@ -1,7 +1,6 @@
 package controlador;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Vector;
 
@@ -9,7 +8,6 @@ import modelo.Colocacion;
 import modelo.DiarieroExclusivo;
 import modelo.DiarieroRevistero;
 import modelo.Edicion;
-import modelo.ItemColocacionView;
 import modelo.Publicacion;
 import modelo.PublicacionDiario;
 import modelo.PublicacionRevista;
@@ -21,6 +19,7 @@ public class Sistema {
 	
 	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
+	private Colocacion colocacion;
 	
 	public Sistema() {
 		super();
@@ -115,7 +114,7 @@ public class Sistema {
 		return edicionesBuscadas;
 	}
 	
-	public void crearColocacionColocacion(Vector<ItemColocacionView> itemsColocacionView) {
+	public void crearColocacion() {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR, 0);
@@ -125,18 +124,16 @@ public class Sistema {
 		
 		Colocacion colocacion = new Colocacion(calendar.getTime());
 		
-		for(ItemColocacionView itemColocacionView : itemsColocacionView) {
-			
-			colocacion.crearItem(
-				this.buscarEdicion(itemColocacionView.getCodigoEdicion()),
-				this.buscarVendedor(itemColocacionView.getCodigoVendedor()),
-				itemColocacionView.getCantidadEntregada()
-			);
-		}
+		this.colocacion = colocacion;
+	}
+	
+	public void agregarItemColocacion(int codigoEdicion, int codigoVendedor, int cantidadEntrega) {
 		
-		/**
-		 * Guardar la colocacion
-		 */
+		this.colocacion.crearItem(
+			this.buscarEdicion(codigoEdicion), 
+			this.buscarVendedor(codigoVendedor), 
+			cantidadEntrega
+		);
 	}
 	
 	public Vector<Edicion> buscarEdiciones (Date fecha){
