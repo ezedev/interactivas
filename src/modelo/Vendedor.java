@@ -6,16 +6,15 @@ import java.util.Vector;
 
 public abstract class Vendedor {
 
+	protected int codigo;
 	protected String direccion;
 	protected  Vector<Publicacion> publicaciones;
 	protected Zona zona;
 	
-	
-
-
-	public Vendedor(String direccion, Vector<Publicacion> publicaciones,
+	public Vendedor(int codigo, String direccion, Vector<Publicacion> publicaciones,
 			Zona zona) {
 		super();
+		this.codigo = codigo;
 		this.direccion = direccion;
 		this.publicaciones = publicaciones;
 		this.zona = zona;
@@ -48,6 +47,14 @@ public abstract class Vendedor {
 
 	public void setZona(Zona zona) {
 		this.zona = zona;
+	}
+	
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
 	public  abstract boolean vendesPublicaciones(Publicacion pub);

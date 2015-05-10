@@ -3,12 +3,10 @@ package modelo;
 import java.util.Vector;
 
 public class RevisteroExclusivo extends Vendedor {
-
-
 	
-	public RevisteroExclusivo(String direccion,
-			Vector<Publicacion> publicaciones, Zona zona) {
-		super(direccion, publicaciones, zona);
+	public RevisteroExclusivo(int codigo, String direccion, Vector<Publicacion> publicaciones, Zona zona) {
+		
+		super(codigo, direccion, publicaciones, zona);
 		// TODO Auto-generated constructor stub
 	}
 

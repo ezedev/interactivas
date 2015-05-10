@@ -2,26 +2,33 @@ package modelo;
 
 public class ItemColocacion {
 
-	private int codigo;
-	private int cantidad;
+	private int cantidadEntrega;
+	private int cantidadDevolucion;
 	private Edicion edicion;
 	private Vendedor vendedor;
 	
-	public ItemColocacion(int codigo, int cantidad, Edicion edicion,
-			Vendedor vendedor) {
+	public ItemColocacion(int cantidadEntrega, int cantidadDevolucion, Edicion edicion, Vendedor vendedor) {
 		super();
-		this.codigo = codigo;
-		this.cantidad = cantidad;
+		this.cantidadEntrega = cantidadEntrega;
+		this.cantidadDevolucion = cantidadDevolucion;
 		this.edicion = edicion;
 		this.vendedor = vendedor;
 	}
 
-	public int getCantidad() {
-		return cantidad;
+	public int getCantidadEntrega() {
+		return cantidadEntrega;
 	}
 
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
+	public void setCantidadEntrega(int cantidadEntrega) {
+		this.cantidadEntrega = cantidadEntrega;
+	}
+
+	public int getCantidadDevolucion() {
+		return cantidadDevolucion;
+	}
+
+	public void setCantidadDevolucion(int cantidadDevolucion) {
+		this.cantidadDevolucion = cantidadDevolucion;
 	}
 
 	public Edicion getEdicion() {
@@ -39,11 +46,5 @@ public class ItemColocacion {
 	public void setVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
 	}
-
-	public int getCodigo() {
-		return codigo;
-	}
-	
-	
 	
 }
