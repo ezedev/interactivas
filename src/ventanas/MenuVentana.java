@@ -39,6 +39,7 @@ public class MenuVentana extends javax.swing.JFrame {
 			
 			JMenuItem menuItemGenerarColocacion = new JMenuItem();
 			menuItemGenerarColocacion.setText("Generar colocacion");
+			
 		
 			JMenuItem menuItemCargarDevoluciones = new JMenuItem();
 			menuItemCargarDevoluciones.setText("Cargar devoluciones");

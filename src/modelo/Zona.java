@@ -4,10 +4,6 @@ public class Zona {
 	private int codigo;
 	private String nombre;
 	
-	
-	
-	
-	
 	public Zona(int codigo, String nombre) {
 		super();
 		this.codigo = codigo;
