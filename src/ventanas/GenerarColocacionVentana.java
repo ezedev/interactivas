@@ -42,6 +42,7 @@ public class GenerarColocacionVentana extends javax.swing.JFrame {
 	private JPanel jPanelRight;
 	private JLabel jLabelTituloPublicacion;
 	private JLabel jLabelTituloEdicion;
+	private JButton jButtonAplicar;
 	private JButton jButtonCancelar;
 	private JButton jButtonGuardar;
 	private JComboBox jComboBoxPautasColocacion;
@@ -173,6 +174,12 @@ public class GenerarColocacionVentana extends javax.swing.JFrame {
 					jButtonCancelar.setText("Cancelar");
 					jButtonCancelar.setBounds(71, 163, 58, 23);
 				}
+				{
+					jButtonAplicar = new JButton();
+					jPanelRight.add(jButtonAplicar);
+					jButtonAplicar.setText("Aplicar");
+					jButtonAplicar.setBounds(46, 48, 49, 23);
+				}
 			}
 			{
 				jPanelLeft = new JPanel();
@@ -183,7 +190,7 @@ public class GenerarColocacionVentana extends javax.swing.JFrame {
 				{
 					TableModel jTableColocacionesModel = 
 							new DefaultTableModel(
-									new String[][] { { "Nombre", "Date 1", "Date 2", "Date 3", "Salida" } },
+									new String[][] { { "Nombre", "Date 1", "Date 2", "Date 3", "Salida" },{},{},{},{},{},{},{} },
 									new String[] { "Nombre", "Date 1", "Date 2", "Date 3", "Salida" });
 					jTableColocaciones = new JTable();
 					jPanelLeft.add(jTableColocaciones);
