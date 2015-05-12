@@ -1,5 +1,8 @@
 package ventanas;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -9,7 +12,13 @@ import javax.swing.SwingUtilities;
 import controlador.Sistema;
 
 public class MenuVentana extends javax.swing.JFrame {
-	
+	private JMenuBar menuBar;
+	private JMenu menuColocacion;
+	private JMenuItem menuItemGenerarColocacion;
+	private JMenuItem menuItemCargarDevoluciones;
+	private JMenu menuEdiciones;
+	private JMenu menuReportes;
+
 	public MenuVentana() {
 		super();
 		initGUI();
@@ -22,26 +31,26 @@ public class MenuVentana extends javax.swing.JFrame {
 			pack();
 			setSize(400, 300);
 			setTitle("Sistema de colocacion de ediciones");
-			
+			getContentPane().setBackground(new java.awt.Color(64,128,128));
+
 			/**
 			 * Menu
 			 */
 			
-			JMenuBar menuBar = new JMenuBar();
+			menuBar = new JMenuBar();
 			
 			/**
 			 * Colocaciones
 			 */
 			
-			JMenu menuColocacion = new JMenu();
+			menuColocacion = new JMenu();
 			menuColocacion.setText("Colocacion");
 			menuColocacion.setSize(120, 30);
 			
-			JMenuItem menuItemGenerarColocacion = new JMenuItem();
+			menuItemGenerarColocacion = new JMenuItem();
 			menuItemGenerarColocacion.setText("Generar colocacion");
 			
-		
-			JMenuItem menuItemCargarDevoluciones = new JMenuItem();
+			menuItemCargarDevoluciones = new JMenuItem();
 			menuItemCargarDevoluciones.setText("Cargar devoluciones");
 			
 			menuColocacion.add(menuItemGenerarColocacion);
@@ -51,7 +60,7 @@ public class MenuVentana extends javax.swing.JFrame {
 			 * ABM Ediciones
 			 */
 			
-			JMenu menuEdiciones = new JMenu();
+			menuEdiciones = new JMenu();
 			menuEdiciones.setText("Ediciones");
 			menuEdiciones.setSize(120, 30);			
 			
@@ -59,7 +68,7 @@ public class MenuVentana extends javax.swing.JFrame {
 			 * Reportes
 			 */
 			
-			JMenu menuReportes = new JMenu();
+			menuReportes = new JMenu();
 			menuReportes.setText("Reportes");
 			menuReportes.setSize(120, 30);		
 			
@@ -73,5 +82,5 @@ public class MenuVentana extends javax.swing.JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	
 }
