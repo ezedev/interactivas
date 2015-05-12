@@ -4,15 +4,15 @@ import java.util.Vector;
 
 public abstract class Publicacion {
 	
-	private int codigo;
-	private String titulo;
-	private String editor;
-	private String tema;
-	private String subtema;
-	private String publico;
-	private Vector <Edicion> ediciones;
-	private String idioma;
-	private String paisDeOrigen;
+	protected int codigo;
+	protected String titulo;
+	protected String editor;
+	protected String tema;
+	protected String subtema;
+	protected String publico;
+	protected Vector <Edicion> ediciones;
+	protected String idioma;
+	protected String paisDeOrigen;
 	
 	public Publicacion(int codigo, String titulo, String editor, String tema,String subtema, String publico, String idioma, String paisDeOrigen) {
 		super();

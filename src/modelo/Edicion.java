@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.Date;
 
-public class Edicion {
+public class Edicion{
 
 	private int codigo;
 	private String tituloTapa;
@@ -60,6 +60,5 @@ public class Edicion {
 	public boolean SosEdicion (int c){
 		return this.codigo==c;
 	}
-	
 
 }
