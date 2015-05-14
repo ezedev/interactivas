@@ -8,10 +8,25 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import controlador.Sistema;
 
-public class MenuVentana extends javax.swing.JFrame {
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
+public class MenuVentana extends javax.swing.JFrame implements MenuListener, ActionListener{
 	private JMenuBar menuBar;
 	private JMenu menuColocacion;
 	private JMenuItem menuItemGenerarColocacion;
@@ -29,9 +44,11 @@ public class MenuVentana extends javax.swing.JFrame {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			pack();
-			setSize(400, 300);
+			this.setSize(770, 557);
 			setTitle("Sistema de colocacion de ediciones");
 			getContentPane().setBackground(new java.awt.Color(64,128,128));
+			this.setPreferredSize(new java.awt.Dimension(770, 557));
+			this.setResizable(false);
 
 			/**
 			 * Menu
@@ -49,6 +66,7 @@ public class MenuVentana extends javax.swing.JFrame {
 			
 			menuItemGenerarColocacion = new JMenuItem();
 			menuItemGenerarColocacion.setText("Generar colocacion");
+			this.menuItemGenerarColocacion.addActionListener(this);
 			
 			menuItemCargarDevoluciones = new JMenuItem();
 			menuItemCargarDevoluciones.setText("Cargar devoluciones");
@@ -81,6 +99,31 @@ public class MenuVentana extends javax.swing.JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void menuCanceled(MenuEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void menuDeselected(MenuEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void menuSelected(MenuEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void actionPerformed(ActionEvent event) {
+		// TODO Auto-generated method stub
+		if(event.getSource()==this.menuItemGenerarColocacion){
+			getContentPane().removeAll();
+			getContentPane().add(new PanelColocacion());
+		}
+		getContentPane().revalidate();
+		getContentPane().repaint();
 	}
 	
 }
