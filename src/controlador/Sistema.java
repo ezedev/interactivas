@@ -19,12 +19,14 @@ public class Sistema {
 	
 	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
+	private Vector<Publicacion> publicaciones;
 	private Colocacion colocacion;
 	
 	public Sistema() {
 		super();
 		this.vendedores = new Vector<Vendedor>();
 		this.ediciones = new Vector<Edicion>();
+		this.publicaciones = new Vector<Publicacion>();
 		
 		/**
 		 * Carga para desarrollar
@@ -168,5 +170,58 @@ public class Sistema {
 		
 		return vendedorEncontrado;
 	}	
+	
+	private Publicacion buscarPublicacion(int codigo)
+	{
+		for (int i = 0 ; i < publicaciones.size() ; i++)
+		{
+			
+			if(publicaciones.elementAt(i).getCodigo() == codigo)
+			{
+				return publicaciones.elementAt(i);
+			}
+		}
+		return null;
+	}
+	
+	public void altaEdicion(int codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
+	{
+		Edicion nuevaEdicion = buscarEdicion(codigo);		
+		Publicacion publicacion = buscarPublicacion(CodPublicacion);
+		if(publicacion != null)
+		{
+			if(nuevaEdicion == null)
+			{
+				nuevaEdicion = new Edicion(codigo,tituloTapa,fechaDeSalida,precio, publicacion);
+				ediciones.add(nuevaEdicion);
+			}
+		}
+	}
+	
+	public void modificacionEdicion(int codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
+	{
+			
+		Publicacion publicacion = buscarPublicacion(CodPublicacion);
+		if(publicacion != null)
+		{
+			for(Edicion edicion: ediciones)
+			{
+				if(edicion.getCodigo() == codigo)
+				{
+					edicion.setTituloTapa(tituloTapa);
+					edicion.setPrecio(precio);
+					edicion.setFechaSalida(fechaDeSalida);
+					edicion.setPublicacion(publicacion);
+							
+				}
+			}
+		}
+	}
+	
+	
+	public void bajaEdicion(int codigo)
+	{
+		//tengo que hablarlo para saber si hago baja fisica o logica
+	}
 }
 
