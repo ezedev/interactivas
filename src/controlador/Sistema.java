@@ -21,7 +21,7 @@ public class Sistema {
 	private Vector<Publicacion> publicaciones;
 	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
-	private Vector<Publicacion> publicaciones;
+
 	private Colocacion colocacion;
 	
 	private Sistema() {
@@ -189,6 +189,9 @@ public class Sistema {
 		return (String[])nombresPublicaciones.toArray(new String[nombresPublicaciones.size()]);
 	}	
 	
+	
+	
+	//para ediciones
 	private Publicacion buscarPublicacion(int codigo)
 	{
 		for (int i = 0 ; i < publicaciones.size() ; i++)
