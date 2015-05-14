@@ -6,13 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import controlador.Sistema;
-
+import java.awt.BorderLayout;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -28,6 +29,7 @@ import controlador.Sistema;
 */
 public class MenuVentana extends javax.swing.JFrame implements MenuListener, ActionListener{
 	private JMenuBar menuBar;
+	private JPanel jPanelInicial;
 	private JMenu menuColocacion;
 	private JMenuItem menuItemGenerarColocacion;
 	private JMenuItem menuItemCargarDevoluciones;
@@ -49,6 +51,12 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener, Act
 			getContentPane().setBackground(new java.awt.Color(64,128,128));
 			this.setPreferredSize(new java.awt.Dimension(770, 557));
 			this.setResizable(false);
+			
+			{
+				jPanelInicial = new JPanel();
+				getContentPane().add(jPanelInicial, BorderLayout.CENTER);
+				jPanelInicial.setBackground(new java.awt.Color(64,128,128));
+			}
 
 			/**
 			 * Menu

@@ -1,8 +1,11 @@
 package controlador;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import modelo.Colocacion;
 import modelo.DiarieroExclusivo;
@@ -90,11 +93,22 @@ public class Sistema {
 		this.vendedores.add(new DiarieroRevistero(1004, "Vendedor Diarios y Revistas Puesto #1", publicacionesDiariosRevistas, microcentro));
 	}
 	
+	public String getFechaSalida(){
+		Calendar c = Calendar.getInstance();
+		String dia = Integer.toString(c.get(Calendar.DATE)+1);
+		String mes = Integer.toString(c.get(Calendar.MONTH));
+		String annio = Integer.toString(c.get(Calendar.YEAR));
+		String fechaSalida = dia +"/" + mes + "/" + annio;
+		return fechaSalida;
+	}
+	
 	/*Implementación patrón Singleton*/
 	
 	public static Sistema getInstance(){
 		return instancia;
 	}
+	
+	
 
 	/**
 	 * Busca las ediciones para armar la colocacion.
@@ -145,6 +159,14 @@ public class Sistema {
 			this.buscarVendedor(codigoVendedor), 
 			cantidadEntrega
 		);
+	}
+	
+	public Edicion buscarEdicionesXFechaYPublicacion (Date fecha, String publicacion){
+		for (Edicion edicion : ediciones) {
+			if(edicion.getFechaSalida().equals(fecha) && edicion.getPublicacion().getTitulo() == publicacion)
+				return edicion;
+		}
+		return null;
 	}
 	
 	public Vector<Edicion> buscarEdiciones (Date fecha){
@@ -243,6 +265,20 @@ public class Sistema {
 	public void bajaEdicion(int codigo)
 	{
 		//tengo que hablarlo para saber si hago baja fisica o logica
+	}
+	
+	
+	public Date stringToDate (String fecha) throws Exception{
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+	 
+			Date date = formatter.parse(fecha);
+			return date;
+	 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 

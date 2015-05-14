@@ -2,6 +2,7 @@ package ventanas;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -34,7 +35,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 	static private PanelColocacion panelColocacion_IL;
 	static private JLabel publicacionLabel;
 	static private JLabel fechaLabel;
-	static private JTextField fechaTextField;
+	static private JLabel fechaSalidaLabel;
 	static private JButton limpiarButton;
 	static private JButton cancelarJButton;
 	static private JTable vendedoresTable;
@@ -63,7 +64,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		frame.setPreferredSize(new java.awt.Dimension(770, 557));
 		{
 			panelColocacion_IL = new PanelColocacion();
-			//frame.getContentPane().add(panelColocacion_IL);
+			frame.getContentPane().add(panelColocacion_IL);
 			panelColocacion_IL.setBounds(0, 0, 770, 557);
 			panelColocacion_IL.setLayout(null);
 			{
@@ -182,11 +183,28 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		initGUI();
 	}
 	
+	
+	//Función que utiliza el botón cancelar para volver a la pantalla inicial
+	
+	private void limpiarPantalla (){
+		try{
+			JPanel panelInicial = this;
+			panelInicial.removeAll();
+			panelInicial.setBounds(0, 0, 770, 557);
+			panelInicial.setLayout(null);
+			panelInicial.setBackground(new java.awt.Color(64,128,128));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 	private void initGUI() {
 		try {
 			panelColocacion_IL = this;
 			panelColocacion_IL.setBounds(0, 0, 770, 557);
 			panelColocacion_IL.setLayout(null);
+			panelColocacion_IL.setBackground(new java.awt.Color(219,238,249));
 			{
 				publicacionLabel = new JLabel();
 				panelColocacion_IL.add(publicacionLabel);
@@ -208,10 +226,10 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				fechaLabel.setBounds(348, 30, 95, 16);
 			}
 			{
-				fechaTextField = new JTextField();
-				panelColocacion_IL.add(fechaTextField);
-				fechaTextField.setText("DD/MM/AAAA");
-				fechaTextField.setBounds(449, 27, 86, 23);
+				fechaSalidaLabel = new JLabel();
+				panelColocacion_IL.add(fechaSalidaLabel);
+				fechaSalidaLabel.setText(Sistema.getInstance().getFechaSalida());
+				fechaSalidaLabel.setBounds(450, 30, 82, 16);
 			}
 			{
 				edicionLabel = new JLabel();
@@ -222,7 +240,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 			{
 				tituloEdicionLabel = new JLabel();
 				panelColocacion_IL.add(tituloEdicionLabel);
-				tituloEdicionLabel.setText("...");
+				tituloEdicionLabel.setText("");
 				tituloEdicionLabel.setBounds(102, 69, 100, 16);
 			}
 			{
@@ -287,6 +305,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				cancelarJButton.addActionListener(this);
 				cancelarJButton.setBounds(670, 360, 90, 23);
 			}
+			
 			{
 				limpiarButton = new JButton();
 				panelColocacion_IL.add(limpiarButton);
@@ -298,14 +317,14 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
 		if(event.getSource()==this.cancelarJButton){
+			limpiarPantalla();
 		}
-		getRootPane().revalidate();
-		getRootPane().repaint();
 	}
 
 }
