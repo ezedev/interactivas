@@ -17,11 +17,13 @@ import modelo.Zona;
 
 public class Sistema {
 	
+	private static Sistema instancia= new Sistema();
+	private Vector<Publicacion> publicaciones;
 	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
 	private Colocacion colocacion;
 	
-	public Sistema() {
+	private Sistema() {
 		super();
 		this.vendedores = new Vector<Vendedor>();
 		this.ediciones = new Vector<Edicion>();
@@ -46,6 +48,7 @@ public class Sistema {
 		Vector<Publicacion> publicacionesDiariosRevistas = new Vector<Publicacion>();
 		publicacionesDiariosRevistas.addAll(publicacionesDiarios);
 		publicacionesDiariosRevistas.addAll(publicacionesRevistas);
+		this.publicaciones = publicacionesDiariosRevistas;
 		
 		/**
 		 * Calculamos la fecha de maÃ±ana
@@ -83,6 +86,12 @@ public class Sistema {
 		this.vendedores.add(new DiarieroExclusivo(1002, "Vendedor Diarios Puesto #3", publicacionesDiarios, norte));
 		this.vendedores.add(new RevisteroExclusivo(1003, "Vendedor Revistas Puesto #1", publicacionesRevistas, norte));
 		this.vendedores.add(new DiarieroRevistero(1004, "Vendedor Diarios y Revistas Puesto #1", publicacionesDiariosRevistas, microcentro));
+	}
+	
+	/*Implementación patrón Singleton*/
+	
+	public static Sistema getInstance(){
+		return instancia;
 	}
 
 	/**
@@ -167,6 +176,15 @@ public class Sistema {
 		}
 		
 		return vendedorEncontrado;
+	}
+
+	public String[] listaPublicaciones() {
+		// TODO Auto-generated method stub
+		Vector<String> nombresPublicaciones = new Vector <String>();
+		for (Publicacion publicacion : publicaciones) {
+			nombresPublicaciones.add(publicacion.getTitulo());
+		}
+		return (String[])nombresPublicaciones.toArray(new String[nombresPublicaciones.size()]);
 	}	
 }
 
