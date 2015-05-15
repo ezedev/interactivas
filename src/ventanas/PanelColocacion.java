@@ -336,8 +336,6 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		try{
 		String seleccion = this.publicacionesComboBox.getSelectedItem().toString();
 		Date fecha = Sistema.getInstance().stringToDate(Sistema.getInstance().getFechaSalida());
-		System.out.println(fecha);
-		System.out.println(seleccion);
 		String edicion = Sistema.getInstance().buscarEdicionesXFechaYPublicacion(fecha, seleccion);
 		this.tituloEdicionLabel.setText(edicion);
 		}catch (Exception e){

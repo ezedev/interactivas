@@ -165,8 +165,6 @@ public class Sistema {
 	
 	public String buscarEdicionesXFechaYPublicacion (Date fecha, String publicacion){
 		for (Edicion edicion : ediciones) {
-			System.out.println(edicion.getPublicacion().getTitulo());
-			System.out.println(edicion.getFechaSalida());
 			if(edicion.getFechaSalida().equals(fecha) && edicion.getPublicacion().getTitulo() == publicacion)
 				return edicion.getTituloTapa();
 		}
