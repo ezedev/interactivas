@@ -33,6 +33,7 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener, Act
 	private JMenu menuColocacion;
 	private JMenuItem menuItemGenerarColocacion;
 	private JMenuItem menuItemCargarDevoluciones;
+	private JMenuItem menuItemEdiciones;
 	private JMenu menuEdiciones;
 	private JMenu menuReportes;
 
@@ -88,8 +89,13 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener, Act
 			
 			menuEdiciones = new JMenu();
 			menuEdiciones.setText("Ediciones");
-			menuEdiciones.setSize(120, 30);			
+			menuEdiciones.setSize(120, 30);		
 			
+			menuItemEdiciones= new JMenuItem();
+			menuItemEdiciones.setText("Ediciones");
+			this.menuItemEdiciones.addActionListener(this);
+			
+			this.menuEdiciones.add(menuItemEdiciones);
 			/**
 			 * Reportes
 			 */
@@ -129,6 +135,12 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener, Act
 		if(event.getSource()==this.menuItemGenerarColocacion){
 			getContentPane().removeAll();
 			getContentPane().add(new PanelColocacion());
+		}
+		else{
+			if(event.getSource()==this.menuItemEdiciones){
+				getContentPane().removeAll();
+				getContentPane().add(new PanelEdiciones());
+			}
 		}
 		getContentPane().revalidate();
 		getContentPane().repaint();
