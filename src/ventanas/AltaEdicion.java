@@ -1,5 +1,5 @@
 package ventanas;
-import com.cloudgarden.layout.AnchorLayout;
+//import com.cloudgarden.layout.AnchorLayout;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
