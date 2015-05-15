@@ -2,6 +2,7 @@ package ventanas;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ComboBoxModel;
@@ -218,6 +219,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				panelColocacion_IL.add(publicacionesComboBox);
 				publicacionesComboBox.setModel(publicacionesComboBoxModel);
 				publicacionesComboBox.setBounds(102, 27, 108, 23);
+				publicacionesComboBox.addActionListener(this);
 			}
 			{
 				fechaLabel = new JLabel();
@@ -324,7 +326,24 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		// TODO Auto-generated method stub
 		if(event.getSource()==this.cancelarJButton){
 			limpiarPantalla();
+		}else{
+			if(event.getSource()==this.publicacionesComboBox){
+				updateEdiciones();
+			}
 		}
+	}
+	private String updateEdiciones (){
+		try{
+		String seleccion = this.publicacionesComboBox.getSelectedItem().toString();
+		Date fecha = Sistema.getInstance().stringToDate(Sistema.getInstance().getFechaSalida());
+		System.out.println(fecha);
+		System.out.println(seleccion);
+		String edicion = Sistema.getInstance().buscarEdicionesXFechaYPublicacion(fecha, seleccion);
+		this.tituloEdicionLabel.setText(edicion);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

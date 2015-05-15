@@ -70,10 +70,12 @@ public class Sistema {
 		/**
 		 * Cargamos las ediciones que salen mañana
 		 */		
-		
-		this.ediciones.add(new Edicion(1000, "Clarin - Lunes", fechaSalida, 9.50f, clarin));
-		this.ediciones.add(new Edicion(1001, "Lanacion - Lunes", fechaSalida, 12.50f, lanacion));
-		
+		try{
+		this.ediciones.add(new Edicion(1000, "Clarin - Lunes", stringToDate(getFechaSalida()), 9.50f, clarin));
+		this.ediciones.add(new Edicion(1001, "Lanacion - Lunes", stringToDate(getFechaSalida()), 12.50f, lanacion));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		/**
 		 * Cargamos zonas
 		 */
@@ -161,10 +163,12 @@ public class Sistema {
 		);
 	}
 	
-	public Edicion buscarEdicionesXFechaYPublicacion (Date fecha, String publicacion){
+	public String buscarEdicionesXFechaYPublicacion (Date fecha, String publicacion){
 		for (Edicion edicion : ediciones) {
+			System.out.println(edicion.getPublicacion().getTitulo());
+			System.out.println(edicion.getFechaSalida());
 			if(edicion.getFechaSalida().equals(fecha) && edicion.getPublicacion().getTitulo() == publicacion)
-				return edicion;
+				return edicion.getTituloTapa();
 		}
 		return null;
 	}
