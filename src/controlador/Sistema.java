@@ -5,9 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import modelo.Colocacion;
+import modelo.ComboItem;
 import modelo.DiarieroExclusivo;
 import modelo.DiarieroRevistero;
 import modelo.Edicion;
@@ -166,7 +165,7 @@ public class Sistema {
 	public String buscarEdicionesXFechaYPublicacion (Date fecha, String publicacion){
 		for (Edicion edicion : ediciones) {
 			if(edicion.getFechaSalida().equals(fecha) && edicion.getPublicacion().getTitulo() == publicacion)
-				return edicion.getTituloTapa();
+					return edicion.getTituloTapa();
 		}
 		return null;
 	}
@@ -204,13 +203,13 @@ public class Sistema {
 		return vendedorEncontrado;
 	}
 
-	public String[] listaPublicaciones() {
+	public Vector<ComboItem> listaPublicaciones() {
 		// TODO Auto-generated method stub
-		Vector<String> nombresPublicaciones = new Vector <String>();
+		Vector<ComboItem> publicacionesItems = new Vector <ComboItem>();
 		for (Publicacion publicacion : publicaciones) {
-			nombresPublicaciones.add(publicacion.getTitulo());
+			publicacionesItems.add(new ComboItem (String.valueOf(publicacion.getCodigo()), publicacion.getTitulo()));
 		}
-		return (String[])nombresPublicaciones.toArray(new String[nombresPublicaciones.size()]);
+		return publicacionesItems;
 	}	
 	
 	
@@ -281,6 +280,18 @@ public class Sistema {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public Vector<Vendedor> getVendedoresXPublicacion(int codPublicacion){
+		Vector<Vendedor>vendedoresSalida = new Vector <Vendedor>();
+		for (Vendedor vendedor : vendedores) {
+			Vector<Publicacion>publicacionesV = vendedor.getPublicaciones();
+			for (Publicacion publicacion : publicacionesV) {
+				if(publicacion.getCodigo()==codPublicacion)
+					vendedoresSalida.add(vendedor);
+			}
+		}
+		return vendedoresSalida;
 	}
 }
 

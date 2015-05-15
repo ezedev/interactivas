@@ -1,23 +1,19 @@
 package ventanas;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
+import modelo.ComboItem;
+import modelo.TablaVendedoresModel;
 import controlador.Sistema;
 
 /**
@@ -40,16 +36,16 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 	static private JButton limpiarButton;
 	static private JButton cancelarJButton;
 	static private JTable vendedoresTable;
-	static private JPanel tabelPanel;
+	static private JScrollPane tabelPanel;
 	static private JButton guardarButton;
 	static private JLabel totalLabel;
 	static private JButton aplicarButton;
-	static private JComboBox pautasComboBox;
+	static private JComboBox<ComboItem> pautasComboBox;
 	static private JLabel pautaLabel;
 	static private JLabel totalColocacionLabel;
 	static private JLabel tituloEdicionLabel;
 	static private JLabel edicionLabel;
-	static private JComboBox publicacionesComboBox;
+	static private JComboBox<ComboItem> publicacionesComboBox;
 
 	/**
 	* Auto-generated main method to display this 
@@ -213,11 +209,11 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				publicacionLabel.setBounds(20, 30, 82, 16);
 			}
 			{
-				ComboBoxModel publicacionesComboBoxModel = 
-						new DefaultComboBoxModel(Sistema.getInstance().listaPublicaciones());
-				publicacionesComboBox = new JComboBox();
+//				ComboBoxModel publicacionesComboBoxModel = 
+//						new DefaultComboBoxModel(Sistema.getInstance().listaPublicaciones());
+				publicacionesComboBox = new JComboBox<ComboItem>(Sistema.getInstance().listaPublicaciones());
 				panelColocacion_IL.add(publicacionesComboBox);
-				publicacionesComboBox.setModel(publicacionesComboBoxModel);
+//				publicacionesComboBox.setModel(publicacionesComboBoxModel);
 				publicacionesComboBox.setBounds(102, 27, 108, 23);
 				publicacionesComboBox.addActionListener(this);
 			}
@@ -286,19 +282,19 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				guardarButton.setSize(90, 23);
 			}
 			{
-				tabelPanel = new JPanel();
-				panelColocacion_IL.add(tabelPanel);
-				tabelPanel.setBounds(16, 91, 508, 339);
 				{
-					TableModel vendedoresTableModel = 
-							new DefaultTableModel(
-									new String[][] { { "One", "Two" }, { "Three", "Four" } },
-									new String[] { "Column 1", "Column 2", "Column3", "Column 4", "Column 5" });
+//					TableModel vendedoresTableModel = 
+//							new DefaultTableModel(
+//									new String[][] { { "One", "Two" }, { "Three", "Four" } },
+//									new String[] { "Column 1", "Column 2", "Column3", "Column 4", "Column 5" });
 					vendedoresTable = new JTable();
-					tabelPanel.add(vendedoresTable);
-					vendedoresTable.setModel(vendedoresTableModel);
+//					tabelPanel.add(vendedoresTable);
+					vendedoresTable.setModel((new TablaVendedoresModel()).getModel());
 					vendedoresTable.setPreferredSize(new java.awt.Dimension(499, 326));
 				}
+				tabelPanel = new JScrollPane(vendedoresTable);
+				panelColocacion_IL.add(tabelPanel);
+				tabelPanel.setBounds(16, 91, 508, 339);
 			}
 			{
 				cancelarJButton = new JButton();

@@ -1,5 +1,6 @@
 package ventanas;
-import com.cloudgarden.layout.AnchorLayout;
+
+//import com.cloudgarden.layout.AnchorLayout;
 //import com.jgoodies.forms.layout.FormLayout;
 import com.sun.javafx.property.adapter.JavaBeanPropertyBuilderHelper;
 //
