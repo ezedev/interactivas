@@ -266,7 +266,7 @@ public class Sistema {
 	
 	public void bajaEdicion(int codigo)
 	{
-		//tengo que hablarlo para saber si hago baja fisica o logica
+		//
 	}
 	
 	
