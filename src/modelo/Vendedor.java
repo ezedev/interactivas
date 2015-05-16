@@ -2,16 +2,18 @@ package modelo;
 
 import java.util.Vector;
 
-
-
 public abstract class Vendedor {
 
-	protected int codigo;
+	public final static String TIPO_DIARIERIO_EXCLUSIVO = "D";
+	public final static String TIPO_REVISTERO_EXCLUSIVO = "R";
+	public final static String TIPO_DIARIERIO_REVISTERO = "A";
+	
+	protected String codigo;
 	protected String direccion;
 	protected  Vector<Publicacion> publicaciones;
 	protected Zona zona;
 	
-	public Vendedor(int codigo, String direccion, Vector<Publicacion> publicaciones,
+	public Vendedor(String codigo, String direccion, Vector<Publicacion> publicaciones,
 			Zona zona) {
 		super();
 		this.codigo = codigo;
@@ -48,12 +50,12 @@ public abstract class Vendedor {
 	public void setZona(Zona zona) {
 		this.zona = zona;
 	}
-	
-	public int getCodigo() {
+
+	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 

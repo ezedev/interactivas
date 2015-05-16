@@ -5,7 +5,7 @@ import java.util.Vector;
 public class DiarieroRevistero extends Vendedor {
 
 
-	public DiarieroRevistero(int codigo, String direccion, Vector<Publicacion> publicaciones, Zona zona) {
+	public DiarieroRevistero(String codigo, String direccion, Vector<Publicacion> publicaciones, Zona zona) {
 		
 		super(codigo, direccion, publicaciones, zona);
 		// TODO Auto-generated constructor stub

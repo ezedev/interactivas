@@ -4,6 +4,9 @@ import java.util.Vector;
 
 public abstract class Publicacion {
 	
+	public final static String TIPO_DIARIO = "D";
+	public final static String TIPO_REVISTA = "R";
+	
 	protected String codigo;
 	protected String titulo;
 	protected String editor;
@@ -13,11 +16,6 @@ public abstract class Publicacion {
 	protected Vector <Edicion> ediciones;
 	protected String idioma;
 	protected String paisDeOrigen;
-	
-	
-	public Publicacion() {
-		super();
-	}
 
 	public Publicacion(String codigo, String titulo, String editor, String tema,String subtema, String publico, String idioma, String paisDeOrigen) {
 		super();

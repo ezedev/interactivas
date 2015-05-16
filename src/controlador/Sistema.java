@@ -82,21 +82,25 @@ public class Sistema {
 		/**
 		 * Cargamos zonas
 		 */
-		
+	
+		/*
 		Zona microcentro = new Zona(1000, "Microcentro");
 		Zona sur = new Zona(1001, "Sur");
 		Zona norte = new Zona(1002, "Norte");
+		*/
 		
 		/**
 		 * Cargamos un vendedor diario que venda todos los diarios
 		 */
 
+		/*
 		this.vendedores.add(new DiarieroExclusivo(1000, "Vendedor Diarios Puesto #1", publicacionesDiarios, microcentro));
 		this.vendedores.add(new DiarieroExclusivo(1001, "Vendedor Diarios Puesto #2", publicacionesDiarios, sur));
 		this.vendedores.add(new DiarieroExclusivo(1002, "Vendedor Diarios Puesto #3", publicacionesDiarios, norte));
 		this.vendedores.add(new RevisteroExclusivo(1003, "Vendedor Revistas Puesto #1", publicacionesRevistas, norte));
 		this.vendedores.add(new DiarieroRevistero(1004, "Vendedor Diarios y Revistas Puesto #1", publicacionesDiariosRevistas, microcentro));
-			}
+		*/
+	}
 	
 	public String getFechaSalida(){
 		Calendar c = Calendar.getInstance();
@@ -107,7 +111,7 @@ public class Sistema {
 		return fechaSalida;
 	}
 	
-	/*Implementación patrón Singleton*/
+	/*Implementaciï¿½n patrï¿½n Singleton*/
 	
 	public static Sistema getInstance(){
 		return instancia;
@@ -157,7 +161,7 @@ public class Sistema {
 		this.colocacion = colocacion;
 	}
 	
-	public void agregarItemColocacion(String codigoEdicion, int codigoVendedor, int cantidadEntrega) {
+	public void agregarItemColocacion(String codigoEdicion, String codigoVendedor, int cantidadEntrega) {
 		
 		this.colocacion.crearItem(
 			this.buscarEdicion(codigoEdicion), 
@@ -192,13 +196,13 @@ public class Sistema {
 		return null;
 	}
 
-	public Vendedor buscarVendedor (int codigo){
+	public Vendedor buscarVendedor (String codigo){
 		
 		Vendedor vendedorEncontrado = null;
 		
 		for(Vendedor vendedor: this.vendedores){
 			
-			if (vendedor.getCodigo()==codigo) {
+			if (vendedor.getCodigo().equals(codigo)) {
 				vendedorEncontrado = vendedor;
 				break;
 			}
