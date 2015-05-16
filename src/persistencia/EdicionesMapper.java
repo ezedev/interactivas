@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import modelo.Edicion;
@@ -64,8 +65,8 @@ public class EdicionesMapper {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion codigo = ?");
-			s.setString(0, codigo);
+			PreparedStatement s = conn.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ?");
+			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();				
 		
 			if(rs.next()) {
@@ -100,9 +101,9 @@ public class EdicionesMapper {
 				"precio = ? WHERE codigo = ?"
 			);
 			
-			s.setString(0, edicion.getTituloTapa());
-			s.setDate(1, new java.sql.Date(edicion.getFechaSalida().getTime()));
-			s.setString(2, edicion.getCodigo());
+			s.setString(1, edicion.getTituloTapa());
+			s.setDate(2, new java.sql.Date(edicion.getFechaSalida().getTime()));
+			s.setString(3, edicion.getCodigo());
 			s.executeUpdate();
 			
 		} catch(SQLException e) {
@@ -120,7 +121,7 @@ public class EdicionesMapper {
 		try {
 			
 			PreparedStatement s = conn.prepareStatement("DELETE FROM edicion WHERE codigo = ?");
-			s.setString(0, edicion.getCodigo());
+			s.setString(1, edicion.getCodigo());
 			s.executeUpdate();
 			
 		} catch(SQLException e) {
@@ -129,5 +130,37 @@ public class EdicionesMapper {
 		}
 		
 		PoolConnection.getInstance().realeaseConnection(conn);		
+	}
+
+	public Edicion buscarEdicionXPublicacion(Date fechaSalida, String codPublicacion) {
+		// TODO Auto-generated method stub
+Edicion edicion = null;
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+			
+		try {
+			
+		
+			PreparedStatement s = conn.prepareStatement("SELECT e.titulo FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? AND e.fecha_salida = ?");
+			s.setString(1, codPublicacion);
+			s.setDate(2, new java.sql.Date(fechaSalida.getTime()));
+			ResultSet rs = s.executeQuery();				
+			
+			if(rs.next()) {
+			
+				edicion = new Edicion();
+				edicion.setTituloTapa(rs.getString("titulo"));
+
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);		
+		
+		return edicion;
+		
 	}
 }

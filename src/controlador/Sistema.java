@@ -12,6 +12,7 @@ import modelo.ComboItem;
 import modelo.DiarieroExclusivo;
 import modelo.DiarieroRevistero;
 import modelo.Edicion;
+import modelo.EdicionView;
 import modelo.Publicacion;
 import modelo.PublicacionDiario;
 import modelo.PublicacionRevista;
@@ -42,8 +43,8 @@ public class Sistema {
 		 * Publicaciones
 		 */
 		
-		Publicacion clarin = new PublicacionDiario("1", "Clarin", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion lanacion = new PublicacionDiario("1", "Lanacion", "Grupo Clarin", "General", "General", "General", "es", "ARG");
+		Publicacion clarin = new PublicacionDiario("CLARIN", "CLARIN", "Grupo Clarin", "General", "General", "General", "es", "ARG");
+		Publicacion lanacion = new PublicacionDiario("NACION", "LA NACION", "Grupo Clarin", "General", "General", "General", "es", "ARG");
 		Publicacion noticias = new PublicacionRevista("1", "Revista NOTICIAS", "Noticias", "General", "General", "General", "es", "ARG");
 		
 		Vector<Publicacion> publicacionesDiarios = new Vector<Publicacion>();
@@ -298,20 +299,14 @@ public class Sistema {
 	}
 
 	public String getStringFechaSalida() {
-		return Utils.getFechaSalida();
+		return Utils.getFechaSalidaString();
 	}
 
 
 
 // busqueda de ediciones en la base por publicacion
-
-	private String buscarEdicion (){
-		Edicion edicion = new Edicion();
-		try{
-		
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-	return null;
+	
+	public EdicionView buscarEdicionXPublicacion(String codPublicacion) {
+		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), codPublicacion)).toView();	
 	}
 }

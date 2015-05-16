@@ -64,5 +64,9 @@ public class Edicion{
 	public boolean SosEdicion (String c){
 		return this.codigo.equals(c);
 	}
+	
+	public EdicionView toView() {
+		return new EdicionView(codigo, tituloTapa, fechaSalida, precio, publicacion);
+	}
 
 }

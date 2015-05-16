@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import modelo.ComboItem;
+import modelo.EdicionView;
 import controlador.Sistema;
 
 /**
@@ -330,6 +331,9 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 			limpiarPantalla();
 		}else{
 			if(event.getSource()==this.publicacionesComboBox){	
+				ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
+				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
+				edicionLabel.setText(edicionView.getTituloTapa());
 			}
 		}
 	}
