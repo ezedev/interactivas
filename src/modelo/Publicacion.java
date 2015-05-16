@@ -14,6 +14,11 @@ public abstract class Publicacion {
 	protected String idioma;
 	protected String paisDeOrigen;
 	
+	
+	public Publicacion() {
+		super();
+	}
+
 	public Publicacion(String codigo, String titulo, String editor, String tema,String subtema, String publico, String idioma, String paisDeOrigen) {
 		super();
 		this.codigo = codigo;
