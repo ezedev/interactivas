@@ -51,7 +51,7 @@ public class AltaEdicion extends javax.swing.JPanel {
 	/**
 	* Auto-generated main method to display this JFrame
 	*/
-	public static void main(String[] args) {
+	public static void main(String[] args) {  //esta pantalla manejara todo el abm de edicion, voy a subir el nombre correcto luego.
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				AltaEdicion inst = new AltaEdicion();
