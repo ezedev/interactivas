@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
+import persistencia.AdmPersistenciaEdiciones;
+import ventanas.Utils;
+
 import modelo.Colocacion;
 import modelo.ComboItem;
 import modelo.DiarieroExclusivo;
@@ -70,8 +73,9 @@ public class Sistema {
 		 * Cargamos las ediciones que salen mañana
 		 */		
 		try{
-		this.ediciones.add(new Edicion(1000, "Clarin - Lunes", stringToDate(getFechaSalida()), 9.50f, clarin));
-		this.ediciones.add(new Edicion(1001, "Lanacion - Lunes", stringToDate(getFechaSalida()), 12.50f, lanacion));
+		ediciones = AdmPersistenciaEdiciones.getInstance().findAll();
+//		this.ediciones.add(new Edicion(1000, "Clarin - Lunes", stringToDate(getFechaSalida()), 9.50f, clarin));
+//		this.ediciones.add(new Edicion(1001, "Lanacion - Lunes", stringToDate(getFechaSalida()), 12.50f, lanacion));
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -92,7 +96,7 @@ public class Sistema {
 		this.vendedores.add(new DiarieroExclusivo(1002, "Vendedor Diarios Puesto #3", publicacionesDiarios, norte));
 		this.vendedores.add(new RevisteroExclusivo(1003, "Vendedor Revistas Puesto #1", publicacionesRevistas, norte));
 		this.vendedores.add(new DiarieroRevistero(1004, "Vendedor Diarios y Revistas Puesto #1", publicacionesDiariosRevistas, microcentro));
-	}
+			}
 	
 	public String getFechaSalida(){
 		Calendar c = Calendar.getInstance();
@@ -292,6 +296,11 @@ public class Sistema {
 			}
 		}
 		return vendedoresSalida;
+	}
+	
+
+	public String getStringFechaSalida() {
+		return Utils.getFechaSalida();
 	}
 }
 
