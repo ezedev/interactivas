@@ -294,11 +294,7 @@ public class Sistema {
 	}
 	
 	public Vector<Vendedor> buscarVendedoresXPublicacion(String codPublicacion){
-		Vector<Vendedor> vendedores = VendedoresMapper.getInstance().findVendedoresXPublicacion(codPublicacion);
-		for (Vendedor vendedor : vendedores) {
-			System.out.println(vendedor.getDireccion());
-		}
-		return vendedores;
+		return VendedoresMapper.getInstance().findVendedoresXPublicacion(codPublicacion);
 	}
 
 	public String getStringFechaSalida() {

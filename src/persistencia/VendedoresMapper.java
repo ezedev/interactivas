@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import controlador.Sistema;
 import modelo.DiarieroExclusivo;
 import modelo.DiarieroRevistero;
 import modelo.Publicacion;
@@ -134,17 +135,17 @@ public class VendedoresMapper {
 	
 public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
 		
-		Vector<Vendedor>vendedores = new Vector<Vendedor>();
+		Vector<Vendedor> vendedores = new Vector<Vendedor>();
 		
 		Connection conn = PoolConnection.getInstance().getConnection();
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("select * FROM vendedor_publicacion vp INNER JOIN vendedor v ON (vp.vendedor_id = v.id) INNER JOIN publicacion p ON (vp.publicacion_id = p.id) WHERE p.codigo = ?");
+			PreparedStatement s = conn.prepareStatement("select v.tipo , v.direccion , v.codigo FROM vendedor_publicacion vp INNER JOIN vendedor v ON (vp.vendedor_id = v.id) INNER JOIN publicacion p ON (vp.publicacion_id = p.id) WHERE p.codigo = ?");
 			s.setString(1, codPublicacion);
 			ResultSet rs = s.executeQuery();				
 		
-			if(rs.next()) {
+			while(rs.next()) {
 			
 				String tipo = rs.getString("tipo"); 
 				
@@ -158,14 +159,14 @@ public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
 				} else if(tipo.equals(Vendedor.TIPO_REVISTERO_EXCLUSIVO)) {				
 
 					Vendedor vendedor = new RevisteroExclusivo(
-						rs.getString("codigo"), rs.getString("direccion"), null, null
+							rs.getString("codigo"), rs.getString("direccion"), null, null
 					);
 					vendedores.add(vendedor);
 					
 				} else if(tipo.equals(Vendedor.TIPO_DIARIERIO_REVISTERO)) {
 					
 					Vendedor vendedor = new DiarieroRevistero(
-						rs.getString("codigo"), rs.getString("direccion"), null, null
+							rs.getString("codigo"), rs.getString("direccion"), null, null
 					);
 					vendedores.add(vendedor);
 				}
@@ -177,7 +178,6 @@ public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
 		}
 		
 		PoolConnection.getInstance().realeaseConnection(conn);		
-		
 		return vendedores;
 	}
 	

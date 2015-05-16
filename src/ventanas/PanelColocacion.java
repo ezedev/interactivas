@@ -337,6 +337,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
 				tituloEdicionLabel.setText(edicionView.getTituloTapa());
 				Vector <Vendedor> vendedores = Sistema.getInstance().buscarVendedoresXPublicacion(item.getValue());
+				//Hay que ver como meter este vector dentro de la tabla
 			}
 		}
 	}
