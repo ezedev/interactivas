@@ -329,22 +329,10 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		if(event.getSource()==this.cancelarJButton){
 			limpiarPantalla();
 		}else{
-			if(event.getSource()==this.publicacionesComboBox){
-				updateEdiciones();
+			if(event.getSource()==this.publicacionesComboBox){	
 			}
 		}
 	}
-	private String updateEdiciones (){
-		try{
-		String seleccion = this.publicacionesComboBox.getSelectedItem().toString();
-		Date fecha = Sistema.getInstance().stringToDate(Sistema.getInstance().getFechaSalida());
-		String edicion = Sistema.getInstance().buscarEdicionesXFechaYPublicacion(fecha, seleccion);
-		this.tituloEdicionLabel.setText(edicion);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
+
 
 }

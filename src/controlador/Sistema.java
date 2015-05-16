@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+
 import persistencia.EdicionesMapper;
 import ventanas.Utils;
 import modelo.Colocacion;
@@ -41,9 +42,9 @@ public class Sistema {
 		 * Publicaciones
 		 */
 		
-		Publicacion clarin = new PublicacionDiario(1, "Clarin", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion lanacion = new PublicacionDiario(1, "Lanacion", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion noticias = new PublicacionRevista(1, "Revista NOTICIAS", "Noticias", "General", "General", "General", "es", "ARG");
+		Publicacion clarin = new PublicacionDiario("1", "Clarin", "Grupo Clarin", "General", "General", "General", "es", "ARG");
+		Publicacion lanacion = new PublicacionDiario("1", "Lanacion", "Grupo Clarin", "General", "General", "General", "es", "ARG");
+		Publicacion noticias = new PublicacionRevista("1", "Revista NOTICIAS", "Noticias", "General", "General", "General", "es", "ARG");
 		
 		Vector<Publicacion> publicacionesDiarios = new Vector<Publicacion>();
 		publicacionesDiarios.add(clarin);
@@ -222,7 +223,7 @@ public class Sistema {
 		for (int i = 0 ; i < publicaciones.size() ; i++)
 		{
 			
-			if(publicaciones.elementAt(i).getCodigo() == codigo)
+			if(publicaciones.elementAt(i).getCodigo().equals(codigo))
 			{
 				return publicaciones.elementAt(i);
 			}
@@ -289,7 +290,7 @@ public class Sistema {
 		for (Vendedor vendedor : vendedores) {
 			Vector<Publicacion>publicacionesV = vendedor.getPublicaciones();
 			for (Publicacion publicacion : publicacionesV) {
-				if(publicacion.getCodigo()==codPublicacion)
+				if(publicacion.getCodigo().equals(codPublicacion))
 					vendedoresSalida.add(vendedor);
 			}
 		}
@@ -299,5 +300,18 @@ public class Sistema {
 	public String getStringFechaSalida() {
 		return Utils.getFechaSalida();
 	}
-}
 
+
+
+// busqueda de ediciones en la base por publicacion
+
+	private String buscarEdicion (){
+		Edicion edicion = new Edicion();
+		try{
+		
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	return null;
+	}
+}

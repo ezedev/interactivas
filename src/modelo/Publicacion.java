@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public abstract class Publicacion {
 	
-	protected int codigo;
+	protected String codigo;
 	protected String titulo;
 	protected String editor;
 	protected String tema;
@@ -14,7 +14,7 @@ public abstract class Publicacion {
 	protected String idioma;
 	protected String paisDeOrigen;
 	
-	public Publicacion(int codigo, String titulo, String editor, String tema,String subtema, String publico, String idioma, String paisDeOrigen) {
+	public Publicacion(String codigo, String titulo, String editor, String tema,String subtema, String publico, String idioma, String paisDeOrigen) {
 		super();
 		this.codigo = codigo;
 		this.titulo = titulo;
@@ -35,11 +35,11 @@ public abstract class Publicacion {
 		this.ediciones = ediciones;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
