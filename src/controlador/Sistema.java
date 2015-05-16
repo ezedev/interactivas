@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import persistencia.EdicionesMapper;
+import persistencia.PublicacionesMapper;
 import ventanas.Utils;
 import modelo.Colocacion;
 import modelo.ComboItem;
@@ -214,7 +215,8 @@ public class Sistema {
 	public Vector<ComboItem> listaPublicaciones() {
 		// TODO Auto-generated method stub
 		Vector<ComboItem> publicacionesItems = new Vector <ComboItem>();
-		for (Publicacion publicacion : publicaciones) {
+		
+		for (Publicacion publicacion : PublicacionesMapper.getInstance().findAll()) {
 			publicacionesItems.add(new ComboItem (String.valueOf(publicacion.getCodigo()), publicacion.getTitulo()));
 		}
 		return publicacionesItems;
@@ -313,4 +315,5 @@ public class Sistema {
 	public EdicionView buscarEdicionXPublicacion(String codPublicacion) {
 		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), codPublicacion)).toView();	
 	}
+	
 }

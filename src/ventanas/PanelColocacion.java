@@ -333,7 +333,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 			if(event.getSource()==this.publicacionesComboBox){	
 				ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
 				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
-				edicionLabel.setText(edicionView.getTituloTapa());
+				tituloEdicionLabel.setText(edicionView.getTituloTapa());
 			}
 		}
 	}
