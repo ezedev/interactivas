@@ -2,7 +2,6 @@ package programa;
 
 import javax.swing.SwingUtilities;
 
-import controlador.Sistema;
 import ventanas.MenuVentana;
 
 public class Programa {

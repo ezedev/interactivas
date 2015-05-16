@@ -9,6 +9,10 @@ public class Edicion{
 	private Date fechaSalida;
 	private float precio;
 	private Publicacion publicacion;
+
+	public Edicion() {
+		
+	}	
 	
 	public Edicion (int codigo, String tituloTapa, Date fechaSalida, float precio, Publicacion publicacion) {
 		super();
@@ -18,7 +22,7 @@ public class Edicion{
 		this.precio = precio;
 		this.publicacion = publicacion;
 	}
-	
+
 	public int getCodigo() {
 		return codigo;
 	}
