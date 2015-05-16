@@ -1,38 +1,14 @@
 package ventanas;
 //import com.cloudgarden.layout.AnchorLayout;
 //import com.jgoodies.forms.layout.FormLayout;
-import com.sun.javafx.property.adapter.JavaBeanPropertyBuilderHelper;
-//
-//import info.clearthought.layout.TableLayout;
-
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
-import javax.swing.WindowConstants;
-import javax.swing.SwingUtilities;
-
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+//
+//import info.clearthought.layout.TableLayout;
 
 
 /**

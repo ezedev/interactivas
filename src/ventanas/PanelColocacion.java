@@ -13,7 +13,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import modelo.ComboItem;
-import modelo.TablaVendedoresModel;
 import controlador.Sistema;
 
 /**
@@ -337,6 +336,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 
