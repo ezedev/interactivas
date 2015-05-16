@@ -2,6 +2,8 @@ package programa;
 
 import javax.swing.SwingUtilities;
 
+import persistencia.AdmPersistenciaEdiciones;
+import persistencia.PoolConnection;
 import ventanas.MenuVentana;
 
 public class Programa {

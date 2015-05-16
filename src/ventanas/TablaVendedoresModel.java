@@ -6,12 +6,12 @@ public class TablaVendedoresModel {
 
     private DefaultTableModel model;
 
-    private String[] columns = {"Vendedor", "Fecha 1", "Fecha 2", "Fecha 3", "Salida"};
+    private String[] columns = {"Vendedor", "C1", "D1", "C2", "D2", "C3", "D3", "Salida"};
 
-    private String[][] rows = {{"Group A", "all", "box", "game"},
-            {"Group A", "apple", "band", "going"},
-            {"Group B", "alabaster", "banquet", "ghost"},
-            {"Group B", "alone", "boy", "ghoulish"}};
+    private String[][] rows = {
+    		{"Rivadavia 3044", "5", "4", "4", "4", "5", "4", "5"},
+    		{"Corrientes 1500", "10", "6", "8", "4", "6", "6", "6"},
+    		{"Rivadavia 12750", "5", "5", "6", "6", "7", "5", "7"}};
 
     public TablaVendedoresModel() {
         this.model = new DefaultTableModel();

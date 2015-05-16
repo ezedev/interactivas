@@ -4,10 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-
 import persistencia.AdmPersistenciaEdiciones;
 import ventanas.Utils;
-
 import modelo.Colocacion;
 import modelo.ComboItem;
 import modelo.DiarieroExclusivo;
@@ -297,7 +295,6 @@ public class Sistema {
 		}
 		return vendedoresSalida;
 	}
-	
 
 	public String getStringFechaSalida() {
 		return Utils.getFechaSalida();
