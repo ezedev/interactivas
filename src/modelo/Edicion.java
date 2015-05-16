@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Edicion{
 
-	private int codigo;
+	private String codigo;
 	private String tituloTapa;
 	private Date fechaSalida;
 	private float precio;
@@ -14,7 +14,7 @@ public class Edicion{
 		
 	}	
 	
-	public Edicion (int codigo, String tituloTapa, Date fechaSalida, float precio, Publicacion publicacion) {
+	public Edicion (String codigo, String tituloTapa, Date fechaSalida, float precio, Publicacion publicacion) {
 		super();
 		this.codigo = codigo;
 		this.tituloTapa = tituloTapa;
@@ -23,11 +23,11 @@ public class Edicion{
 		this.publicacion = publicacion;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 	
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 	
@@ -61,8 +61,8 @@ public class Edicion{
 	public void setPublicacion(Publicacion publicacion) {
 		this.publicacion = publicacion;
 	}
-	public boolean SosEdicion (int c){
-		return this.codigo==c;
+	public boolean SosEdicion (String c){
+		return this.codigo.equals(c);
 	}
 
 }

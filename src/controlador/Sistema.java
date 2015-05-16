@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-import persistencia.AdmPersistenciaEdiciones;
+import persistencia.EdicionesMapper;
 import ventanas.Utils;
 import modelo.Colocacion;
 import modelo.ComboItem;
@@ -71,7 +71,7 @@ public class Sistema {
 		 * Cargamos las ediciones que salen mañana
 		 */		
 		try{
-		ediciones = AdmPersistenciaEdiciones.getInstance().findAll();
+		ediciones = EdicionesMapper.getInstance().findAll();
 //		this.ediciones.add(new Edicion(1000, "Clarin - Lunes", stringToDate(getFechaSalida()), 9.50f, clarin));
 //		this.ediciones.add(new Edicion(1001, "Lanacion - Lunes", stringToDate(getFechaSalida()), 12.50f, lanacion));
 		}catch(Exception e){
@@ -155,7 +155,7 @@ public class Sistema {
 		this.colocacion = colocacion;
 	}
 	
-	public void agregarItemColocacion(int codigoEdicion, int codigoVendedor, int cantidadEntrega) {
+	public void agregarItemColocacion(String codigoEdicion, int codigoVendedor, int cantidadEntrega) {
 		
 		this.colocacion.crearItem(
 			this.buscarEdicion(codigoEdicion), 
@@ -182,9 +182,9 @@ public class Sistema {
 		return edicionesBuscadas;
 	}
 	
-	public Edicion buscarEdicion (int codigo){
+	public Edicion buscarEdicion (String codigo){
 		for(Edicion edicion: ediciones){
-			if (edicion.getCodigo()==codigo)
+			if (edicion.getCodigo().equals(codigo))
 				return edicion;
 		}
 		return null;
@@ -230,7 +230,7 @@ public class Sistema {
 		return null;
 	}
 	
-	public void altaEdicion(int codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
+	public void altaEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
 	{
 		Edicion nuevaEdicion = buscarEdicion(codigo);		
 		Publicacion publicacion = buscarPublicacion(CodPublicacion);
@@ -244,7 +244,7 @@ public class Sistema {
 		}
 	}
 	
-	public void modificacionEdicion(int codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
+	public void modificacionEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
 	{
 			
 		Publicacion publicacion = buscarPublicacion(CodPublicacion);
@@ -252,7 +252,7 @@ public class Sistema {
 		{
 			for(Edicion edicion: ediciones)
 			{
-				if(edicion.getCodigo() == codigo)
+				if(edicion.getCodigo().equals(codigo))
 				{
 					edicion.setTituloTapa(tituloTapa);
 					edicion.setPrecio(precio);

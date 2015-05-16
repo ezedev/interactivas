@@ -2,7 +2,7 @@ package programa;
 
 import javax.swing.SwingUtilities;
 
-import persistencia.AdmPersistenciaEdiciones;
+import persistencia.EdicionesMapper;
 import persistencia.PoolConnection;
 import ventanas.MenuVentana;
 

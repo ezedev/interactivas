@@ -8,18 +8,18 @@ import java.util.Vector;
 
 import modelo.Edicion;
 
-public class AdmPersistenciaEdiciones {
+public class EdicionesMapper {
 
-	private static AdmPersistenciaEdiciones instance;
+	private static EdicionesMapper instance;
 	
-	private AdmPersistenciaEdiciones() {
+	private EdicionesMapper() {
 		
 	}
 	
-	public static AdmPersistenciaEdiciones getInstance() {
+	public static EdicionesMapper getInstance() {
 		
 		if(instance == null) {
-			instance = new AdmPersistenciaEdiciones();
+			instance = new EdicionesMapper();
 		}
 		
 		return instance;
@@ -39,7 +39,7 @@ public class AdmPersistenciaEdiciones {
 			while(rs.next()) {
 			
 				Edicion edicion = new Edicion();
-				edicion.setCodigo(rs.getInt("codigo"));
+				edicion.setCodigo(rs.getString("codigo"));
 				edicion.setTituloTapa(rs.getString("titulo"));
 				edicion.setFechaSalida(rs.getDate("fecha_salida"));
 				edicion.setPrecio(rs.getFloat("precio"));
@@ -56,7 +56,7 @@ public class AdmPersistenciaEdiciones {
 		return ediciones;		
 	}
 	
-	public Edicion find(int codigo) {
+	public Edicion find(String codigo) {
 		
 		Edicion edicion = null;
 		
@@ -65,7 +65,7 @@ public class AdmPersistenciaEdiciones {
 		try {
 			
 			PreparedStatement s = conn.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion codigo = ?");
-			s.setInt(0, codigo);
+			s.setString(0, codigo);
 			ResultSet rs = s.executeQuery();				
 		
 			if(rs.next()) {
@@ -102,7 +102,7 @@ public class AdmPersistenciaEdiciones {
 			
 			s.setString(0, edicion.getTituloTapa());
 			s.setDate(1, new java.sql.Date(edicion.getFechaSalida().getTime()));
-			s.setInt(2, edicion.getCodigo());
+			s.setString(2, edicion.getCodigo());
 			s.executeUpdate();
 			
 		} catch(SQLException e) {
@@ -120,7 +120,7 @@ public class AdmPersistenciaEdiciones {
 		try {
 			
 			PreparedStatement s = conn.prepareStatement("DELETE FROM edicion WHERE codigo = ?");
-			s.setInt(0, edicion.getCodigo());
+			s.setString(0, edicion.getCodigo());
 			s.executeUpdate();
 			
 		} catch(SQLException e) {
