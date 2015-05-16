@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.Vector;
 
-public abstract class Vendedor {
+public abstract class VendedorView {
 
 	public final static String TIPO_DIARIERIO_EXCLUSIVO = "D";
 	public final static String TIPO_REVISTERO_EXCLUSIVO = "R";
@@ -13,7 +13,7 @@ public abstract class Vendedor {
 	protected  Vector<Publicacion> publicaciones;
 	protected Zona zona;
 	
-	public Vendedor(String codigo, String direccion, Vector<Publicacion> publicaciones,
+	public VendedorView(String codigo, String direccion, Vector<Publicacion> publicaciones,
 			Zona zona) {
 		super();
 		this.codigo = codigo;
@@ -58,7 +58,9 @@ public abstract class Vendedor {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
+	
+	
 
 	public  abstract boolean vendesPublicaciones(Publicacion pub);
-	
 }
+

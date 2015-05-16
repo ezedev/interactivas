@@ -127,4 +127,58 @@ public class VendedoresMapper {
 		
 		return vendedor;
 	}
+	
+	
+	
+	
+	
+public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
+		
+		Vector<Vendedor>vendedores = new Vector<Vendedor>();
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+			
+		try {
+			
+			PreparedStatement s = conn.prepareStatement("select * FROM vendedor_publicacion vp INNER JOIN vendedor v ON (vp.vendedor_id = v.id) INNER JOIN publicacion p ON (vp.publicacion_id = p.id) WHERE p.codigo = ?");
+			s.setString(1, codPublicacion);
+			ResultSet rs = s.executeQuery();				
+		
+			if(rs.next()) {
+			
+				String tipo = rs.getString("tipo"); 
+				
+				if(tipo.equals(Vendedor.TIPO_DIARIERIO_EXCLUSIVO)) {
+					
+					Vendedor vendedor = new DiarieroExclusivo(
+						rs.getString("codigo"), rs.getString("direccion"), null, null
+					);
+					vendedores.add(vendedor);
+					
+				} else if(tipo.equals(Vendedor.TIPO_REVISTERO_EXCLUSIVO)) {				
+
+					Vendedor vendedor = new RevisteroExclusivo(
+						rs.getString("codigo"), rs.getString("direccion"), null, null
+					);
+					vendedores.add(vendedor);
+					
+				} else if(tipo.equals(Vendedor.TIPO_DIARIERIO_REVISTERO)) {
+					
+					Vendedor vendedor = new DiarieroRevistero(
+						rs.getString("codigo"), rs.getString("direccion"), null, null
+					);
+					vendedores.add(vendedor);
+				}
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);		
+		
+		return vendedores;
+	}
+	
 }

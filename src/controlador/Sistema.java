@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import persistencia.EdicionesMapper;
 import persistencia.PublicacionesMapper;
+import persistencia.VendedoresMapper;
 import ventanas.Utils;
 import modelo.Colocacion;
 import modelo.ComboItem;
@@ -292,16 +293,12 @@ public class Sistema {
 		return null;
 	}
 	
-	public Vector<Vendedor> getVendedoresXPublicacion(int codPublicacion){
-		Vector<Vendedor>vendedoresSalida = new Vector <Vendedor>();
+	public Vector<Vendedor> buscarVendedoresXPublicacion(String codPublicacion){
+		Vector<Vendedor> vendedores = VendedoresMapper.getInstance().findVendedoresXPublicacion(codPublicacion);
 		for (Vendedor vendedor : vendedores) {
-			Vector<Publicacion>publicacionesV = vendedor.getPublicaciones();
-			for (Publicacion publicacion : publicacionesV) {
-				if(publicacion.getCodigo().equals(codPublicacion))
-					vendedoresSalida.add(vendedor);
-			}
+			System.out.println(vendedor.getDireccion());
 		}
-		return vendedoresSalida;
+		return vendedores;
 	}
 
 	public String getStringFechaSalida() {

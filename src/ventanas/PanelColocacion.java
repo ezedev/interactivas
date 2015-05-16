@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -15,6 +16,7 @@ import javax.swing.JTable;
 
 import modelo.ComboItem;
 import modelo.EdicionView;
+import modelo.Vendedor;
 import controlador.Sistema;
 
 /**
@@ -334,6 +336,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
 				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
 				tituloEdicionLabel.setText(edicionView.getTituloTapa());
+				Vector <Vendedor> vendedores = Sistema.getInstance().buscarVendedoresXPublicacion(item.getValue());
 			}
 		}
 	}
