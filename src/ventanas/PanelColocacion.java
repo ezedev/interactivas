@@ -1,4 +1,5 @@
 package ventanas;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -225,7 +226,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 			{
 				fechaSalidaLabel = new JLabel();
 				panelColocacion_IL.add(fechaSalidaLabel);
-				fechaSalidaLabel.setText(Sistema.getInstance().getFechaSalida());
+				fechaSalidaLabel.setText(Sistema.getInstance().getStringFechaSalida());
 				fechaSalidaLabel.setBounds(450, 30, 82, 16);
 			}
 			{
@@ -289,6 +290,12 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 					vendedoresTable = new JTable();
 //					tabelPanel.add(vendedoresTable);
 					vendedoresTable.setModel((new TablaVendedoresModel()).getModel());
+					vendedoresTable.getColumnModel().getColumn(1).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
+					vendedoresTable.getColumnModel().getColumn(3).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
+					vendedoresTable.getColumnModel().getColumn(5).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
+					vendedoresTable.getColumnModel().getColumn(2).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
+					vendedoresTable.getColumnModel().getColumn(4).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
+					vendedoresTable.getColumnModel().getColumn(6).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
 					vendedoresTable.setPreferredSize(new java.awt.Dimension(499, 326));
 				}
 				tabelPanel = new JScrollPane(vendedoresTable);
