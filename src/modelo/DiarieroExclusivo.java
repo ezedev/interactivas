@@ -13,7 +13,7 @@ public class DiarieroExclusivo extends Vendedor {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
+	
 	public boolean vendesPublicaciones(Publicacion pub) {
 		// TODO Auto-generated method stub
 		return false;

@@ -4,7 +4,14 @@ import java.util.Vector;
 
 public class PublicacionRevista extends Publicacion{
 
-	public PublicacionRevista(String codigo, String titulo, String editor,String tema, String subtema, String publico, String idioma, String paisDeOrigen) {
+	public PublicacionRevista(String codigo, 
+							  String titulo, 
+							  String editor,
+							  String tema, 
+							  String subtema, 
+							  String publico, 
+							  String idioma, 
+							  String paisDeOrigen) {
 		super(codigo, titulo, editor, tema, subtema, publico, idioma,paisDeOrigen);
 	}
 

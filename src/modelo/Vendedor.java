@@ -10,7 +10,7 @@ public abstract class Vendedor {
 	
 	protected String codigo;
 	protected String direccion;
-	protected  Vector<Publicacion> publicaciones;
+	protected Vector<Publicacion> publicaciones;
 	protected Zona zona;
 	
 	public Vendedor(String codigo, String direccion, Vector<Publicacion> publicaciones,
@@ -26,26 +26,21 @@ public abstract class Vendedor {
 		return direccion;
 	}
 
-
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-
 
 	public Vector<Publicacion> getPublicaciones() {
 		return publicaciones;
 	}
 
-
 	public void setPublicaciones(Vector<Publicacion> publicaciones) {
 		this.publicaciones = publicaciones;
 	}
 
-
 	public Zona getZona() {
 		return zona;
 	}
-
 
 	public void setZona(Zona zona) {
 		this.zona = zona;
@@ -58,7 +53,11 @@ public abstract class Vendedor {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-
+	
+	public boolean sosVendedor (String codigo){
+		return this.codigo.equals(codigo);
+	}
+	
 	public  abstract boolean vendesPublicaciones(Publicacion pub);
 	
 }

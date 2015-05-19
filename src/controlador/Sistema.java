@@ -15,6 +15,7 @@ import modelo.DiarieroExclusivo;
 import modelo.DiarieroRevistero;
 import modelo.Edicion;
 import modelo.EdicionView;
+import modelo.ItemColocacion;
 import modelo.Publicacion;
 import modelo.PublicacionDiario;
 import modelo.PublicacionRevista;
@@ -28,6 +29,7 @@ public class Sistema {
 	private Vector<Publicacion> publicaciones;
 	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
+	private Vector <Colocacion> colocaciones;
 
 	private Colocacion colocacion;
 	
@@ -302,11 +304,34 @@ public class Sistema {
 	}
 
 
-
 // busqueda de ediciones en la base por publicacion
 	
 	public EdicionView buscarEdicionXPublicacion(String codPublicacion) {
 		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), codPublicacion)).toView();	
+	}
+		
+	public Colocacion buscarUltimaColocacion (Date fecha){
+		for (int i = 0; i < colocaciones.size(); i++){
+			if (colocacion.getFecha().equals(fecha))
+				return colocacion;
+		}
+		return null;
+	}
+	
+	//la cantidad que devuelvo es la nueva para asigna a la colocacion del dia siguiente
+	public int nuevaCantidadCargaProxColocacion (Date fecha, String nombrePauta, String codigoEdicion, String codigoVendedor){
+		
+		int cantidad = 0;
+		
+		Colocacion c = buscarUltimaColocacion(fecha);
+		
+		if (c != null){
+			
+			cantidad = c.aplicarPauta(nombrePauta, codigoEdicion, codigoVendedor);
+		}
+		
+		return cantidad;
+		
 	}
 	
 }

@@ -1,24 +1,14 @@
 package modelo;
 
-public class PautaZona extends Pauta {
-
-	private String nombre;
-	private String codPostal;
-	private int  codZona;
-	
+public class PautaZona extends Pauta {	
 	
 
-	public PautaZona(String nombre, String codPostal, int codZona) {
-		super();
-		this.nombre = nombre;
-		this.codPostal = codPostal;
-		this.codZona = codZona;
+	public PautaZona() {
+		// TODO Auto-generated constructor stub
 	}
 
-
-
 	@Override
-	public int getCantidad(Edicion edicion, Vendedor vendedor) {
+	public int getCantidad (int cantidadCargada, int cantidadDevuelta) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

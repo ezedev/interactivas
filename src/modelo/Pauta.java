@@ -8,5 +8,5 @@ public abstract class Pauta {
 		
 	}
 	
-	public abstract int getCantidad(Edicion edicion, Vendedor vendedor); 
+	public abstract int getCantidad (int cantidadCargada, int cantidadDevuelta); 
 }
