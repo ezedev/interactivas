@@ -228,10 +228,9 @@ public class Sistema {
 	
 	
 	//para ediciones
-	private Publicacion buscarPublicacion(int codigo)
-	{
-		for (int i = 0 ; i < publicaciones.size() ; i++)
-		{
+	private Publicacion buscarPublicacion(String codigo) {
+		
+		for (int i = 0 ; i < publicaciones.size() ; i++) {
 			
 			if(publicaciones.elementAt(i).getCodigo().equals(codigo))
 			{
@@ -241,8 +240,7 @@ public class Sistema {
 		return null;
 	}
 	
-	public void altaEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
-	{
+	public void altaEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, String CodPublicacion) {
 		Edicion nuevaEdicion = buscarEdicion(codigo);		
 		Publicacion publicacion = buscarPublicacion(CodPublicacion);
 		if(publicacion != null)
@@ -250,12 +248,15 @@ public class Sistema {
 			if(nuevaEdicion == null)
 			{
 				nuevaEdicion = new Edicion(codigo,tituloTapa,fechaDeSalida,precio, publicacion);
+				
 				ediciones.add(nuevaEdicion);
+				
+				EdicionesMapper.getInstance().insert(nuevaEdicion);
 			}
 		}
 	}
 	
-	public void modificacionEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, int CodPublicacion)
+	public void modificacionEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, String CodPublicacion)
 	{
 			
 		Publicacion publicacion = buscarPublicacion(CodPublicacion);

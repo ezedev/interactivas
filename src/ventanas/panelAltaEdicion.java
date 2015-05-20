@@ -3,6 +3,7 @@ package ventanas;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import modelo.ComboItem;
 import controlador.Sistema;
 
 /**
@@ -122,6 +124,7 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 			}
 			{
 				btnCrear = new JButton();
+				btnCrear.addActionListener(this);
 				this.add(btnCrear);
 				btnCrear.setText("Crear Edicion");
 				btnCrear.setBounds(174, 242, 84, 23);
@@ -139,8 +142,18 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	
+		if(arg0.getSource() == btnCrear) {
+			
+			ComboItem selected = (ComboItem)cmbPublicaciones.getSelectedItem();
+			
+			Sistema.getInstance().altaEdicion(
+				txtCodigo.getText(), 
+				txtTituloTapa.getText(), 
+				Float.parseFloat(txtPrecio.getText()), 
+				new Date(), 
+				selected.getValue()
+			);
+		}
 	}
-
 }
