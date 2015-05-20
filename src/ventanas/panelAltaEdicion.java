@@ -3,6 +3,9 @@ package ventanas;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ComboBoxModel;
@@ -13,6 +16,8 @@ import javax.swing.WindowConstants;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import modelo.ComboItem;
 import controlador.Sistema;
@@ -147,13 +152,36 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 			
 			ComboItem selected = (ComboItem)cmbPublicaciones.getSelectedItem();
 			
-			Sistema.getInstance().altaEdicion(
-				txtCodigo.getText(), 
-				txtTituloTapa.getText(), 
-				Float.parseFloat(txtPrecio.getText()), 
-				new Date(), 
-				selected.getValue()
-			);
+			try {
+			
+				/**
+				 * Parseo fecha de salida
+				 * 
+				 * Formato: dia/mes/año
+				 */
+				
+				Date fechaSalida = new SimpleDateFormat("dd/MM/yyyy").parse(txtFechaSalida.getText());
+				
+				Sistema.getInstance().altaEdicion(
+					txtCodigo.getText(), 
+					txtTituloTapa.getText(), 
+					Float.parseFloat(txtPrecio.getText()), 
+					fechaSalida,
+					selected.getValue()
+				);
+				
+			} catch(NumberFormatException e) {
+				
+				// Error de precio
+				
+			} catch(ParseException e) {
+				
+				// Error de fecha
+				
+			} catch(Exception e) {
+				
+				// Error en la base 
+			}
 		}
 	}
 }
