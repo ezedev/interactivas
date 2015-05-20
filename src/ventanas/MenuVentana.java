@@ -145,17 +145,23 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener, Act
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
 		if(event.getSource()==this.menuItemGenerarColocacion){
-			getContentPane().removeAll();
-			getContentPane().add(new PanelColocacion());
+		getContentPane().removeAll();
+		getContentPane().add(new PanelColocacion());
 		}
 		else{
-			if(event.getSource()==this.itemAltaEdicion){
-				getContentPane().removeAll();
-				getContentPane().add(new panelAltaEdicion());
-			}
+		if(event.getSource()==this.itemAltaEdicion){
+		getContentPane().removeAll();
+		getContentPane().add(new panelAltaEdicion());
+		}
+		else{
+		if(event.getSource()==this.itemModEdicion){
+		getContentPane().removeAll();
+		getContentPane().add(new ModificarEdicion());
+		}
+
 		}
 		getContentPane().revalidate();
 		getContentPane().repaint();
+		}
 	}
-	
 }
