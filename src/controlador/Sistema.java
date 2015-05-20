@@ -271,15 +271,49 @@ public class Sistema {
 					edicion.setFechaSalida(fechaDeSalida);
 					edicion.setPublicacion(publicacion);
 							
+					EdicionesMapper.getInstance().update(edicion);
 				}
 			}
 		}
 	}
 	
 	
-	public void bajaEdicion(int codigo)
-	{
-		//
+	public void bajaEdicion(String codigo) {
+		
+		/**
+		 * Buscamos la edicion 
+		 */
+		
+		Edicion edicion = buscarEdicion(codigo);
+		
+		/**
+		 * Si encontramos la edicion
+		 */
+		
+		if(edicion != null) {
+			
+			/**
+			 * Calculamos la fecha de colocacion para esta edicion
+			 */
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(edicion.getFechaSalida());
+			calendar.set(Calendar.HOUR, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.add(Calendar.DATE, -1);
+			
+			Colocacion colocacion = buscarUltimaColocacion(calendar.getTime());
+			
+			/**
+			 * Si todavia no se hizo la colocacion para esta edicion podemos borrarla
+			 */
+			
+			if(colocacion == null) {
+				
+				EdicionesMapper.getInstance().delete(edicion);
+			}
+		}
 	}
 	
 	

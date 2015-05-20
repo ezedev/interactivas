@@ -157,7 +157,7 @@ public class EdicionesMapper {
 		
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("DELETE FROM edicion WHERE codigo = ?");
+			PreparedStatement s = conn.prepareStatement("DELETE FROM [dbo].edicion WHERE codigo = ?");
 			s.setString(1, edicion.getCodigo());
 			s.executeUpdate();
 			
