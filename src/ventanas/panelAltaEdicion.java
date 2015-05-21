@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import javafx.scene.control.Alert;
 import javax.swing.BorderFactory;
 
 import javax.swing.ComboBoxModel;
