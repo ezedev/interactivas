@@ -16,7 +16,9 @@ import javax.swing.WindowConstants;
 import javax.swing.JFrame;
 import javax.swing.border.BevelBorder;
 
+import persistencia.EdicionesMapper;
 import modelo.ComboItem;
+import modelo.Edicion;
 import modelo.EdicionView;
 import controlador.Sistema;
 
@@ -39,6 +41,7 @@ public class BajaEdicion extends javax.swing.JPanel implements ActionListener{
 	static private JComboBox<ComboItem> cmbPublicaciones;
 	static private JLabel lblFecha;
 	static private JLabel lblPublicacionDet;
+	private JLabel lblResultado;
 	static private JButton BtnCancelar;
 	static private JTextField txtPrecio;
 	static private JTextField jTextField1;
@@ -173,7 +176,7 @@ public class BajaEdicion extends javax.swing.JPanel implements ActionListener{
 					{
 						btnBorrar = new JButton();
 						panelDetalleEdicion.add(btnBorrar);
-						
+						btnBorrar.addActionListener(this);
 						btnBorrar.setText("Borrar");
 						btnBorrar.setBounds(481, 168, 108, 23);
 						btnBuscar.addActionListener(this);
@@ -211,6 +214,11 @@ public class BajaEdicion extends javax.swing.JPanel implements ActionListener{
 						txtPrecio.setBounds(136, 134, 77, 23);
 						txtPrecio.setEditable(false);
 					}
+					{
+						lblResultado = new JLabel();
+						panelDetalleEdicion.add(lblResultado);
+						lblResultado.setBounds(276, 168, 134, 20);
+					}
 				}
 			}
 			//pack();
@@ -240,32 +248,57 @@ public class BajaEdicion extends javax.swing.JPanel implements ActionListener{
 			limpiarPantalla();
 		}
 		else if(event.getSource()==this.btnBuscar){
-				ComboItem selected = (ComboItem) cmbPublicaciones.getSelectedItem();
-				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(selected.getValue());
-
-				System.out.println(Utils.getFechaSalida());
-				System.out.println(edicionView.getCodigo());
+			lblResultado.setText("");
+			ComboItem selected = (ComboItem) cmbPublicaciones.getSelectedItem();
+			//EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(selected.getValue());
+			Edicion edicion = EdicionesMapper.getInstance().buscarEdicionXPublicacion2(Utils.parseFecha(txtFecha.getText()),selected.getValue());
+			
+			System.out.println(Utils.getFechaSalida());
+			System.out.println(edicion.getCodigo());
+			
+			if(edicion.getCodigo() != null)
+			{
+				btnBorrar.setEnabled(true);
 				
-				if(edicionView.getCodigo() != null)
-				{
-					
-					
-					txtTituloTapa.setText(edicionView.getTituloTapa());
-					 txtCodigo.setText(edicionView.getCodigo());
-					 txtPrecio.setText( String.valueOf(edicionView.getPrecio()));
-					 jTextField1.setText( edicionView.getFechaSalida().toString());
-					 cmbPublicacionDetalle.setSelectedItem(new ComboItem(edicionView.getCodigo(),edicionView.getPublicacion().getTitulo()) );
-					
-				}
+				txtTituloTapa.setText(edicion.getTituloTapa());
+				 txtCodigo.setText(edicion.getCodigo());
+				 txtPrecio.setText( String.valueOf(edicion.getPrecio()));
+				 jTextField1.setText( edicion.getFechaSalida().toString());
+				 cmbPublicacionDetalle.setSelectedItem((ComboItem) cmbPublicaciones.getSelectedItem());
+				
+			
+				 
+			}
 			
 			}
 		else if (event.getSource()== this.btnBorrar)
 		{
 			
-			System.out.println("toque borrar");
-			//Sistema.getInstance().modificacionEdicion(txtCodigo.getText(), txtTituloTapa.getText(), Float.parseFloat(txtPrecio.getText()),fechaSalida , selected.getValue());
-			Sistema.getInstance().bajaEdicion(txtCodigo.getText());
-			System.out.println("toque borrar");
+			try {
+				
+				
+				Sistema.getInstance().bajaEdicion(txtCodigo.getText());
+				
+				System.out.println("toque borrar");
+				btnBorrar.setEnabled(false);
+				
+				txtCodigo.setText("");
+				 txtTituloTapa.setText("");
+				 txtPrecio.setText("");
+				 
+				
+				 
+				 lblResultado.setText("modificacion con exito");
+				 
+				} catch(NumberFormatException e) {
+					
+				
+					lblResultado.setText("error");
+					
+				 }  catch(Exception e) {
+					 lblResultado.setText("error de base");
+					
+				}
 		}
 			
 		

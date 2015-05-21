@@ -175,9 +175,18 @@ public class EdicionesMapper {
 			
 			s.setString(1, edicion.getTituloTapa());
 			s.setDate(2, new java.sql.Date(edicion.getFechaSalida().getTime()));
-			s.setString(3, edicion.getCodigo());
-			s.executeUpdate();
+			s.setFloat(3, edicion.getPrecio());
+			s.setString(4, edicion.getCodigo());
 			
+			s.executeUpdate();
+			/*
+			 * statementInsert.setString(1, edicion.getCodigo());
+				statementInsert.setString(2, edicion.getTituloTapa());
+				statementInsert.setDate(3, new java.sql.Date(edicion.getFechaSalida().getTime()));
+				statementInsert.setFloat(4, edicion.getPrecio());
+				statementInsert.setInt(5, publicacionId);
+				statementInsert.execute();
+			 * */
 		} catch(SQLException e) {
 			
 			e.printStackTrace();
@@ -233,6 +242,47 @@ Edicion edicion = null;
 		PoolConnection.getInstance().realeaseConnection(conn);		
 		
 		return edicion;
+		
+	}
+	
+	public Edicion buscarEdicionXPublicacion2(Date fechaSalida, String codPublicacion) {
+		// TODO Auto-generated method stub
+		Edicion edicion = null;
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+			
+		try {
+			
+		
+			PreparedStatement s = conn.prepareStatement("SELECT * FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? AND e.fecha_salida = ?");
+			s.setString(1, codPublicacion);
+			s.setDate(2, new java.sql.Date(fechaSalida.getTime()));
+			//.setDate(2,new java.sql.Date(fechaSalida.getDate()));
+			ResultSet rs = s.executeQuery();				
+			
+			while (rs.next())
+			{
+			
+				edicion = new Edicion();
+				edicion.setTituloTapa(rs.getString("titulo"));
+				edicion.setCodigo(rs.getString("codigo"));
+				edicion.setFechaSalida(rs.getDate("fecha_salida"));
+				edicion.setPrecio(rs.getFloat("precio"));
+				
+				
+				//edicion.setPublicacion(rs.getString("titulo"));
+				return edicion;
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);		
+		
+		//return edicion;
+		return null;
 		
 	}
 }

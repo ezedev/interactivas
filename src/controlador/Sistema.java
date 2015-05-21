@@ -366,6 +366,8 @@ public class Sistema {
 		return null;
 	}
 	
+	
+	
 	//la cantidad que devuelvo es la nueva para asigna a la colocacion del dia siguiente
 	public int nuevaCantidadCargaProxColocacion (Date fecha, String nombrePauta, String codigoEdicion, String codigoVendedor){
 		

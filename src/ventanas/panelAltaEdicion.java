@@ -43,7 +43,6 @@ import controlador.Sistema;
 public class panelAltaEdicion extends javax.swing.JPanel implements ActionListener{
 	private JLabel lblPublicacion;
 	private JComboBox cmbPublicaciones;
-	private JTextField txtFormatoFecha;
 	private JLabel lblTituloTapa;
 	private JTextField txtFechaSalida;
 	private JTextField txtEstado;
@@ -122,8 +121,11 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 			}
 			{
 				txtFechaSalida = new JTextField();
+				txtFechaSalida.setText(Sistema.getInstance().getStringFechaSalida());
 				this.add(txtFechaSalida);
+				//txtFechaSalida.setText(Sistema.getInstance().getStringFechaSalida());
 				txtFechaSalida.setBounds(174, 149, 78, 23);
+				txtFechaSalida.setEditable(false);
 			}
 			{
 				lblPrecio = new JLabel();
@@ -159,13 +161,6 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 				txtEstado.setBorder(BorderFactory.createCompoundBorder(
 						null, 
 						null));
-			}
-			{
-				txtFormatoFecha = new JTextField();
-				this.add(txtFormatoFecha);
-				txtFormatoFecha.setText("dd/mm/aa");
-				txtFormatoFecha.setBounds(264, 149, 64, 23);
-				txtFormatoFecha.setEditable(false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
