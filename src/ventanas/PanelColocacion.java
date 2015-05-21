@@ -53,6 +53,8 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 	static private JLabel tituloEdicionLabel;
 	static private JLabel edicionLabel;
 	static private JComboBox<ComboItem> publicacionesComboBox;
+	
+	private Vector<String> titulos = new Vector<String>();
 
 	/**
 	* Auto-generated main method to display this 
@@ -297,13 +299,13 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 					vendedoresTable = new JTable();
 //					tabelPanel.add(vendedoresTable);
 					
-					Vector<CargaVendedorView> filas = new Vector<CargaVendedorView>();
-					filas.add(new CargaVendedorView("123", "Direccion 1", 5, 4, 5, 3, 4, 3, 4));
-					filas.add(new CargaVendedorView("124", "Direccion 2", 6, 4, 5, 3, 4, 4, 4));
-					filas.add(new CargaVendedorView("125", "Direccion 3", 5, 4, 5, 5, 6, 4, 6));
-					filas.add(new CargaVendedorView("126", "Direccion 4", 8, 8, 9, 8, 10, 9, 10));
-					
-					Vector<String> titulos = new Vector<String>();
+//					Vector<CargaVendedorView> filas = new Vector<CargaVendedorView>();
+//					filas.add(new CargaVendedorView("123", "Direccion 1", 5, 4, 5, 3, 4, 3, 4));
+//					filas.add(new CargaVendedorView("124", "Direccion 2", 6, 4, 5, 3, 4, 4, 4));
+//					filas.add(new CargaVendedorView("125", "Direccion 3", 5, 4, 5, 5, 6, 4, 6));
+//					filas.add(new CargaVendedorView("126", "Direccion 4", 8, 8, 9, 8, 10, 9, 10));
+//					
+//					Vector<String> titulos = new Vector<String>();
 					titulos.add("Código");
 					titulos.add("Dirección");
 					titulos.add("C1");
@@ -314,17 +316,14 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 					titulos.add("D3");
 					titulos.add("Salida");
 					
-					CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, filas);
+					CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, new Vector<CargaVendedorView>());
 					
 					vendedoresTable.setModel(model);
 					
+					
+					
 					//vendedoresTable.setModel((new TablaVendedoresModel()).getModel());
-					vendedoresTable.getColumnModel().getColumn(2).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
-					vendedoresTable.getColumnModel().getColumn(4).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
-					vendedoresTable.getColumnModel().getColumn(6).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
-					vendedoresTable.getColumnModel().getColumn(3).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
-					vendedoresTable.getColumnModel().getColumn(5).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
-					vendedoresTable.getColumnModel().getColumn(7).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
+
 					vendedoresTable.setPreferredSize(new java.awt.Dimension(499, 326));				
 				}
 				tabelPanel = new JScrollPane(vendedoresTable);
@@ -357,14 +356,26 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 		// TODO Auto-generated method stub
 		if(event.getSource()==this.cancelarJButton){
 			limpiarPantalla();
-		}else{
-			if(event.getSource()==this.publicacionesComboBox){	
+		}else if(event.getSource()==this.publicacionesComboBox){	
 				ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
 				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
 				tituloEdicionLabel.setText(edicionView.getTituloTapa());
-				Vector <Vendedor> vendedores = Sistema.getInstance().buscarVendedoresXPublicacion(item.getValue());
-				//Hay que ver como meter este vector dentro de la tabla
-			}
+				
+//				;
+				
+				CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, Sistema.getInstance().cargarVendedoresTable(item.getValue()));
+				
+				vendedoresTable.setModel(model);
+				
+				vendedoresTable.getColumnModel().getColumn(2).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
+				vendedoresTable.getColumnModel().getColumn(4).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
+				vendedoresTable.getColumnModel().getColumn(6).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
+				vendedoresTable.getColumnModel().getColumn(3).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
+				vendedoresTable.getColumnModel().getColumn(5).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
+				vendedoresTable.getColumnModel().getColumn(7).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
+				
+				
+			
 		}
 	}
 
