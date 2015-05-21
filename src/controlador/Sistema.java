@@ -5,23 +5,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
+import modelo.Colocacion;
+import modelo.ComboItem;
+import modelo.Edicion;
+import modelo.EdicionView;
+import modelo.Publicacion;
+import modelo.PublicacionDiario;
+import modelo.PublicacionRevista;
+import modelo.Vendedor;
+import persistencia.ColocacionesMapper;
 import persistencia.EdicionesMapper;
 import persistencia.PublicacionesMapper;
 import persistencia.VendedoresMapper;
 import ventanas.Utils;
-import modelo.Colocacion;
-import modelo.ComboItem;
-import modelo.DiarieroExclusivo;
-import modelo.DiarieroRevistero;
-import modelo.Edicion;
-import modelo.EdicionView;
-import modelo.ItemColocacion;
-import modelo.Publicacion;
-import modelo.PublicacionDiario;
-import modelo.PublicacionRevista;
-import modelo.RevisteroExclusivo;
-import modelo.Vendedor;
-import modelo.Zona;
 
 public class Sistema {
 	
@@ -342,6 +338,23 @@ public class Sistema {
 // busqueda de ediciones en la base por publicacion
 	
 	public EdicionView buscarEdicionXPublicacion(String codPublicacion) {
+		
+		Calendar calendar = Calendar.getInstance();
+//		calendar.add(Calendar.DATE, 1);
+		calendar.add(Calendar.DATE, -6);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+//		calendar.getTime();
+		
+		
+		
+		Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(calendar.getTime());
+		
+		System.out.println("hola");
+		
+		
 		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), codPublicacion)).toView();	
 	}
 		

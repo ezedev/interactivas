@@ -5,13 +5,17 @@ import java.util.Vector;
 
 public class Colocacion {
 
-	private int codigo;
+	private int id;
 	private Date fecha;
 	private Vector<ItemColocacion> items;
 	
 	public Colocacion(Date fecha) {
 		super();
 		this.fecha = fecha;
+	}
+	
+	public Colocacion() {
+		super();
 	}
 
 	public void crearItem(Edicion edicion, Vendedor vendedor, int cantidadEntrega) {
@@ -21,12 +25,14 @@ public class Colocacion {
 		this.items.add(itemColocacion);
 	}
 	
-	public int getCodigo() {
-		return codigo;
+
+
+	public int getId() {
+		return id;
 	}
 
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getFecha() {
@@ -37,6 +43,14 @@ public class Colocacion {
 		this.fecha = fecha;
 	}
 	
+	public Vector<ItemColocacion> getItems() {
+		return items;
+	}
+
+	public void setItems(Vector<ItemColocacion> items) {
+		this.items = items;
+	}
+
 	public int aplicarPauta (String nombrePauta, String codigoEdicion, String codigoVendedor){
 		int totalAdicional=0;
 		

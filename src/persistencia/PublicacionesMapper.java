@@ -142,4 +142,35 @@ public class PublicacionesMapper {
 		
 		return publicacion;
 	}
+	
+	public Publicacion byId(int id) {
+		
+		Publicacion publicacion = null;
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+			
+		try {
+			
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT codigo, tipo FROM [dbo].[publicacion] WHERE id = ?"
+			);
+			
+			s.setInt(1, id);
+			ResultSet rs = s.executeQuery();				
+		
+			if(rs.next()) {
+				
+				publicacion = PublicacionesMapper.getInstance().find(rs.getString("codigo"));
+			
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);		
+		
+		return publicacion;
+	}
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import modelo.Edicion;
+import modelo.Publicacion;
 
 public class EdicionesMapper {
 
@@ -87,6 +88,40 @@ public class EdicionesMapper {
 		
 		return edicion;
 	}
+	
+	public Edicion byId(int id) {
+		
+		Edicion edicion = null;
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+			
+		try {
+			
+			PreparedStatement s = conn.prepareStatement("SELECT codigo, titulo, fecha_salida, precio, publicacion_id FROM edicion WHERE id = ?");
+			s.setInt(1, id);
+			ResultSet rs = s.executeQuery();				
+		
+			if(rs.next()) {
+				edicion = new Edicion(rs.getString("codigo"), rs.getString("titulo"), 
+						rs.getDate("fecha_salida"), rs.getFloat("precio"), 
+						PublicacionesMapper.getInstance().byId(rs.getInt("publicacion_id")));
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);		
+		
+		return edicion;
+	}
+	
+//	private Edicion fromRs(ResultSet rs) {
+//		return new Edicion(rs.getString("codigo"), rs.getString("titulo"), 
+//							rs.getDate("fecha_salida"), rs.getFloat("precio"), 
+//							PublicacionesMapper.getInstance().find(""));
+//	}
 	
 	public void insert(Edicion edicion) {
 	
