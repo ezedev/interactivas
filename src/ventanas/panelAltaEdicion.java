@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.BorderFactory;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -39,6 +43,7 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 	private JComboBox cmbPublicaciones;
 	private JLabel lblTituloTapa;
 	private JTextField txtFechaSalida;
+	private JTextField txtEstado;
 	private JLabel lblAltaEdicion;
 	private JButton btnCrear;
 	private JTextField txtPrecio;
@@ -69,6 +74,7 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 		try {
 			this.setPreferredSize(new java.awt.Dimension(454, 300));
 			this.setLayout(null);
+			this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			{
 				lblPublicacion = new JLabel();
 				this.add(lblPublicacion);
@@ -113,8 +119,11 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 			}
 			{
 				txtFechaSalida = new JTextField();
+				txtFechaSalida.setText(Sistema.getInstance().getStringFechaSalida());
 				this.add(txtFechaSalida);
+				//txtFechaSalida.setText(Sistema.getInstance().getStringFechaSalida());
 				txtFechaSalida.setBounds(174, 149, 78, 23);
+				txtFechaSalida.setEditable(false);
 			}
 			{
 				lblPrecio = new JLabel();
@@ -139,6 +148,17 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 				this.add(lblAltaEdicion);
 				lblAltaEdicion.setText("Alta de edicion");
 				lblAltaEdicion.setBounds(18, 12, 112, 16);
+			}
+			{
+				txtEstado = new JTextField();
+				this.add(txtEstado);
+				txtEstado.setBounds(291, 242, 149, 23);
+				txtEstado.setEditable(false);
+				txtEstado.setEnabled(false);
+				txtEstado.setFont(new java.awt.Font("Segoe UI",1,12));
+				txtEstado.setBorder(BorderFactory.createCompoundBorder(
+						null, 
+						null));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,16 +190,20 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 					selected.getValue()
 				);
 				
+			
+				txtEstado.setText("alta con exito");
+				
 			} catch(NumberFormatException e) {
 				
+				txtEstado.setText("error");
 				// Error de precio
 				
 			} catch(ParseException e) {
-				
+				txtEstado.setText("error de fecha");
 				// Error de fecha
 				
 			} catch(Exception e) {
-				
+				txtEstado.setText("error de base");
 				// Error en la base 
 			}
 		}

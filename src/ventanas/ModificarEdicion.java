@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -18,9 +21,12 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.SwingUtilities;
 
+import persistencia.EdicionesMapper;
 import controlador.Sistema;
 import modelo.ComboItem;
+import modelo.Edicion;
 import modelo.EdicionView;
+import modelo.Publicacion;
 import modelo.Vendedor;
 
 
@@ -42,6 +48,7 @@ public class ModificarEdicion extends javax.swing.JPanel implements ActionListen
 	static private JComboBox<ComboItem> cmbPublicaciones;
 	static private JLabel lblFecha;
 	static private JLabel lblPublicacionDet;
+	private JLabel lblResultado;
 	static private JButton BtnCancelar;
 	static private JTextField txtPrecio;
 	static private JTextField jTextField1;
@@ -176,8 +183,12 @@ public class ModificarEdicion extends javax.swing.JPanel implements ActionListen
 					{
 						btnModificar = new JButton();
 						panelDetalleEdicion.add(btnModificar);
+						//	btnBuscar.addActionListener(this);
+						btnModificar.addActionListener(this);
 						btnModificar.setText("Modificar");
 						btnModificar.setBounds(481, 168, 108, 23);
+						btnModificar.setEnabled(false);
+
 					}
 					{
 
@@ -191,21 +202,30 @@ public class ModificarEdicion extends javax.swing.JPanel implements ActionListen
 						txtCodigo = new JTextField();
 						panelDetalleEdicion.add(txtCodigo);
 						txtCodigo.setBounds(136, 40, 89, 23);
+						txtCodigo.setEditable(false);
 					}
 					{
 						txtTituloTapa = new JTextField();
 						panelDetalleEdicion.add(txtTituloTapa);
 						txtTituloTapa.setBounds(136, 71, 174, 23);
+						txtTituloTapa.setEditable(false);
 					}
 					{
 						jTextField1 = new JTextField();
 						panelDetalleEdicion.add(jTextField1);
 						jTextField1.setBounds(136, 106, 86, 22);
+						jTextField1.setEditable(false);
 					}
 					{
 						txtPrecio = new JTextField();
 						panelDetalleEdicion.add(txtPrecio);
 						txtPrecio.setBounds(136, 134, 77, 23);
+						txtPrecio.setEditable(false);
+					}
+					{
+						lblResultado = new JLabel();
+						panelDetalleEdicion.add(lblResultado);
+						lblResultado.setBounds(222, 168, 241, 20);
 					}
 				}
 			}
@@ -235,20 +255,77 @@ public class ModificarEdicion extends javax.swing.JPanel implements ActionListen
 		if(event.getSource()==this.BtnCancelar){
 			limpiarPantalla();
 		}
-		else{
-			if(event.getSource()==this.btnBuscar){
-				ComboItem item = (ComboItem) cmbPublicaciones.getSelectedItem();
-				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
-			    cmbPublicacionDetalle.setSelectedItem(new ComboItem(edicionView.getCodigo(),edicionView.getPublicacion().getTitulo()) );
-				txtTituloTapa.setText(edicionView.getTituloTapa());
-				 txtCodigo.setText(edicionView.getCodigo());
+		else if(event.getSource()==this.btnBuscar){
+				lblResultado.setText("");
+				ComboItem selected = (ComboItem) cmbPublicaciones.getSelectedItem();
+				//EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(selected.getValue());
+				Edicion edicion = EdicionesMapper.getInstance().buscarEdicionXPublicacion2(Utils.parseFecha(txtFecha.getText()),selected.getValue());
 				
-				 txtPrecio.setText( String.valueOf(edicionView.getPrecio()));
-				 txtFecha.setText( edicionView.getFechaSalida().toString());
-
-			}
+				System.out.println(Utils.getFechaSalida());
+				System.out.println(edicion.getCodigo());
+				
+				if(edicion.getCodigo() != null)
+				{
+					btnModificar.setEnabled(true);
+					
+					txtTituloTapa.setText(edicion.getTituloTapa());
+					 txtCodigo.setText(edicion.getCodigo());
+					 txtPrecio.setText( String.valueOf(edicion.getPrecio()));
+					 jTextField1.setText( edicion.getFechaSalida().toString());
+					 cmbPublicacionDetalle.setSelectedItem((ComboItem) cmbPublicaciones.getSelectedItem());
+					
+					 txtCodigo.setEditable(true);
+					 txtTituloTapa.setEditable(true);
+					 txtPrecio.setEditable(true);
+					 
+				}
 			
+			}
+		else if (event.getSource()== this.btnModificar)
+		{
+			try {
+			//Date fechaSalida = new SimpleDateFormat("dd/MM/yyyy").parse(txtFechaSalida.getText());
+			//Date fechaSalida = (Date) new SimpleDateFormat("dd/MM/yyyy").parse("22/05/2015");
+			//Date fechaSalida = new Date(24,05,2015);//para probar
+			ComboItem selected = (ComboItem) cmbPublicacionDetalle.getSelectedItem();
+			Float.parseFloat(txtPrecio.getText());
+			
+			//Date fechaSalida = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(jTextField1.getText());
+			
+			//Sistema.getInstance().modificacionEdicion(txtCodigo.getText(), txtTituloTapa.getText(), Float.parseFloat(txtPrecio.getText()),Utils.parseFecha(jTextField1.getText()) , selected.getValue());
+			
+			
+			Sistema.getInstance().modificacionEdicion(txtCodigo.getText(), txtTituloTapa.getText(),
+			Float.parseFloat(txtPrecio.getText()),
+
+			Utils.parseFecha(Sistema.getInstance().getStringFechaSalida()) , selected.getValue());
+			
+			System.out.println("toque modificar");
+			btnModificar.setEnabled(false);
+			
+			txtCodigo.setText("");
+			 txtTituloTapa.setText("");
+			 txtPrecio.setText("");
+			 
+			 txtCodigo.setEditable(false);
+			 txtTituloTapa.setEditable(false);
+			 txtPrecio.setEditable(false);
+			 
+			 lblResultado.setText("modificacion con exito");
+			 
+			} catch(NumberFormatException e) {
+				
+				//txtEstado.setText("error");
+				// Error de precio
+				lblResultado.setText("error");
+				
+			 }  catch(Exception e) {
+				 lblResultado.setText("error de base");
+				// Error en la base 
+			}
 		}
+			
+		
 		
 
 		

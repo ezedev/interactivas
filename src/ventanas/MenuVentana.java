@@ -153,7 +153,12 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener,
 		} else if (event.getSource() == this.itemModEdicion) {
 			getContentPane().removeAll();
 			getContentPane().add(new ModificarEdicion());
+		} else if (event.getSource() == this.itemBajaEdicion) {
+			getContentPane().removeAll();
+			getContentPane().add(new BajaEdicion());
 		}
+			
+		
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}

@@ -3,27 +3,27 @@ package controlador;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
-import persistencia.EdicionesMapper;
-import persistencia.PublicacionesMapper;
-import persistencia.UsuariosMapper;
-import persistencia.VendedoresMapper;
-import ventanas.Utils;
 import modelo.Colocacion;
 import modelo.ComboItem;
-import modelo.DiarieroExclusivo;
-import modelo.DiarieroRevistero;
 import modelo.Edicion;
 import modelo.EdicionView;
 import modelo.ItemColocacion;
 import modelo.Publicacion;
 import modelo.PublicacionDiario;
 import modelo.PublicacionRevista;
-import modelo.RevisteroExclusivo;
 import modelo.Usuario;
 import modelo.Vendedor;
-import modelo.Zona;
+import persistencia.CargaVendedorView;
+import persistencia.ColocacionesMapper;
+import persistencia.EdicionesMapper;
+import persistencia.PublicacionesMapper;
+import persistencia.UsuariosMapper;
+import persistencia.VendedoresMapper;
+import ventanas.Utils;
 
 public class Sistema {
 	
@@ -355,16 +355,34 @@ public class Sistema {
 // busqueda de ediciones en la base por publicacion
 	
 	public EdicionView buscarEdicionXPublicacion(String codPublicacion) {
+		
+		Calendar calendar = Calendar.getInstance();
+//		calendar.add(Calendar.DATE, 1);
+		calendar.add(Calendar.DATE, -6);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+//		calendar.getTime();
+		
+		
+		
+		Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(calendar.getTime());
+		System.out.println(colocacion.getItems());
+		System.out.println("hola");
+		
+		
 		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), codPublicacion)).toView();	
 	}
 		
 	public Colocacion buscarUltimaColocacion (Date fecha){
-		for (int i = 0; i < colocaciones.size(); i++){
-			if (colocacion.getFecha().equals(fecha))
-				return colocacion;
-		}
-		return null;
+
+		return ColocacionesMapper.getInstance().buscarPorFecha(fecha);
 	}
+	
+	
+	
+	
 	
 	//la cantidad que devuelvo es la nueva para asigna a la colocacion del dia siguiente
 	public int nuevaCantidadCargaProxColocacion (Date fecha, String nombrePauta, String codigoEdicion, String codigoVendedor){
@@ -381,5 +399,94 @@ public class Sistema {
 		return cantidad;
 		
 	}
+	public Vector<Vendedor> buscarVendedoresPorPublicacion (String codPublicacion){
+		return VendedoresMapper.getInstance().findVendedoresXPublicacion(codPublicacion);
+	}
 	
+	public Vector<CargaVendedorView> cargarVendedoresTable (String codPublicacion){
+		
+		Vector<CargaVendedorView> cargas = new Vector<CargaVendedorView>();
+		
+		Vector<Vendedor> vendedores = Sistema.getInstance().buscarVendedoresPorPublicacion(codPublicacion);
+		Map <Vendedor , Vector<ItemColocacion>>mapa = new HashMap <Vendedor , Vector<ItemColocacion>>();
+		for (Vendedor vendedor : vendedores) {
+			mapa.put(vendedor, new Vector<ItemColocacion>());//Vendedor.getItemsColocacion
+		}
+		
+		
+		Publicacion publicacion = PublicacionesMapper.getInstance().find(codPublicacion);
+		Vector<Edicion> obtenerUltimas3 = publicacion.obtenerUltimas3();
+		
+		for (Edicion edicion : obtenerUltimas3) {
+			Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(edicion.getFechaSalida());
+			Vector<ItemColocacion> items = colocacion.getItems();
+			for (ItemColocacion itemColocacion : items) {
+				if (itemColocacion.getEdicion().SosEdicion(edicion.getCodigo())) {
+					mapa.get(itemColocacion.getVendedor()).add(itemColocacion);
+				}
+			}
+			
+		}
+		
+		for (Vendedor vendedor : mapa.keySet()) {
+			CargaVendedorView carga = new CargaVendedorView();
+			carga.setCodigoVendedor(vendedor.getCodigo());
+			carga.setDireccionVendedor(vendedor.getDireccion());
+			int nroCarga = 1;
+			for (ItemColocacion item : mapa.get(vendedor)) {
+				switch (nroCarga) {
+				case 1:
+					carga.setCarga3(item.getCantidadEntrega());
+					carga.setDevolucion3(item.getCantidadDevolucion());
+					carga.setSalida(item.getCantidadEntrega());
+					break;
+				case 2:
+					carga.setCarga2(item.getCantidadEntrega());
+					carga.setDevolucion2(item.getCantidadDevolucion());
+					break;
+				default:
+					carga.setCarga1(item.getCantidadEntrega());
+					carga.setDevolucion1(item.getCantidadDevolucion());
+					break;
+				}
+				nroCarga++;
+			}
+			cargas.add(carga);
+		}
+		
+		return cargas;
+		
+	}
+	
+	
+	private Vector<ItemColocacion> buscarItemsPorVendedor (String codPublicacion){
+		Vector<ItemColocacion> items = new Vector<ItemColocacion>();
+		
+		return items;
+	}
+	
+	private Vector<Date> getFechasSalida(String tipoPublicacion) {
+		Vector<Date> fechas = new Vector<Date>();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		if (tipoPublicacion.equals("D")) {
+			calendar.add(Calendar.DATE, -6);
+			fechas.add(calendar.getTime());
+			calendar.add(Calendar.DATE, -7);
+			fechas.add(calendar.getTime());
+			calendar.add(Calendar.DATE, -7);
+			fechas.add(calendar.getTime());
+
+		} else {
+			fechas.add(calendar.getTime());
+			calendar.add(Calendar.DATE, -1);
+			fechas.add(calendar.getTime());
+			calendar.add(Calendar.DATE, -1);
+			fechas.add(calendar.getTime());
+		}
+		return fechas;
+	}
 }

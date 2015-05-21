@@ -129,6 +129,34 @@ public class VendedoresMapper {
 		return vendedor;
 	}
 	
+	public Vendedor byId(int id) {
+		
+		Vendedor vendedor = null;
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+			
+		try {
+			
+			PreparedStatement s = conn.prepareStatement("SELECT codigo FROM [dbo].[vendedor] WHERE id = ?");
+			s.setInt(1, id);
+			ResultSet rs = s.executeQuery();				
+		
+			if(rs.next()) {
+				
+				vendedor = VendedoresMapper.getInstance().find(rs.getString("codigo"));
+
+			}
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);		
+		
+		return vendedor;
+	}
+	
 	
 	
 	

@@ -2,6 +2,8 @@ package modelo;
 import java.util.Calendar;
 import java.util.Vector;
 
+import ventanas.Utils;
+
 public class PublicacionDiario extends Publicacion{
 
 	public PublicacionDiario(String codigo, 
@@ -24,7 +26,10 @@ public class PublicacionDiario extends Publicacion{
 		hoy.add(Calendar.DAY_OF_YEAR, -7);
 		//busco las ultimas edicones segun el dia (pueden ser 1,2 o 3)
 			for (int i=e.size()-1; i >= 0 && ultimas3.size() < 3; i--){
-				if (hoy.equals(e.elementAt(i).getFechaSalida())){
+				if (Utils.mismoDia(hoy.getTime(), e.elementAt(i).getFechaSalida())) {
+				
+				
+//				if (hoy.getTime().equals(e.elementAt(i).getFechaSalida())){
 					ultimas3.add(e.elementAt(i));
 					hoy.add(Calendar.DATE, -7);;
 				}

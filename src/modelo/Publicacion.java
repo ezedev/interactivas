@@ -2,6 +2,9 @@ package modelo;
 
 import java.util.Vector;
 
+import persistencia.EdicionesMapper;
+import ventanas.Utils;
+
 public abstract class Publicacion {
 	
 	public final static String TIPO_DIARIO = "D";
@@ -29,8 +32,13 @@ public abstract class Publicacion {
 		this.idioma = idioma;
 		this.paisDeOrigen = paisDeOrigen;
 	}
+	
+	public Publicacion() {
+		
+	}
 
 	public Vector<Edicion> getEdiciones() {
+		Edicion buscarEdicionXPublicacion = EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), this.codigo);
 		return ediciones;
 	}
 
