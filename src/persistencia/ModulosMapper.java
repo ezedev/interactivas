@@ -43,7 +43,14 @@ public class ModulosMapper {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("SELECT codigo, nombre FROM [dbo].[modulo] WHERE codigo_rol = ?");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT m.codigo, m.nombre " + 
+				"FROM [dbo].[modulo] m " + 
+				"INNER JOIN [dbo].[rol_modulo] rm ON rm.modulo_id = m.id " + 
+				"INNER JOIN [dbo].[rol] r ON r.id = rm.rol_id " + 
+				"WHERE r.codigo = ?"
+			);
+			
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();				
 		
