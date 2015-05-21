@@ -131,6 +131,8 @@ public class PublicacionesMapper {
 						rs.getString("pais_origen")
 					);
 				}
+				
+				publicacion.setEdiciones(EdicionesMapper.getInstance().buscarEdicionesDePublicacion(codigo));
 			}
 			
 		} catch(SQLException e) {
