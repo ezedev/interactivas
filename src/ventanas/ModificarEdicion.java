@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -18,9 +21,12 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.SwingUtilities;
 
+import persistencia.EdicionesMapper;
 import controlador.Sistema;
 import modelo.ComboItem;
+import modelo.Edicion;
 import modelo.EdicionView;
+import modelo.Publicacion;
 import modelo.Vendedor;
 
 
@@ -176,8 +182,10 @@ public class ModificarEdicion extends javax.swing.JPanel implements ActionListen
 					{
 						btnModificar = new JButton();
 						panelDetalleEdicion.add(btnModificar);
+						btnBuscar.addActionListener(this);
 						btnModificar.setText("Modificar");
 						btnModificar.setBounds(481, 168, 108, 23);
+						
 					}
 					{
 
@@ -235,20 +243,40 @@ public class ModificarEdicion extends javax.swing.JPanel implements ActionListen
 		if(event.getSource()==this.BtnCancelar){
 			limpiarPantalla();
 		}
-		else{
-			if(event.getSource()==this.btnBuscar){
-				ComboItem item = (ComboItem) cmbPublicaciones.getSelectedItem();
-				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
-			    cmbPublicacionDetalle.setSelectedItem(new ComboItem(edicionView.getCodigo(),edicionView.getPublicacion().getTitulo()) );
-				txtTituloTapa.setText(edicionView.getTituloTapa());
-				 txtCodigo.setText(edicionView.getCodigo());
-				
-				 txtPrecio.setText( String.valueOf(edicionView.getPrecio()));
-				 txtFecha.setText( edicionView.getFechaSalida().toString());
+		else if(event.getSource()==this.btnBuscar){
+				ComboItem selected = (ComboItem) cmbPublicaciones.getSelectedItem();
+				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(selected.getValue());
 
-			}
+				System.out.println(Utils.getFechaSalida());
+				System.out.println(edicionView.getCodigo());
+				
+				if(edicionView.getCodigo() != null)
+				{
+					
+					
+					txtTituloTapa.setText(edicionView.getTituloTapa());
+					 txtCodigo.setText(edicionView.getCodigo());
+					 txtPrecio.setText( String.valueOf(edicionView.getPrecio()));
+					 jTextField1.setText( edicionView.getFechaSalida().toString());
+					 cmbPublicacionDetalle.setSelectedItem(new ComboItem(edicionView.getCodigo(),edicionView.getPublicacion().getTitulo()) );
+					
+				}
 			
+			}
+		else if (event.getSource()== this.btnModificar)
+		{
+			
+			//Date fechaSalida = new SimpleDateFormat("dd/MM/yyyy").parse(txtFechaSalida.getText());
+			//Date fechaSalida = (Date) new SimpleDateFormat("dd/MM/yyyy").parse("22/05/2015");
+			Date fechaSalida = new Date(24,05,2015);//para probar
+			ComboItem selected = (ComboItem) cmbPublicacionDetalle.getSelectedItem();
+			Float.parseFloat(txtPrecio.getText());
+			Sistema.getInstance().modificacionEdicion(txtCodigo.getText(), txtTituloTapa.getText(), Float.parseFloat(txtPrecio.getText()),fechaSalida , selected.getValue());
+			
+			System.out.println("toque modificar");
 		}
+			
+		
 		
 
 		
