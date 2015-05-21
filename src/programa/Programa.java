@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import persistencia.EdicionesMapper;
 import persistencia.PoolConnection;
+import ventanas.Login;
 import ventanas.MenuVentana;
 
 public class Programa {
@@ -12,9 +13,9 @@ public class Programa {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				MenuVentana menuVentana = new MenuVentana();				
-				menuVentana.setLocationRelativeTo(null);
-				menuVentana.setVisible(true);
+				Login ventanaLogin = new Login();				
+				ventanaLogin.setLocationRelativeTo(null);
+				ventanaLogin.setVisible(true);
 			}
 		});		
 	}

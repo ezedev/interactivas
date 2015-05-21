@@ -12,7 +12,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import modelo.Modulo;
 import controlador.Sistema;
+
 import java.awt.BorderLayout;
 
 /**
@@ -70,54 +72,53 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener,
 			 * Colocaciones
 			 */
 
-			menuColocacion = new JMenu();
-			menuColocacion.setText("Colocacion");
-			menuColocacion.setSize(120, 30);
-
-			menuItemGenerarColocacion = new JMenuItem();
-			menuItemGenerarColocacion.setText("Generar colocacion");
-			this.menuItemGenerarColocacion.addActionListener(this);
-
-			menuItemCargarDevoluciones = new JMenuItem();
-			menuItemCargarDevoluciones.setText("Cargar devoluciones");
-
-			menuColocacion.add(menuItemGenerarColocacion);
-			menuColocacion.add(menuItemCargarDevoluciones);
+			if(Sistema.getInstance().tieneAcceso(Modulo.MODULO_COLOCACION)) {
+			
+				menuColocacion = new JMenu();
+				menuColocacion.setText("Colocacion");
+				menuColocacion.setSize(120, 30);
+	
+				menuItemGenerarColocacion = new JMenuItem();
+				menuItemGenerarColocacion.setText("Generar colocacion");
+				this.menuItemGenerarColocacion.addActionListener(this);
+	
+				menuItemCargarDevoluciones = new JMenuItem();
+				menuItemCargarDevoluciones.setText("Cargar devoluciones");
+	
+				menuColocacion.add(menuItemGenerarColocacion);
+				menuColocacion.add(menuItemCargarDevoluciones);
+				
+				menuBar.add(menuColocacion);
+			}
 
 			/**
 			 * ABM Ediciones
 			 */
 
-			menuEdiciones = new JMenu();
-			menuEdiciones.setText("Ediciones");
-			menuEdiciones.setSize(120, 30);
-
-			itemAltaEdicion = new JMenuItem();
-			itemAltaEdicion.setText("Alta edicion");
-			this.itemAltaEdicion.addActionListener(this);
-
-			itemModEdicion = new JMenuItem();
-			itemModEdicion.setText("Modificar edicion");
-			this.itemModEdicion.addActionListener(this);
-
-			itemBajaEdicion = new JMenuItem();
-			itemBajaEdicion.setText("Baja edicion");
-			this.itemBajaEdicion.addActionListener(this);
-
-			this.menuEdiciones.add(itemAltaEdicion);
-			this.menuEdiciones.add(itemModEdicion);
-			this.menuEdiciones.add(itemBajaEdicion);
-			/**
-			 * Reportes
-			 */
-
-			menuReportes = new JMenu();
-			menuReportes.setText("Reportes");
-			menuReportes.setSize(120, 30);
-
-			menuBar.add(menuColocacion);
-			menuBar.add(menuEdiciones);
-			menuBar.add(menuReportes);
+			if(Sistema.getInstance().tieneAcceso(Modulo.MODULO_EDICIONES)) {
+			
+				menuEdiciones = new JMenu();
+				menuEdiciones.setText("Ediciones");
+				menuEdiciones.setSize(120, 30);
+	
+				itemAltaEdicion = new JMenuItem();
+				itemAltaEdicion.setText("Alta edicion");
+				this.itemAltaEdicion.addActionListener(this);
+	
+				itemModEdicion = new JMenuItem();
+				itemModEdicion.setText("Modificar edicion");
+				this.itemModEdicion.addActionListener(this);
+	
+				itemBajaEdicion = new JMenuItem();
+				itemBajaEdicion.setText("Baja edicion");
+				this.itemBajaEdicion.addActionListener(this);
+	
+				this.menuEdiciones.add(itemAltaEdicion);
+				this.menuEdiciones.add(itemModEdicion);
+				this.menuEdiciones.add(itemBajaEdicion);
+				
+				menuBar.add(menuEdiciones);
+			}			
 
 			setJMenuBar(menuBar);
 

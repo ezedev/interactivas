@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import persistencia.EdicionesMapper;
 import persistencia.PublicacionesMapper;
+import persistencia.UsuariosMapper;
 import persistencia.VendedoresMapper;
 import ventanas.Utils;
 import modelo.Colocacion;
@@ -20,6 +21,7 @@ import modelo.Publicacion;
 import modelo.PublicacionDiario;
 import modelo.PublicacionRevista;
 import modelo.RevisteroExclusivo;
+import modelo.Usuario;
 import modelo.Vendedor;
 import modelo.Zona;
 
@@ -30,6 +32,7 @@ public class Sistema {
 	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
 	private Vector <Colocacion> colocaciones;
+	private Usuario usuarioAutenticado;
 
 	private Colocacion colocacion;
 	
@@ -121,7 +124,17 @@ public class Sistema {
 		return instancia;
 	}
 	
+	public boolean iniciarSesion(String usuario, String clave) {
+		
+		this.usuarioAutenticado = UsuariosMapper.getInstance().findByUsuarioClave(usuario, clave);
+		
+		return this.usuarioAutenticado != null;
+	}
 	
+	public boolean tieneAcceso(String modulo) {
+		
+		return this.usuarioAutenticado.getRol().tieneAcceso(modulo);
+	}
 
 	/**
 	 * Busca las ediciones para armar la colocacion.
