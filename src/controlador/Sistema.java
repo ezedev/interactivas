@@ -359,11 +359,8 @@ public class Sistema {
 	}
 		
 	public Colocacion buscarUltimaColocacion (Date fecha){
-		for (int i = 0; i < colocaciones.size(); i++){
-			if (colocacion.getFecha().equals(fecha))
-				return colocacion;
-		}
-		return null;
+
+		return ColocacionesMapper.getInstance().buscarPorFecha(fecha);
 	}
 	
 	

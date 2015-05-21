@@ -298,14 +298,7 @@ public class BajaEdicion extends javax.swing.JPanel implements ActionListener{
 				 }  catch(Exception e) {
 					 lblResultado.setText("error de base");
 					
-				}
+			}
 		}
-			
-		
-		
-
-		
 	}
-	
-	
 }
