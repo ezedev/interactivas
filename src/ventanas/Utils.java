@@ -57,6 +57,11 @@ public class Utils {
 		JOptionPane.showMessageDialog(parent, mensaje, "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public static void mostrarExito(Component parent, String mensaje) {
+		JOptionPane.showMessageDialog(parent, mensaje, "Exito",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
 
 	public static boolean numeroValido(String numero) {
 		try {

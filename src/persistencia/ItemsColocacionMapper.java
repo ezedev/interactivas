@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import modelo.Edicion;
 import modelo.ItemColocacion;
+import modelo.Vendedor;
 
 public class ItemsColocacionMapper {
 
@@ -26,7 +28,7 @@ public class ItemsColocacionMapper {
 	}
 
 	public static Vector<ItemColocacion> buscarPorColocacion(int id) {
-		
+
 		Vector<ItemColocacion> items = new Vector<ItemColocacion>();
 
 		Connection conn = PoolConnection.getInstance().getConnection();
@@ -39,11 +41,13 @@ public class ItemsColocacionMapper {
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {
-				
-				ItemColocacion item = new ItemColocacion(rs.getInt("cantidad_entregada"), 
-														rs.getInt("cantidad_devuelta"), 
-														EdicionesMapper.getInstance().byId(rs.getInt("edicion_id")), 
-														VendedoresMapper.getInstance().byId(rs.getInt("vendedor_id")));
+
+				ItemColocacion item = new ItemColocacion(
+						rs.getInt("cantidad_entregada"),
+						rs.getInt("cantidad_devuelta"), EdicionesMapper
+								.getInstance().byId(rs.getInt("edicion_id")),
+						VendedoresMapper.getInstance().byId(
+								rs.getInt("vendedor_id")));
 
 				items.add(item);
 			}
@@ -56,9 +60,35 @@ public class ItemsColocacionMapper {
 		PoolConnection.getInstance().realeaseConnection(conn);
 
 		return items;
-		
-		
-		
+
+	}
+
+	public void insert(ItemColocacion itemColocacion, int colocacion_id) {
+
+		Connection conn = PoolConnection.getInstance().getConnection();
+
+		try {
+
+			PreparedStatement statementInsert = conn
+					.prepareStatement("INSERT INTO dbo.item_colocacion ("
+							+ "colocacion_id, edicion_id, vendedor_id, cantidad_entregada, cantidad_devuelta"
+							+ ") VALUES (?, ?, ?, ?, ?)");
+
+			statementInsert.setInt(1, colocacion_id);
+			Edicion edicion = EdicionesMapper.getInstance().find(itemColocacion.getEdicion().getCodigo());
+			statementInsert.setInt(2, edicion.getId());
+			Vendedor vendedor = VendedoresMapper.getInstance().find(itemColocacion.getVendedor().getCodigo());
+			statementInsert.setInt(3, vendedor.getId());
+			statementInsert.setInt(4, itemColocacion.getCantidadEntrega());
+			statementInsert.setInt(5, itemColocacion.getCantidadDevolucion());
+			statementInsert.execute();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+		PoolConnection.getInstance().realeaseConnection(conn);
 	}
 
 }

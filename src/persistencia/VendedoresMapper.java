@@ -91,7 +91,7 @@ public class VendedoresMapper {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("SELECT codigo, direccion, tipo, zona_id FROM [dbo].[vendedor] WHERE codigo = ?");
+			PreparedStatement s = conn.prepareStatement("SELECT id, codigo, direccion, tipo, zona_id FROM [dbo].[vendedor] WHERE codigo = ?");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();				
 		
@@ -117,6 +117,7 @@ public class VendedoresMapper {
 						rs.getString("codigo"), rs.getString("direccion"), null, null
 					);
 				}
+				vendedor.setId(rs.getInt("id"));
 			}
 			
 		} catch(SQLException e) {

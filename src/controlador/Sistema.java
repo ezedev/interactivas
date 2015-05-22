@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import modelo.Colocacion;
 import modelo.ComboItem;
+import modelo.DiarieroExclusivo;
 import modelo.Edicion;
 import modelo.EdicionView;
 import modelo.ItemColocacion;
@@ -165,7 +166,7 @@ public class Sistema {
 		return edicionesBuscadas;
 	}
 	
-	public void crearColocacion() {
+	public boolean crearColocacion(Vector<CargaVendedorView> cargas, String codigo) {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR, 0);
@@ -173,9 +174,32 @@ public class Sistema {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);		
 		
-		Colocacion colocacion = new Colocacion(calendar.getTime());
+//		Colocacion colocacion = new Colocacion(calendar.getTime());
 		
-		this.colocacion = colocacion;
+//		Publicacion publicacion = PublicacionesMapper.getInstance().find(codigo);
+		Date fechaSalida = Utils.parseFecha(getStringFechaSalida());
+		Edicion edicion = EdicionesMapper.getInstance().buscarEdicionXPublicacion(fechaSalida, codigo);
+		Colocacion colocacion = new Colocacion(fechaSalida);
+		Vector<ItemColocacion> items = new Vector<ItemColocacion>();
+		
+		for (CargaVendedorView carga : cargas) {
+			
+			ItemColocacion item = new ItemColocacion();
+			item.setCantidadEntrega(carga.getSalida());
+			Vendedor vendedor = new DiarieroExclusivo();
+			vendedor.setCodigo(carga.getCodigoVendedor());
+			item.setVendedor(vendedor);
+			item.setEdicion(edicion);
+			item.setCantidadDevolucion(0);
+			
+			items.add(item);
+		}
+		colocacion.setItems(items);
+		
+		return ColocacionesMapper.getInstance().insert(colocacion, fechaSalida);
+		
+//		this.colocacion = colocacion;
+
 	}
 	
 	public void agregarItemColocacion(String codigoEdicion, String codigoVendedor, int cantidadEntrega) {
@@ -291,7 +315,9 @@ public class Sistema {
 	}
 	
 	
-	public void bajaEdicion(String codigo) {
+	public boolean bajaEdicion(String codigo) {
+		
+		boolean resultadoExitoso = false;
 		
 		/**
 		 * Buscamos la edicion 
@@ -325,8 +351,13 @@ public class Sistema {
 			if(colocacion == null) {
 				
 				EdicionesMapper.getInstance().delete(edicion);
+				
+				resultadoExitoso = true;
 			}
 		}
+		
+		return resultadoExitoso;
+		
 	}
 	
 	
@@ -367,12 +398,12 @@ public class Sistema {
 		
 		
 		
-		Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(calendar.getTime());
-		System.out.println(colocacion.getItems());
-		System.out.println("hola");
+//		Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(calendar.getTime());
+//		System.out.println(colocacion.getItems());
+//		System.out.println("hola");
 		
 		
-		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), codPublicacion)).toView();	
+		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.parseFecha(Sistema.getInstance().getStringFechaSalida()), codPublicacion)).toView();	
 	}
 		
 	public Colocacion buscarUltimaColocacion (Date fecha){

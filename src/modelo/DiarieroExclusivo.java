@@ -12,6 +12,10 @@ public class DiarieroExclusivo extends Vendedor {
 		super(codigo, direccion, publicaciones, zona);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public DiarieroExclusivo() {
+		super();
+	}
 
 	
 	public boolean vendesPublicaciones(Publicacion pub) {

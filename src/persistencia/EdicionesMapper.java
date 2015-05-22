@@ -68,13 +68,14 @@ public class EdicionesMapper {
 		try {
 
 			PreparedStatement s = conn
-					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ?");
+					.prepareStatement("SELECT id, codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ?");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 
 			if (rs.next()) {
 
 				edicion = new Edicion();
+				edicion.setId(rs.getInt("id"));
 				edicion.setCodigo(codigo);
 				edicion.setTituloTapa(rs.getString("titulo"));
 				edicion.setFechaSalida(rs.getDate("fecha_salida"));
@@ -219,7 +220,7 @@ public class EdicionesMapper {
 		try {
 
 			PreparedStatement s = conn
-					.prepareStatement("SELECT e.titulo FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? AND e.fecha_salida = ?");
+					.prepareStatement("SELECT e.titulo, e.codigo FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? AND e.fecha_salida = ?");
 			s.setString(1, codPublicacion);
 			s.setDate(2, new java.sql.Date(fechaSalida.getTime()));
 			ResultSet rs = s.executeQuery();
@@ -228,6 +229,7 @@ public class EdicionesMapper {
 
 				edicion = new Edicion();
 				edicion.setTituloTapa(rs.getString("titulo"));
+				edicion.setCodigo(rs.getString("codigo"));
 
 			}
 

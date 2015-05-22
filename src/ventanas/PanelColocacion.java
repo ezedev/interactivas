@@ -1,9 +1,6 @@
 package ventanas;
-import java.awt.color.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,12 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
 
-import persistencia.CargaVendedorView;
 import modelo.ComboItem;
 import modelo.EdicionView;
-import modelo.Vendedor;
+import persistencia.CargaVendedorView;
 import controlador.Sistema;
 
 /**
@@ -289,6 +284,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				guardarButton.setText("Guardar");
 				guardarButton.setBounds(547, 360, 90, 23);
 				guardarButton.setSize(90, 23);
+				guardarButton.addActionListener(this);
 			}
 			{
 				{
@@ -360,21 +356,25 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
 				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
 				tituloEdicionLabel.setText(edicionView.getTituloTapa());
-				
-//				;
-				
 				CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, Sistema.getInstance().cargarVendedoresTable(item.getValue()));
-				
 				vendedoresTable.setModel(model);
-				
 				vendedoresTable.getColumnModel().getColumn(2).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
 				vendedoresTable.getColumnModel().getColumn(4).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
 				vendedoresTable.getColumnModel().getColumn(6).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
 				vendedoresTable.getColumnModel().getColumn(3).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
 				vendedoresTable.getColumnModel().getColumn(5).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
 				vendedoresTable.getColumnModel().getColumn(7).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
-				
-				
+		}else if(event.getSource()==this.guardarButton){
+			Vector<CargaVendedorView> rows = ((CargaVendedorTableModel)vendedoresTable.getModel()).getRows();
+			ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
+			
+			boolean resultadoExitoso = Sistema.getInstance().crearColocacion(rows, item.getValue());
+			
+			if (!resultadoExitoso) {
+				Utils.mostrarError(this, "No se pudieron insertar las cargas en la colocación.");
+			}else{
+				Utils.mostrarExito(this, "Se ingresaron las cargas exitosamente");
+			}
 			
 		}
 	}

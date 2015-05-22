@@ -8,6 +8,7 @@ public abstract class Vendedor {
 	public final static String TIPO_REVISTERO_EXCLUSIVO = "R";
 	public final static String TIPO_DIARIERIO_REVISTERO = "A";
 	
+	private int id;
 	protected String codigo;
 	protected String direccion;
 	protected Vector<Publicacion> publicaciones;
@@ -20,6 +21,10 @@ public abstract class Vendedor {
 		this.direccion = direccion;
 		this.publicaciones = publicaciones;
 		this.zona = zona;
+	}
+	
+	public Vendedor() {
+		
 	}
 
 	public String getDireccion() {
@@ -84,6 +89,15 @@ public abstract class Vendedor {
 			return false;
 		return true;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	
 	
 	

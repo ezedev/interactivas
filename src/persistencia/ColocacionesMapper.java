@@ -125,35 +125,39 @@ public class ColocacionesMapper {
 
 	}
 
-//	public Vector<Edicion> buscarEdicionXPublicacion(String codPublicacion) {
-//
-//		Vector<Edicion> edicioines = new Vector<Edicion>();
-//		Edicion edicion = null;
-//
-//		Connection conn = PoolConnection.getInstance().getConnection();
-//
-//		try {
-//
-//			PreparedStatement s = conn
-//					.prepareStatement("SELECT e.titulo FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? ");
-//			s.setString(1, codPublicacion);
-//			ResultSet rs = s.executeQuery();
-//
-//			while (rs.next()) {
-//
-//				edicion = new Edicion();
-//				edicion.setTituloTapa(rs.getString("titulo"));
-//
-//			}
-//
-//		} catch (SQLException e) {
-//
-//			e.printStackTrace();
-//		}
-//
-//		PoolConnection.getInstance().realeaseConnection(conn);
-//
-//		return edicion;
-//
-//	}
+	public boolean insert(Colocacion colocacion, Date fecha) {
+		
+		boolean resultadoExitoso = true;
+
+		Connection conn = PoolConnection.getInstance().getConnection();
+
+		try {
+			
+			Colocacion colocacionPrevia = ColocacionesMapper.getInstance().buscarPorFecha(fecha);
+			
+			if (null == colocacionPrevia) {
+				PreparedStatement statementInsert = conn
+						.prepareStatement("INSERT INTO dbo.colocacion ("
+								+ "fecha"
+								+ ") VALUES (?)");
+				statementInsert.setDate(1, new java.sql.Date(fecha.getTime()));
+				statementInsert.execute();
+				
+				colocacionPrevia = ColocacionesMapper.getInstance().buscarPorFecha(fecha);
+				
+			} 
+			
+			for (ItemColocacion itemColocacion : colocacion.getItems()) {
+				ItemsColocacionMapper.getInstance().insert(itemColocacion, colocacionPrevia.getId());
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			resultadoExitoso = false;
+		}
+
+		PoolConnection.getInstance().realeaseConnection(conn);
+		return resultadoExitoso;
+	}
 }

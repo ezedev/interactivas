@@ -14,6 +14,10 @@ public class ItemColocacion {
 		this.edicion = edicion;
 		this.vendedor = vendedor;
 	}
+	
+	public ItemColocacion() {
+		
+	}
 
 	public int getCantidadEntrega() {
 		return cantidadEntrega;
