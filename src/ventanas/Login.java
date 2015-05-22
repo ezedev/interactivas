@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
@@ -25,9 +26,9 @@ import controlador.Sistema;
 */
 public class Login extends javax.swing.JFrame {
 	private JLabel LblUser;
+	private JPasswordField TxtPass;
 	private JLabel LblPassword;
 	private JButton BtbLogin;
-	private JTextField TxtPass;
 	private JTextField TxtUser;
 
 	/**
@@ -70,11 +71,6 @@ public class Login extends javax.swing.JFrame {
 				TxtUser.setBounds(151, 59, 170, 22);
 			}
 			{
-				TxtPass = new JTextField();
-				getContentPane().add(TxtPass);
-				TxtPass.setBounds(151, 101, 170, 23);
-			}
-			{
 				BtbLogin = new JButton();
 				getContentPane().add(BtbLogin);
 				BtbLogin.setText("Login");
@@ -99,6 +95,11 @@ public class Login extends javax.swing.JFrame {
 						}
 					}
 				});
+			}
+			{
+				TxtPass = new JPasswordField();
+				getContentPane().add(TxtPass);
+				TxtPass.setBounds(151, 102, 170, 22);
 			}
 			pack();
 			setSize(400, 300);
