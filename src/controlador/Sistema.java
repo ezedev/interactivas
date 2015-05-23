@@ -54,15 +54,22 @@ public class Sistema {
 		Publicacion clarin = new PublicacionDiario("CLARIN", "CLARIN", "Grupo Clarin", "General", "General", "General", "es", "ARG");
 		Publicacion lanacion = new PublicacionDiario("NACION", "LA NACION", "Grupo Clarin", "General", "General", "General", "es", "ARG");
 		Publicacion noticias = new PublicacionRevista("1", "Revista NOTICIAS", "Noticias", "General", "General", "General", "es", "ARG");
+		Publicacion sol = new PublicacionDiario("SOL", "Diario el Sol", "Grupo Clarin", "General", "General", "General", "es", "ARG");
+		Publicacion cronica = new PublicacionDiario("CRONIC", "Cronica", "Grupo Clarin", "General", "General", "General", "es", "ARG");
+		Publicacion popular = new PublicacionDiario("POPULA", "Diario Popular", "Grupo Clarin", "General", "General", "General", "es", "ARG");
 		
 		Vector<Publicacion> publicacionesDiarios = new Vector<Publicacion>();
 		publicacionesDiarios.add(clarin);
 		publicacionesDiarios.add(lanacion);
+		publicacionesDiarios.add(sol);
+		publicacionesDiarios.add(cronica);
+		publicacionesDiarios.add(popular);
 		Vector<Publicacion> publicacionesRevistas = new Vector<Publicacion>();
 		publicacionesRevistas.add(noticias);
 		Vector<Publicacion> publicacionesDiariosRevistas = new Vector<Publicacion>();
 		publicacionesDiariosRevistas.addAll(publicacionesDiarios);
 		publicacionesDiariosRevistas.addAll(publicacionesRevistas);
+		
 		this.publicaciones = publicacionesDiariosRevistas;
 		
 		/**

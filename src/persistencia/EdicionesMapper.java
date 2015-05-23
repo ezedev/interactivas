@@ -68,7 +68,7 @@ public class EdicionesMapper {
 		try {
 
 			PreparedStatement s = conn
-					.prepareStatement("SELECT id, codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ?");
+					.prepareStatement("SELECT id, codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ? order by fecha_salida desc");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 
@@ -101,7 +101,7 @@ public class EdicionesMapper {
 		try {
 
 			PreparedStatement s = conn
-					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio, publicacion_id FROM edicion WHERE id = ?");
+					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio, publicacion_id FROM edicion WHERE id = ? order by fecha_salida desc");
 			s.setInt(1, id);
 			ResultSet rs = s.executeQuery();
 
@@ -254,7 +254,7 @@ public class EdicionesMapper {
 
 			PreparedStatement s = conn
 					.prepareStatement("SELECT e.codigo, e.titulo, e.fecha_salida, e.precio, e.publicacion_id FROM edicion e"
-							+ " JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ?");
+							+ " JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? order by fecha_salida asc");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 			
