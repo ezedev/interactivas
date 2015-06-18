@@ -4,14 +4,12 @@ public class ItemColocacion {
 
 	private int cantidadEntrega;
 	private int cantidadDevolucion;
-	private Edicion edicion;
 	private Vendedor vendedor;
 	
-	public ItemColocacion(int cantidadEntrega, int cantidadDevolucion, Edicion edicion, Vendedor vendedor) {
+	public ItemColocacion(int cantidadEntrega, int cantidadDevolucion, Vendedor vendedor) {
 		super();
 		this.cantidadEntrega = cantidadEntrega;
 		this.cantidadDevolucion = cantidadDevolucion;
-		this.edicion = edicion;
 		this.vendedor = vendedor;
 	}
 	
@@ -33,14 +31,6 @@ public class ItemColocacion {
 
 	public void setCantidadDevolucion(int cantidadDevolucion) {
 		this.cantidadDevolucion = cantidadDevolucion;
-	}
-
-	public Edicion getEdicion() {
-		return edicion;
-	}
-
-	public void setEdicion(Edicion edicion) {
-		this.edicion = edicion;
 	}
 
 	public Vendedor getVendedor() {

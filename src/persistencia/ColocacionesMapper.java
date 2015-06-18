@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
-import java.util.Vector;
 
 import modelo.Colocacion;
-import modelo.Edicion;
 import modelo.ItemColocacion;
 
 public class ColocacionesMapper {
@@ -28,69 +27,69 @@ public class ColocacionesMapper {
 		return instance;
 	}
 
-	public Vector<Edicion> findAll() {
-
-		Vector<Edicion> ediciones = new Vector<Edicion>();
-
-		Connection conn = PoolConnection.getInstance().getConnection();
-
-		try {
-
-			PreparedStatement s = conn
-					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM [dbo].[edicion]");
-			ResultSet rs = s.executeQuery();
-
-			while (rs.next()) {
-
-				Edicion edicion = new Edicion();
-				edicion.setCodigo(rs.getString("codigo"));
-				edicion.setTituloTapa(rs.getString("titulo"));
-				edicion.setFechaSalida(rs.getDate("fecha_salida"));
-				edicion.setPrecio(rs.getFloat("precio"));
-				ediciones.add(edicion);
-			}
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-		PoolConnection.getInstance().realeaseConnection(conn);
-
-		return ediciones;
-	}
-
-	public Edicion find(String codigo) {
-
-		Edicion edicion = null;
-
-		Connection conn = PoolConnection.getInstance().getConnection();
-
-		try {
-
-			PreparedStatement s = conn
-					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ?");
-			s.setString(1, codigo);
-			ResultSet rs = s.executeQuery();
-
-			if (rs.next()) {
-
-				edicion = new Edicion();
-				edicion.setCodigo(codigo);
-				edicion.setTituloTapa(rs.getString("titulo"));
-				edicion.setFechaSalida(rs.getDate("fecha_salida"));
-				edicion.setPrecio(rs.getFloat("precio"));
-			}
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-		PoolConnection.getInstance().realeaseConnection(conn);
-
-		return edicion;
-	}
+//	public Vector<Edicion> findAll() {
+//
+//		Vector<Edicion> ediciones = new Vector<Edicion>();
+//
+//		Connection conn = PoolConnection.getInstance().getConnection();
+//
+//		try {
+//
+//			PreparedStatement s = conn
+//					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM [dbo].[edicion]");
+//			ResultSet rs = s.executeQuery();
+//
+//			while (rs.next()) {
+//
+//				Edicion edicion = new Edicion();
+//				edicion.setCodigo(rs.getString("codigo"));
+//				edicion.setTituloTapa(rs.getString("titulo"));
+//				edicion.setFechaSalida(rs.getDate("fecha_salida"));
+//				edicion.setPrecio(rs.getFloat("precio"));
+//				ediciones.add(edicion);
+//			}
+//
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//
+//		PoolConnection.getInstance().realeaseConnection(conn);
+//
+//		return ediciones;
+//	}
+//
+//	public Edicion find(String codigo) {
+//
+//		Edicion edicion = null;
+//
+//		Connection conn = PoolConnection.getInstance().getConnection();
+//
+//		try {
+//
+//			PreparedStatement s = conn
+//					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ?");
+//			s.setString(1, codigo);
+//			ResultSet rs = s.executeQuery();
+//
+//			if (rs.next()) {
+//
+//				edicion = new Edicion();
+//				edicion.setCodigo(codigo);
+//				edicion.setTituloTapa(rs.getString("titulo"));
+//				edicion.setFechaSalida(rs.getDate("fecha_salida"));
+//				edicion.setPrecio(rs.getFloat("precio"));
+//			}
+//
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//
+//		PoolConnection.getInstance().realeaseConnection(conn);
+//
+//		return edicion;
+//	}
 
 
 	public Colocacion buscarPorFecha(Date fechaSalida) {
@@ -138,9 +137,10 @@ public class ColocacionesMapper {
 			if (null == colocacionPrevia) {
 				PreparedStatement statementInsert = conn
 						.prepareStatement("INSERT INTO dbo.colocacion ("
-								+ "fecha"
-								+ ") VALUES (?)");
+								+ "fecha, edicion_id"
+								+ ") VALUES (?, ?)");
 				statementInsert.setDate(1, new java.sql.Date(fecha.getTime()));
+				statementInsert.setInt(2, colocacion.getEdicion().getId());
 				statementInsert.execute();
 				
 				colocacionPrevia = ColocacionesMapper.getInstance().buscarPorFecha(fecha);

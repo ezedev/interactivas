@@ -46,6 +46,8 @@ public class EdicionesMapper {
 				edicion.setTituloTapa(rs.getString("titulo"));
 				edicion.setFechaSalida(rs.getDate("fecha_salida"));
 				edicion.setPrecio(rs.getFloat("precio"));
+//				edicion.setColocacion(ColocacionesMapper.getInstance().);
+				// TODO ver buscar colocacion
 				ediciones.add(edicion);
 			}
 
@@ -92,36 +94,36 @@ public class EdicionesMapper {
 		return edicion;
 	}
 
-	public Edicion byId(int id) {
-
-		Edicion edicion = null;
-
-		Connection conn = PoolConnection.getInstance().getConnection();
-
-		try {
-
-			PreparedStatement s = conn
-					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio, publicacion_id FROM edicion WHERE id = ? order by fecha_salida desc");
-			s.setInt(1, id);
-			ResultSet rs = s.executeQuery();
-
-			if (rs.next()) {
-				edicion = new Edicion(rs.getString("codigo"),
-						rs.getString("titulo"), rs.getDate("fecha_salida"),
-						rs.getFloat("precio"), PublicacionesMapper
-								.getInstance()
-								.byId(rs.getInt("publicacion_id")));
-			}
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-		PoolConnection.getInstance().realeaseConnection(conn);
-
-		return edicion;
-	}
+//	public Edicion byId(int id) {
+//
+//		Edicion edicion = null;
+//
+//		Connection conn = PoolConnection.getInstance().getConnection();
+//
+//		try {
+//
+//			PreparedStatement s = conn
+//					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio, publicacion_id FROM edicion WHERE id = ? order by fecha_salida desc");
+//			s.setInt(1, id);
+//			ResultSet rs = s.executeQuery();
+//
+//			if (rs.next()) {
+//				edicion = new Edicion(rs.getString("codigo"),
+//						rs.getString("titulo"), rs.getDate("fecha_salida"),
+//						rs.getFloat("precio"), PublicacionesMapper
+//								.getInstance()
+//								.byId(rs.getInt("publicacion_id")));
+//			}
+//
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//
+//		PoolConnection.getInstance().realeaseConnection(conn);
+//
+//		return edicion;
+//	}
 
 	// private Edicion fromRs(ResultSet rs) {
 	// return new Edicion(rs.getString("codigo"), rs.getString("titulo"),
@@ -317,5 +319,28 @@ public class EdicionesMapper {
 		return null;
 		
 	}
+
+	public boolean updateColocacion(Edicion edicion) {
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+		boolean resultadoExitoso = true;
+
+		try {
+
+			PreparedStatement s = conn
+					.prepareStatement("UPDATE [dbo].edicion WHERE codigo = ?");
+			s.setString(1, edicion.getCodigo());
+			s.executeUpdate();
+
+		} catch (SQLException e) {
+			resultadoExitoso = false;
+			e.printStackTrace();
+		}
+
+		PoolConnection.getInstance().realeaseConnection(conn);
+		
+		return resultadoExitoso;
+	}
+
 	
 }

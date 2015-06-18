@@ -1,7 +1,6 @@
 package modelo;
 
 import java.util.Date;
-import java.util.Vector;
 
 public class Edicion{
 
@@ -11,7 +10,6 @@ public class Edicion{
 	private Date fechaSalida;
 	private float precio;
 	private Publicacion publicacion;
-	private Vector <ItemColocacion> items;
 
 	public Edicion() {
 		
@@ -23,16 +21,6 @@ public class Edicion{
 		this.tituloTapa = tituloTapa;
 		this.fechaSalida = fechaSalida;
 		this.precio = precio;
-		this.publicacion = publicacion;
-		items = new Vector <ItemColocacion> ();
-	}
-
-	public Vector<ItemColocacion> getItems() {
-		return items;
-	}
-
-	public void setItems(Vector<ItemColocacion> items) {
-		this.items = items;
 	}
 
 	public String getCodigo() {
@@ -88,7 +76,5 @@ public class Edicion{
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	
 
 }
