@@ -1,6 +1,5 @@
 package controlador;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,13 +8,10 @@ import java.util.Vector;
 
 import modelo.Colocacion;
 import modelo.ComboItem;
-import modelo.DiarieroExclusivo;
 import modelo.Edicion;
 import modelo.EdicionView;
 import modelo.ItemColocacion;
 import modelo.Publicacion;
-import modelo.PublicacionDiario;
-import modelo.PublicacionRevista;
 import modelo.Usuario;
 import modelo.Vendedor;
 import persistencia.CargaVendedorView;
