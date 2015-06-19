@@ -19,22 +19,47 @@ public class PublicacionDiario extends Publicacion{
 	}
 	
 	public Vector<Edicion> obtenerUltimas3() {
-		Vector <Edicion> e = getEdiciones();
-		Vector <Edicion> ultimas3 = new Vector <Edicion> ();
-		Calendar hoy = Calendar.getInstance();
-		hoy.add(Calendar.DAY_OF_YEAR, 1);
-		hoy.add(Calendar.DAY_OF_YEAR, -7);
-		//busco las ultimas edicones segun el dia (pueden ser 1,2 o 3)
-			for (int i=e.size()-1; i >= 0 && ultimas3.size() < 3; i--){
-				if (Utils.mismoDia(hoy.getTime(), e.elementAt(i).getFechaSalida())) {
-				
-				
-//				if (hoy.getTime().equals(e.elementAt(i).getFechaSalida())){
-					ultimas3.add(e.elementAt(i));
-					hoy.add(Calendar.DATE, -7);;
+		
+		Vector<Edicion> edicionesAnteriores = new Vector<Edicion>();
+		
+		/**
+		 * Calculamos el dia de mañana y de ahi vamos restando de a 7
+		 */
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, 1);
+		calendar.add(Calendar.DATE, -7 * 4);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+		System.out.println("Buscando diarios anteriores a la fecha...");
+		
+		int index = 1;
+		
+		for (Edicion edicion : this.getEdiciones()){
+			
+			if(index <= 3) {
+			
+				System.out.println("CONDICION " + edicion.getFechaSalida().toString() + " es igual a " + calendar.getTime().toString() + " ??");
+			
+				if (edicion.getFechaSalida().equals(calendar.getTime())) {
+					
+					edicionesAnteriores.add(edicion);
+					calendar.add(Calendar.DATE, 7);
+					index++;
+					
+					System.out.println("Encontramos diario anterior. " + 
+									   "Fecha de salida: " + edicion.getFechaSalida() + " " + 
+									   "Codigo de edicion: " + edicion.getCodigo());
 				}
 			}
-	return ultimas3;
+		}
+		
+		System.out.println("Cantidad de ediciones anteriores a la fecha: " + edicionesAnteriores.size());
+		
+		return edicionesAnteriores;
 	}
 
 }

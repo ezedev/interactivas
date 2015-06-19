@@ -46,8 +46,8 @@ public class ModulosMapper {
 			PreparedStatement s = conn.prepareStatement(
 				"SELECT m.codigo, m.nombre " + 
 				"FROM [dbo].[modulo] m " + 
-				"INNER JOIN [dbo].[rol_modulo] rm ON rm.modulo_id = m.id " + 
-				"INNER JOIN [dbo].[rol] r ON r.id = rm.rol_id " + 
+				"INNER JOIN [dbo].[rol_modulo] rm ON rm.codigo_modulo = m.codigo " + 
+				"INNER JOIN [dbo].[rol] r ON r.codigo = rm.codigo_rol " + 
 				"WHERE r.codigo = ?"
 			);
 			

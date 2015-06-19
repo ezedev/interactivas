@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import modelo.ItemColocacion;
@@ -26,7 +27,7 @@ public class ItemsColocacionMapper {
 		return instance;
 	}
 
-	public static Vector<ItemColocacion> buscarPorColocacion(int id) {
+	public static Vector<ItemColocacion> findByColocacion(Date fecha, String codEdicion) {
 
 		Vector<ItemColocacion> items = new Vector<ItemColocacion>();
 
@@ -34,18 +35,24 @@ public class ItemsColocacionMapper {
 
 		try {
 
-			PreparedStatement s = conn
-					.prepareStatement("SELECT vendedor_id, cantidad_entregada, cantidad_devuelta FROM item_colocacion WHERE colocacion_id = ?");
-			s.setInt(1, id);
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT codigo_vendedor, cantidad_entregada, cantidad_devuelta " + 
+				"FROM item_colocacion " + 
+				"WHERE fecha_colocacion = ? and codigo_edicion = ?");
+			
+			s.setDate(1, new java.sql.Date(fecha.getTime()));
+			s.setString(2, codEdicion);
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {
 
+				Vendedor vendedor = VendedoresMapper.getInstance().find(rs.getString("codigo_vendedor")); 
+				
 				ItemColocacion item = new ItemColocacion(
-						rs.getInt("cantidad_entregada"),
-						rs.getInt("cantidad_devuelta"),
-						VendedoresMapper.getInstance().byId(
-								rs.getInt("vendedor_id")));
+					rs.getInt("cantidad_entregada"),
+					rs.getInt("cantidad_devuelta"),
+					vendedor
+				);
 
 				items.add(item);
 			}
@@ -61,20 +68,21 @@ public class ItemsColocacionMapper {
 
 	}
 
-	public void insert(ItemColocacion itemColocacion, int colocacion_id) {
+	public void insert(ItemColocacion itemColocacion, Date fecha, String codEdicion) {
 
 		Connection conn = PoolConnection.getInstance().getConnection();
 
 		try {
 
-			PreparedStatement statementInsert = conn
-					.prepareStatement("INSERT INTO dbo.item_colocacion ("
-							+ "colocacion_id, vendedor_id, cantidad_entregada, cantidad_devuelta"
-							+ ") VALUES (?, ?, ?, ?, ?)");
+			PreparedStatement statementInsert = conn.prepareStatement(
+				"INSERT INTO dbo.item_colocacion ("+ 
+				"fecha_colocacion, codigo_edicion, codigo_vendedor, cantidad_entregada, cantidad_devuelta)" + 
+				"VALUES (?, ?, ?, ?, ?)");
 
-			statementInsert.setInt(1, colocacion_id);
+			statementInsert.setDate(1, new java.sql.Date(fecha.getTime()));
+			statementInsert.setString(2, codEdicion);
 			Vendedor vendedor = VendedoresMapper.getInstance().find(itemColocacion.getVendedor().getCodigo());
-			statementInsert.setInt(3, vendedor.getId());
+			statementInsert.setString(3, vendedor.getCodigo());
 			statementInsert.setInt(4, itemColocacion.getCantidadEntrega());
 			statementInsert.setInt(5, itemColocacion.getCantidadDevolucion());
 			statementInsert.execute();

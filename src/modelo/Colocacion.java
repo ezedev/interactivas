@@ -7,7 +7,6 @@ import persistencia.CargaVendedorView;
 
 public class Colocacion {
 
-	private int id;
 	private Date fecha;
 	private Vector<ItemColocacion> items;
 	private Edicion edicion;
@@ -29,15 +28,12 @@ public class Colocacion {
 		this.items.add(itemColocacion);
 	}
 	
-
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	public void crearItem(Vendedor vendedor, int cantidadEntrega, int cantidadDevolucion) {
+		
+		ItemColocacion itemColocacion = new ItemColocacion(cantidadEntrega, cantidadDevolucion, vendedor);
+		
+		this.items.add(itemColocacion);
+	}	
 
 	public Date getFecha() {
 		return fecha;

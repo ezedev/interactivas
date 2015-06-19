@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Edicion{
 
-	private int id;
 	private String codigo;
 	private String tituloTapa;
 	private Date fechaSalida;
@@ -68,13 +67,4 @@ public class Edicion{
 	public EdicionView toView() {
 		return new EdicionView(codigo, tituloTapa, fechaSalida, precio, publicacion);
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 }

@@ -43,7 +43,7 @@ public class UsuariosMapper {
 		try {
 			
 			PreparedStatement s = conn.prepareStatement(
-				"SELECT usuario, clave, rol_id FROM [dbo].[usuario] " + 
+				"SELECT usuario, clave, codigo_rol FROM [dbo].[usuario] " + 
 				"WHERE usuario = ? " + 
 				"AND clave = ?"
 			);
@@ -54,26 +54,12 @@ public class UsuariosMapper {
 		
 			if(rs.next()) {
 
+				Rol rol = RolesMapper.getInstance().find(rs.getString("codigo_rol"));
+				
 				usuarioEncontrado = new Usuario();
 				usuarioEncontrado.setUsuario(rs.getString("usuario"));
 				usuarioEncontrado.setClave(rs.getString("clave"));
-				
-				/**
-				 * Rol
-				 */
-				
-				PreparedStatement statementRol = conn.prepareStatement(
-					"SELECT codigo FROM [dbo].[rol] WHERE id = ?"
-				); 
-				
-				statementRol.setInt(1, rs.getInt("rol_id"));
-				ResultSet rs2 = statementRol.executeQuery();
-				
-				if(rs2.next()) {
-				
-					Rol rol = RolesMapper.getInstance().find(rs2.getString("codigo"));
-					usuarioEncontrado.setRol(rol);
-				}
+				usuarioEncontrado.setRol(rol);
 			}
 			
 		} catch(SQLException e) {

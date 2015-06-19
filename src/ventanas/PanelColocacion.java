@@ -51,150 +51,23 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 	
 	private Vector<String> titulos = new Vector<String>();
 
-	/**
-	* Auto-generated main method to display this 
-	* JPanel inside a new JFrame.
-	*/
-	/*public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.pack();
-		frame.setSize(770, 557);
-		frame.setVisible(true);
-		frame.getContentPane().setLayout(null);
-		frame.setPreferredSize(new java.awt.Dimension(770, 557));
-		{
-			panelColocacion_IL = new PanelColocacion();
-			frame.getContentPane().add(panelColocacion_IL);
-			panelColocacion_IL.setBounds(0, 0, 770, 557);
-			panelColocacion_IL.setLayout(null);
-			{
-				publicacionLabel = new JLabel();
-				panelColocacion_IL.add(publicacionLabel);
-				publicacionLabel.setText("Publicación: ");
-				publicacionLabel.setBounds(12, 50, 109, 19);
-			}
-			{
-				ComboBoxModel publicacionesComboBoxModel = 
-						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
-				publicacionesComboBox = new JComboBox();
-				panelColocacion_IL.add(publicacionesComboBox);
-				publicacionesComboBox.setModel(publicacionesComboBoxModel);
-				publicacionesComboBox.setBounds(219, 66, 108, 23);
-			}
-			{
-				fechaLabel = new JLabel();
-				panelColocacion_IL.add(fechaLabel);
-				fechaLabel.setText("Fecha de salida:");
-				fechaLabel.setBounds(348, 30, 83, 16);
-			}
-			{
-				fechaTextField = new JTextField();
-				panelColocacion_IL.add(fechaTextField);
-				fechaTextField.setText("DD/MM/AAAA");
-				fechaTextField.setBounds(449, 27, 86, 23);
-			}
-			{
-				edicionLabel = new JLabel();
-				panelColocacion_IL.add(edicionLabel);
-				edicionLabel.setText("Edicion: ");
-				edicionLabel.setBounds(20, 69, 45, 16);
-			}
-			{
-				tituloEdicionLabel = new JLabel();
-				panelColocacion_IL.add(tituloEdicionLabel);
-				tituloEdicionLabel.setText("...");
-				tituloEdicionLabel.setBounds(102, 69, 99, 16);
-			}
-			{
-				totalLabel = new JLabel();
-				panelColocacion_IL.add(totalLabel);
-				totalLabel.setText("Total: ");
-				totalLabel.setBounds(412, 450, 52, 16);
-			}
-			{
-				totalColocacionLabel = new JLabel();
-				panelColocacion_IL.add(totalColocacionLabel);
-				totalColocacionLabel.setText("...");
-				totalColocacionLabel.setBounds(470, 450, 56, 16);
-			}
-			{
-				pautaLabel = new JLabel();
-				panelColocacion_IL.add(pautaLabel);
-				pautaLabel.setText("Pautas: ");
-				pautaLabel.setBounds(547, 122, 41, 16);
-			}
-			{
-				ComboBoxModel pautasComboBoxModel = 
-						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
-				pautasComboBox = new JComboBox();
-				panelColocacion_IL.add(pautasComboBox);
-				pautasComboBox.setModel(pautasComboBoxModel);
-				pautasComboBox.setBounds(630, 119, 109, 23);
-			}
-			{
-				aplicarButton = new JButton();
-				panelColocacion_IL.add(aplicarButton);
-				aplicarButton.setText("Aplicar");
-				aplicarButton.setBounds(547, 181, 83, 23);
-			}
-			{
-				guardarButton = new JButton();
-				panelColocacion_IL.add(guardarButton);
-				guardarButton.setText("Guardar");
-				guardarButton.setBounds(558, 447, 70, 23);
-				guardarButton.setSize(83, 23);
-			}
-			{
-				tabelPanel = new JPanel();
-				panelColocacion_IL.add(tabelPanel);
-				tabelPanel.setBounds(12, 91, 508, 339);
-				{
-					TableModel vendedoresTableModel = 
-							new DefaultTableModel(
-									new String[][] { { "One", "Two" }, { "Three", "Four" } },
-									new String[] { "Column 1", "Column 2", "Column3", "Column 4", "Column 5" });
-					vendedoresTable = new JTable();
-					tabelPanel.add(vendedoresTable);
-					vendedoresTable.setModel(vendedoresTableModel);
-					vendedoresTable.setPreferredSize(new java.awt.Dimension(499, 326));
-				}
-			}
-			{
-				cancelarJButton = new JButton();
-				panelColocacion_IL.add(cancelarJButton);
-				cancelarJButton.setText("Cancelar");
-				cancelarJButton.setBounds(656, 447, 83, 23);
-			}
-			{
-				limpiarButton = new JButton();
-				panelColocacion_IL.add(limpiarButton);
-				limpiarButton.setText("Limpiar");
-				limpiarButton.setBounds(654, 181, 70, 23);
-				limpiarButton.setOpaque(false);
-				limpiarButton.setSize(83, 23);
-			}
-		}
-	}
-	*/
 	public PanelColocacion() {
 		super();
 		initGUI();
 	}
 	
-	
-	//Función que utiliza el botón cancelar para volver a la pantalla inicial
-	
 	private void limpiarPantalla (){
+		
 		try{
+			
 			JPanel panelInicial = this;
 			panelInicial.removeAll();
 			panelInicial.setBounds(0, 0, 770, 557);
 			panelInicial.setLayout(null);
 			panelInicial.setBackground(new java.awt.Color(64,128,128));
+			
 		}catch(Exception e){
+			
 			e.printStackTrace();
 		}
 	}
@@ -209,15 +82,12 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 			{
 				publicacionLabel = new JLabel();
 				panelColocacion_IL.add(publicacionLabel);
-				publicacionLabel.setText("Publicación: ");
+				publicacionLabel.setText("Publicaciï¿½n: ");
 				publicacionLabel.setBounds(20, 30, 82, 16);
 			}
 			{
-//				ComboBoxModel publicacionesComboBoxModel = 
-//						new DefaultComboBoxModel(Sistema.getInstance().listaPublicaciones());
 				publicacionesComboBox = new JComboBox<ComboItem>(Sistema.getInstance().listaPublicaciones());
 				panelColocacion_IL.add(publicacionesComboBox);
-//				publicacionesComboBox.setModel(publicacionesComboBoxModel);
 				publicacionesComboBox.setBounds(102, 27, 108, 23);
 				publicacionesComboBox.addActionListener(this);
 			}
@@ -287,45 +157,24 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				guardarButton.addActionListener(this);
 			}
 			{
-				{
-//					TableModel vendedoresTableModel = 
-//							new DefaultTableModel(
-//									new String[][] { { "One", "Two" }, { "Three", "Four" } },
-//									new String[] { "Column 1", "Column 2", "Column3", "Column 4", "Column 5" });
-					vendedoresTable = new JTable();
-//					tabelPanel.add(vendedoresTable);
-					
-//					Vector<CargaVendedorView> filas = new Vector<CargaVendedorView>();
-//					filas.add(new CargaVendedorView("123", "Direccion 1", 5, 4, 5, 3, 4, 3, 4));
-//					filas.add(new CargaVendedorView("124", "Direccion 2", 6, 4, 5, 3, 4, 4, 4));
-//					filas.add(new CargaVendedorView("125", "Direccion 3", 5, 4, 5, 5, 6, 4, 6));
-//					filas.add(new CargaVendedorView("126", "Direccion 4", 8, 8, 9, 8, 10, 9, 10));
-//					
-//					Vector<String> titulos = new Vector<String>();
-					titulos.add("Código");
-					titulos.add("Dirección");
-					titulos.add("C1");
-					titulos.add("D1");
-					titulos.add("C2");
-					titulos.add("D2");
-					titulos.add("C3");
-					titulos.add("D3");
-					titulos.add("Salida");
-					
-					CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, new Vector<CargaVendedorView>());
-					
-					vendedoresTable.setModel(model);
-					
-					
-					
-					//vendedoresTable.setModel((new TablaVendedoresModel()).getModel());
-
-					vendedoresTable.setPreferredSize(new java.awt.Dimension(499, 326));				
-				}
+				vendedoresTable = new JTable();
+				titulos.add("Codigo");
+				titulos.add("Direccion");
+				titulos.add("C1");
+				titulos.add("D1");
+				titulos.add("C2");
+				titulos.add("D2");
+				titulos.add("C3");
+				titulos.add("D3");
+				titulos.add("Salida");
+				
+				CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, new Vector<CargaVendedorView>());
+				vendedoresTable.setModel(model);
+				vendedoresTable.setPreferredSize(new java.awt.Dimension(499, 326));				
+			}
 				tabelPanel = new JScrollPane(vendedoresTable);
 				panelColocacion_IL.add(tabelPanel);
 				tabelPanel.setBounds(16, 91, 508, 339);
-			}
 			{
 				cancelarJButton = new JButton();
 				panelColocacion_IL.add(cancelarJButton);
@@ -333,7 +182,6 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				cancelarJButton.addActionListener(this);
 				cancelarJButton.setBounds(670, 360, 90, 23);
 			}
-			
 			{
 				limpiarButton = new JButton();
 				panelColocacion_IL.add(limpiarButton);
@@ -342,6 +190,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				limpiarButton.setSize(90, 23);
 				limpiarButton.setOpaque(false);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -349,13 +198,25 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
-		if(event.getSource()==this.cancelarJButton){
+
+		/**
+		 * Si hay que cerrar la funcionalidad
+		 */
+		
+		if(event.getSource() == this.cancelarJButton){
+			
 			limpiarPantalla();
-		}else if(event.getSource()==this.publicacionesComboBox){	
+			
+		/**
+		 * Si se selecciono una publiocacion
+		 */
+			
+		}else if(event.getSource() == this.publicacionesComboBox){
+			
 				ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
-				EdicionView edicionView = Sistema.getInstance().buscarEdicionXPublicacion(item.getValue());
+				EdicionView edicionView = Sistema.getInstance().buscarUltimaEdicionPorPublicacion(item.getValue());
 				tituloEdicionLabel.setText(edicionView.getTituloTapa());
+				
 				CargaVendedorTableModel model = new CargaVendedorTableModel(titulos, Sistema.getInstance().cargarVendedoresTable(item.getValue()));
 				vendedoresTable.setModel(model);
 				vendedoresTable.getColumnModel().getColumn(2).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_VERDE_CELDA));
@@ -364,14 +225,20 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 				vendedoresTable.getColumnModel().getColumn(3).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
 				vendedoresTable.getColumnModel().getColumn(5).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
 				vendedoresTable.getColumnModel().getColumn(7).setCellRenderer(new CeldaColorRenderer(Utils.COLOR_ROJO_CELDA));
-		}else if(event.getSource()==this.guardarButton){
+			
+		/**
+		 * Procesar la colocacion con los datos ingresados 
+		 */
+				
+		} else if(event.getSource() == this.guardarButton) {
+			
 			Vector<CargaVendedorView> rows = ((CargaVendedorTableModel)vendedoresTable.getModel()).getRows();
 			ComboItem item = (ComboItem) publicacionesComboBox.getSelectedItem();
 			
 			boolean resultadoExitoso = Sistema.getInstance().crearColocacion(rows, item.getValue());
 			
 			if (!resultadoExitoso) {
-				Utils.mostrarError(this, "No se pudieron insertar las cargas en la colocación.");
+				Utils.mostrarError(this, "No se pudieron insertar las cargas en la colocaciï¿½n.");
 			}else{
 				Utils.mostrarExito(this, "Se ingresaron las cargas exitosamente");
 			}
