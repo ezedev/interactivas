@@ -1,6 +1,5 @@
 package controlador;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,115 +8,37 @@ import java.util.Vector;
 
 import modelo.Colocacion;
 import modelo.ComboItem;
-import modelo.DiarieroExclusivo;
 import modelo.Edicion;
 import modelo.EdicionView;
 import modelo.ItemColocacion;
+import modelo.Pauta;
 import modelo.Publicacion;
-import modelo.PublicacionDiario;
-import modelo.PublicacionRevista;
+import modelo.ReporteColocacionView;
 import modelo.Usuario;
 import modelo.Vendedor;
+import modelo.Zona;
 import persistencia.CargaVendedorView;
 import persistencia.ColocacionesMapper;
 import persistencia.EdicionesMapper;
+import persistencia.PautasMapper;
 import persistencia.PublicacionesMapper;
 import persistencia.UsuariosMapper;
 import persistencia.VendedoresMapper;
+import persistencia.ZonasMapper;
 import ventanas.Utils;
 
 public class Sistema {
 	
-	private static Sistema instancia= new Sistema();
+	private static Sistema instancia;
 	private Vector<Publicacion> publicaciones;
-	private Vector<Vendedor> vendedores;
 	private Vector<Edicion> ediciones;
-	private Vector <Colocacion> colocaciones;
 	private Usuario usuarioAutenticado;
-
-	private Colocacion colocacion;
+	private Colocacion colocacionActual;
 	
 	private Sistema() {
 		super();
-		this.vendedores = new Vector<Vendedor>();
 		this.ediciones = new Vector<Edicion>();
 		this.publicaciones = new Vector<Publicacion>();
-		
-		/**
-		 * Carga para desarrollar
-		 */
-		
-		/**
-		 * Publicaciones
-		 */
-		
-		Publicacion clarin = new PublicacionDiario("CLARIN", "CLARIN", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion lanacion = new PublicacionDiario("NACION", "LA NACION", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion noticias = new PublicacionRevista("1", "Revista NOTICIAS", "Noticias", "General", "General", "General", "es", "ARG");
-		Publicacion sol = new PublicacionDiario("SOL", "Diario el Sol", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion cronica = new PublicacionDiario("CRONIC", "Cronica", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		Publicacion popular = new PublicacionDiario("POPULA", "Diario Popular", "Grupo Clarin", "General", "General", "General", "es", "ARG");
-		
-		Vector<Publicacion> publicacionesDiarios = new Vector<Publicacion>();
-		publicacionesDiarios.add(clarin);
-		publicacionesDiarios.add(lanacion);
-		publicacionesDiarios.add(sol);
-		publicacionesDiarios.add(cronica);
-		publicacionesDiarios.add(popular);
-		Vector<Publicacion> publicacionesRevistas = new Vector<Publicacion>();
-		publicacionesRevistas.add(noticias);
-		Vector<Publicacion> publicacionesDiariosRevistas = new Vector<Publicacion>();
-		publicacionesDiariosRevistas.addAll(publicacionesDiarios);
-		publicacionesDiariosRevistas.addAll(publicacionesRevistas);
-		
-		this.publicaciones = publicacionesDiariosRevistas;
-		
-		/**
-		 * Calculamos la fecha de mañana
-		 */
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		calendar.add(Calendar.DATE, 1);
-		Date fechaSalida = calendar.getTime();		
-
-		/**
-		 * Cargamos las ediciones que salen mañana
-		 */		
-		try{
-//		ediciones = EdicionesMapper.getInstance().findAll();
-		
-		
-		
-//		this.ediciones.add(new Edicion(1000, "Clarin - Lunes", stringToDate(getFechaSalida()), 9.50f, clarin));
-//		this.ediciones.add(new Edicion(1001, "Lanacion - Lunes", stringToDate(getFechaSalida()), 12.50f, lanacion));
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		/**
-		 * Cargamos zonas
-		 */
-	
-		/*
-		Zona microcentro = new Zona(1000, "Microcentro");
-		Zona sur = new Zona(1001, "Sur");
-		Zona norte = new Zona(1002, "Norte");
-		*/
-		
-		/**
-		 * Cargamos un vendedor diario que venda todos los diarios
-		 */
-
-		/*
-		this.vendedores.add(new DiarieroExclusivo(1000, "Vendedor Diarios Puesto #1", publicacionesDiarios, microcentro));
-		this.vendedores.add(new DiarieroExclusivo(1001, "Vendedor Diarios Puesto #2", publicacionesDiarios, sur));
-		this.vendedores.add(new DiarieroExclusivo(1002, "Vendedor Diarios Puesto #3", publicacionesDiarios, norte));
-		this.vendedores.add(new RevisteroExclusivo(1003, "Vendedor Revistas Puesto #1", publicacionesRevistas, norte));
-		this.vendedores.add(new DiarieroRevistero(1004, "Vendedor Diarios y Revistas Puesto #1", publicacionesDiariosRevistas, microcentro));
-		*/
 	}
 	
 	public String getFechaSalida(){
@@ -129,9 +50,12 @@ public class Sistema {
 		return fechaSalida;
 	}
 	
-	/*Implementaci�n patr�n Singleton*/
-	
 	public static Sistema getInstance(){
+	
+		if(instancia == null) {
+			instancia = new Sistema();
+		}
+		
 		return instancia;
 	}
 	
@@ -146,128 +70,201 @@ public class Sistema {
 		
 		return this.usuarioAutenticado.getRol().tieneAcceso(modulo);
 	}
-
+	
 	/**
-	 * Busca las ediciones para armar la colocacion.
-	 * Son las que tienen fecha de salida de mañana.
+	 * Cada vez que se selecciona una publicacion creamos una nueva colocacion
 	 * 
-	 * @return Vector<Edicion>
+	 * @param codigoPublicacion
 	 */
 	
-	public Vector<Edicion> buscarEdicionesParaColocar(){
+	public Vector<CargaVendedorView> crearColocacion(String codigoPublicacion) {
 		
-		Vector<Edicion> edicionesBuscadas = new Vector<Edicion>();
+		Date fechaSalida = Utils.parseFecha(getStringFechaSalida());
 		
+		Edicion edicion = EdicionesMapper.getInstance().findByFechaAndPublicacion(fechaSalida, codigoPublicacion);
+		
+		this.colocacionActual = new Colocacion(fechaSalida, edicion);
+		
+		/**
+		 * Generamos los datos para cargar la JTable
+		 */
+		
+		Map <Vendedor , Vector<ItemColocacion>>mapa = new HashMap <Vendedor , Vector<ItemColocacion>>();
+		Vector<CargaVendedorView> cargas = new Vector<CargaVendedorView>();
+
+		/**
+		 * Buscamos los vendedores que venden la publicacion seleccionada
+		 */
+		
+		Vector<Vendedor> vendedores = VendedoresMapper.getInstance().findVendedoresXPublicacion(codigoPublicacion);
+		
+		/**
+		 * Generamos los items de colocacion vacios
+		 */
+		
+		for (Vendedor vendedor : vendedores) {
+			
+			mapa.put(vendedor, new Vector<ItemColocacion>());
+		}
+		
+		/**
+		 * Buscamos la publicacion seleccionada para buscar las ultimas 3 ediciones
+		 */
+		
+		Publicacion publicacion = edicion.getPublicacion();
+	
+		/**
+		 * Obtenemos las 3 ediciones anteriores de la edicion actual para acceder
+		 * a la colocacion de cada una de ellas.
+		 */
+		
+		System.out.println("Buscando ultimas 3 ediciones de la publicacion *" + publicacion.getCodigo() + "*");
+		
+		for (Edicion edicionAnterior : publicacion.obtenerEdicionesAnteriores(3)) {
+		
+			System.out.println("Buscando la colocacion correspondiente a la edicion *" + edicionAnterior.getCodigo() + "*");			
+			
+			if(edicionAnterior.estaColocada()) {
+			
+				System.out.println("Encontramos la colocacion *" + edicionAnterior.getColocacion().getFecha() + "* correspondiente a la edicion *" + edicionAnterior.getCodigo() + "*");
+				
+				for (ItemColocacion itemColocacion : edicionAnterior.getColocacion().getItems()) {
+
+					for(Vendedor vendedor: vendedores) {
+						
+						if(itemColocacion.getVendedor().sosVendedor(vendedor.getCodigo())) {
+							
+							mapa.get(vendedor).add(itemColocacion);
+						}
+					}
+				}
+				
+			} else {
+				
+				System.out.println("NO encontramos la colocacion correspondiente a la edicion *" + edicionAnterior.getCodigo() + "*");
+			}
+		}
+		
+		for (Vendedor vendedor : mapa.keySet()) {
+			CargaVendedorView carga = new CargaVendedorView();
+			carga.setCodigoVendedor(vendedor.getCodigo());
+			carga.setDireccionVendedor(vendedor.getDireccion());
+			int nroCarga = 1;
+			for (ItemColocacion item : mapa.get(vendedor)) {
+				switch (nroCarga) {
+				case 1:
+					carga.setCarga3(item.getCantidadEntrega());
+					carga.setDevolucion3(item.getCantidadDevolucion());
+					carga.setSalida(item.getCantidadEntrega());
+					this.colocacionActual.crearItem(vendedor, item.getCantidadEntrega(), 0);
+					break;
+				case 2:
+					carga.setCarga2(item.getCantidadEntrega());
+					carga.setDevolucion2(item.getCantidadDevolucion());
+					break;
+				default:
+					carga.setCarga1(item.getCantidadEntrega());
+					carga.setDevolucion1(item.getCantidadDevolucion());
+					break;
+				}
+				nroCarga++;
+			}
+			cargas.add(carga);
+		}
+		
+		return cargas;
+	}
+	
+	public void actualizarColocacion(Vector<CargaVendedorView> cantidadesEntrega) {
+		
+		this.colocacionActual.actualizarCantidadesEntrega(cantidadesEntrega);
+	}
+	
+	public Vector<CargaVendedorView> aplicarPauta(String codigo, Map<String, Object> parametrosPauta) {
+		
+		Vector<CargaVendedorView> cantidadesEntrega = new Vector<CargaVendedorView>();
+		
+		/**
+		 * Obtenemos las pautas activas, estas hay que cargarlas en cache...
+		 */
+		
+		Vector<Pauta> pautasActivas = PautasMapper.getInstance().findAll();
+		
+		/**
+		 * Buscamos la pauta que selecciono el usuario
+		 */
+		
+		for(Pauta pauta : pautasActivas) {
+			
+			if(pauta.sosPauta(codigo)) {
+
+				/**
+				 * Aplicamos la pauta a la colocacion
+				 */
+				
+				this.colocacionActual.aplicarPauta(pauta, parametrosPauta);
+				
+				/**
+				 * Obtenemos los items modificados
+				 */
+				
+				cantidadesEntrega = this.colocacionActual.getCantidadesEntrega();
+			}
+		}
+		
+		return cantidadesEntrega;
+	}
+	
+	public boolean confirmarColocacion() {
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		calendar.add(Calendar.DATE, 1);
-		Date fechaSalida = calendar.getTime();
 		
-		for(Edicion edicion: ediciones){
+		return ColocacionesMapper.getInstance().insert(colocacionActual);
+	}
+
+	public Vector<ComboItem> listaPutas() {
+		
+		Vector<ComboItem> pautasItems = new Vector <ComboItem>();
+		pautasItems.add(new ComboItem("XXX", "<ninguna>"));
+		
+		for (Pauta pauta : PautasMapper.getInstance().findAll()) {
 			
-			if (edicion.getFechaSalida().equals(fechaSalida)){
-				edicionesBuscadas.add(edicion);
-			}
-		}
-		
-		return edicionesBuscadas;
-	}
-	
-	public boolean crearColocacion(Vector<CargaVendedorView> cargas, String codigo) {
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);		
-		
-		Date fechaSalida = Utils.parseFecha(getStringFechaSalida());
-		Edicion edicion = EdicionesMapper.getInstance().buscarEdicionXPublicacion(fechaSalida, codigo);
-		Colocacion colocacion = new Colocacion(fechaSalida, edicion);
-		colocacion.crearItems(cargas);
-		
-		return ColocacionesMapper.getInstance().insert(colocacion, fechaSalida);
-
-	}
-	// TODO ver si se usa
-	
-//	public void agregarItemColocacion(String codigoEdicion, String codigoVendedor, int cantidadEntrega) {
-//		
-//		this.colocacion.crearItem(
-//			this.buscarEdicion(codigoEdicion), 
-//			this.buscarVendedor(codigoVendedor), 
-//			cantidadEntrega
-//		);
-//	}
-	
-	public String buscarEdicionesXFechaYPublicacion (Date fecha, String publicacion){
-		for (Edicion edicion : ediciones) {
-			if(edicion.getFechaSalida().equals(fecha) && edicion.getPublicacion().getTitulo() == publicacion)
-					return edicion.getTituloTapa();
-		}
-		return null;
-	}
-	
-	public Vector<Edicion> buscarEdiciones (Date fecha){
-		Vector<Edicion> edicionesBuscadas = new Vector<Edicion>();
-		for(Edicion edicion: ediciones){
-			if (edicion.getFechaSalida().equals(fecha)){
-				edicionesBuscadas.add(edicion);
-			}
-		}
-		return edicionesBuscadas;
-	}
-	
-	public Edicion buscarEdicion (String codigo){
-		for(Edicion edicion: ediciones){
-			if (edicion.getCodigo().equals(codigo))
-				return edicion;
-		}
-		return null;
-	}
-
-	public Vendedor buscarVendedor (String codigo){
-		
-		Vendedor vendedorEncontrado = null;
-		
-		for(Vendedor vendedor: this.vendedores){
+			if(pauta.estasActiva()) {
 			
-			if (vendedor.getCodigo().equals(codigo)) {
-				vendedorEncontrado = vendedor;
-				break;
+				pautasItems.add(new ComboItem(pauta.getCodigo(), pauta.getCodigo()));
 			}
 		}
 		
-		return vendedorEncontrado;
+		return pautasItems;
 	}
 
+	public Vector<ComboItem> listaZonas() {
+		
+		Vector<ComboItem> zonasItems = new Vector <ComboItem>();
+		
+		for (Zona zona : ZonasMapper.getInstance().findAll()) {
+			
+			zonasItems.add(new ComboItem (String.valueOf(zona.getCodigo()), zona.getNombre()));
+			
+		}
+		return zonasItems;
+	}	
+	
 	public Vector<ComboItem> listaPublicaciones() {
-		// TODO Auto-generated method stub
+	
 		Vector<ComboItem> publicacionesItems = new Vector <ComboItem>();
 		
 		for (Publicacion publicacion : PublicacionesMapper.getInstance().findAll()) {
+			
 			publicacionesItems.add(new ComboItem (String.valueOf(publicacion.getCodigo()), publicacion.getTitulo()));
+			
 		}
 		return publicacionesItems;
 	}	
-	
-	
-	
-	//para ediciones
-	private Publicacion buscarPublicacion(String codigo) {
-		
-		for (int i = 0 ; i < publicaciones.size() ; i++) {
-			
-			if(publicaciones.elementAt(i).getCodigo().equals(codigo))
-			{
-				return publicaciones.elementAt(i);
-			}
-		}
-		return null;
-	}
 	
 	public void altaEdicion(String codigo,String tituloTapa, float precio, Date fechaDeSalida, String CodPublicacion) {
 		Edicion nuevaEdicion = buscarEdicion(codigo);		
@@ -329,18 +326,17 @@ public class Sistema {
 			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(edicion.getFechaSalida());
-			calendar.set(Calendar.HOUR, 0);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
-			calendar.add(Calendar.DATE, -1);
-			
-			Colocacion colocacion = buscarUltimaColocacion(calendar.getTime());
+			calendar.set(Calendar.MILLISECOND, 0);
+			calendar.add(Calendar.DATE, 1);
 			
 			/**
 			 * Si todavia no se hizo la colocacion para esta edicion podemos borrarla
 			 */
 			
-			if(colocacion == null) {
+			if(!edicion.estaColocada()) {
 				
 				EdicionesMapper.getInstance().delete(edicion);
 				
@@ -351,167 +347,60 @@ public class Sistema {
 		return resultadoExitoso;
 		
 	}
-	
-	
-	public Date stringToDate (String fecha) throws Exception{
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-	 
-			Date date = formatter.parse(fecha);
-			return date;
-	 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public Vector<Vendedor> buscarVendedoresXPublicacion(String codPublicacion){
-		return VendedoresMapper.getInstance().findVendedoresXPublicacion(codPublicacion);
-	}
 
 	public String getStringFechaSalida() {
 		return Utils.getFechaSalidaString();
 	}
-
-
-// busqueda de ediciones en la base por publicacion
 	
-	public EdicionView buscarEdicionXPublicacion(String codPublicacion) {
-		
+	public EdicionView buscarUltimaEdicionPorPublicacion(String codPublicacion) {
+
 		Calendar calendar = Calendar.getInstance();
-//		calendar.add(Calendar.DATE, 1);
-		calendar.add(Calendar.DATE, -6);
+		calendar.add(Calendar.DATE, 1);
 		calendar.set(Calendar.HOUR, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-//		calendar.getTime();
+		calendar.set(Calendar.MILLISECOND, 0);		
 		
+		Edicion edicion = EdicionesMapper.getInstance().findByFechaAndPublicacion(
+			calendar.getTime(), codPublicacion
+		); 
 		
-		
-//		Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(calendar.getTime());
-//		System.out.println(colocacion.getItems());
-//		System.out.println("hola");
-		
-		
-		return (EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.parseFecha(Sistema.getInstance().getStringFechaSalida()), codPublicacion)).toView();	
+		return edicion.toView();	
 	}
 		
-	public Colocacion buscarUltimaColocacion (Date fecha){
-
-		return ColocacionesMapper.getInstance().buscarPorFecha(fecha);
-	}
-	
-	
-	
-	
-	
-	//la cantidad que devuelvo es la nueva para asigna a la colocacion del dia siguiente
-//	public int nuevaCantidadCargaProxColocacion (Date fecha, String nombrePauta, String codigoEdicion, String codigoVendedor){
-//		
-//		int cantidad = 0;
-//		
-//		Colocacion c = buscarUltimaColocacion(fecha);
-//		
-//		if (c != null){
-//			
-//			cantidad = c.aplicarPauta(nombrePauta, codigoVendedor);
-//		}
-//		
-//		return cantidad;
-//		
-//	}
-	// TODO rever
-	
-	public Vector<Vendedor> buscarVendedoresPorPublicacion (String codPublicacion){
-		return VendedoresMapper.getInstance().findVendedoresXPublicacion(codPublicacion);
-	}
-	
-	public Vector<CargaVendedorView> cargarVendedoresTable (String codPublicacion){
-		
-		Vector<CargaVendedorView> cargas = new Vector<CargaVendedorView>();
-		
-		Vector<Vendedor> vendedores = Sistema.getInstance().buscarVendedoresPorPublicacion(codPublicacion);
-		Map <Vendedor , Vector<ItemColocacion>>mapa = new HashMap <Vendedor , Vector<ItemColocacion>>();
-		for (Vendedor vendedor : vendedores) {
-			mapa.put(vendedor, new Vector<ItemColocacion>());//Vendedor.getItemsColocacion
-		}
-		
-		
-		Publicacion publicacion = PublicacionesMapper.getInstance().find(codPublicacion);
-		Vector<Edicion> obtenerUltimas3 = publicacion.obtenerUltimas3();
-		
-		for (Edicion edicion : obtenerUltimas3) {
-			Colocacion colocacion = ColocacionesMapper.getInstance().buscarPorFecha(edicion.getFechaSalida());
-			Vector<ItemColocacion> items = colocacion.getItems();
-			for (ItemColocacion itemColocacion : items) {
-//				if (itemColocacion.getEdicion().SosEdicion(edicion.getCodigo())) {
-//					mapa.get(itemColocacion.getVendedor()).add(itemColocacion);
-//				}
+	public Vector<ReporteColocacionView> buscarColocacionPorFecha (Date fecha){
+		Vector<Colocacion> colocaciones = ColocacionesMapper.getInstance().findByFecha(fecha);
+		Vector<ReporteColocacionView> reportesView = new Vector();
+		for (Colocacion colocacion : colocaciones) {
+			for (ItemColocacion item : colocacion.getItems()) {
+				ReporteColocacionView reporteView = item.toView();
+				reporteView.setEdicion(colocacion.getEdicion().getTituloTapa());
+				reportesView.add(reporteView);
 			}
+		}
+		return reportesView;
+	}
+
+	private Edicion buscarEdicion (String codigo){
+		
+		for(Edicion edicion: ediciones){
 			
+			if (edicion.getCodigo().equals(codigo))
+				return edicion;
 		}
 		
-		for (Vendedor vendedor : mapa.keySet()) {
-			CargaVendedorView carga = new CargaVendedorView();
-			carga.setCodigoVendedor(vendedor.getCodigo());
-			carga.setDireccionVendedor(vendedor.getDireccion());
-			int nroCarga = 1;
-			for (ItemColocacion item : mapa.get(vendedor)) {
-				switch (nroCarga) {
-				case 1:
-					carga.setCarga3(item.getCantidadEntrega());
-					carga.setDevolucion3(item.getCantidadDevolucion());
-					carga.setSalida(item.getCantidadEntrega());
-					break;
-				case 2:
-					carga.setCarga2(item.getCantidadEntrega());
-					carga.setDevolucion2(item.getCantidadDevolucion());
-					break;
-				default:
-					carga.setCarga1(item.getCantidadEntrega());
-					carga.setDevolucion1(item.getCantidadDevolucion());
-					break;
-				}
-				nroCarga++;
+		return null;
+	}
+	
+	private Publicacion buscarPublicacion(String codigo) {
+		
+		for (int i = 0 ; i < publicaciones.size() ; i++) {
+			
+			if(publicaciones.elementAt(i).getCodigo().equals(codigo))
+			{
+				return publicaciones.elementAt(i);
 			}
-			cargas.add(carga);
 		}
-		
-		return cargas;
-		
-	}
-	
-	
-	private Vector<ItemColocacion> buscarItemsPorVendedor (String codPublicacion){
-		Vector<ItemColocacion> items = new Vector<ItemColocacion>();
-		
-		return items;
-	}
-	
-	private Vector<Date> getFechasSalida(String tipoPublicacion) {
-		Vector<Date> fechas = new Vector<Date>();
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		if (tipoPublicacion.equals("D")) {
-			calendar.add(Calendar.DATE, -6);
-			fechas.add(calendar.getTime());
-			calendar.add(Calendar.DATE, -7);
-			fechas.add(calendar.getTime());
-			calendar.add(Calendar.DATE, -7);
-			fechas.add(calendar.getTime());
-
-		} else {
-			fechas.add(calendar.getTime());
-			calendar.add(Calendar.DATE, -1);
-			fechas.add(calendar.getTime());
-			calendar.add(Calendar.DATE, -1);
-			fechas.add(calendar.getTime());
-		}
-		return fechas;
-	}
+		return null;
+	}	
 }

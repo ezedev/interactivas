@@ -1,16 +1,34 @@
 package modelo;
 
-public class PautaZona extends Pauta {	
+import java.util.Map;
+
+public class PautaZona extends Pauta {
+
+	public final static String CODIGO_PAUTA = "ZONA";
 	
-
-	public PautaZona() {
-		// TODO Auto-generated constructor stub
+	public PautaZona(String codigo, String estado) {
+		
+		super(codigo, estado);
 	}
-
+	
 	@Override
-	public int getCantidad (int cantidadCargada, int cantidadDevuelta) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	public void aplicar(Colocacion colocacion, Map<String, Object> parametrosPauta) {
+		
+		for(ItemColocacion itemColocacion : colocacion.getItems()) {
+						
+			Zona zonaVendedor = itemColocacion.getVendedor().getZona();
+			
+			if(zonaVendedor.getCodigo().equals(parametrosPauta.get("codigoZona"))) {
+			
+				float coeficienteZona = zonaVendedor.getCoeficiente();
+				
+				if(coeficienteZona > 1) {
+					
+					float cantidadEntrega = itemColocacion.getCantidadEntrega() * coeficienteZona;
+					
+					itemColocacion.setCantidadEntrega((int)cantidadEntrega);
+				}
+			}
+		}
+	}	
 }

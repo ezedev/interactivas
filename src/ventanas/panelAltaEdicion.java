@@ -21,8 +21,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import modelo.ComboItem;
 import controlador.Sistema;
 
@@ -197,10 +195,6 @@ public class panelAltaEdicion extends javax.swing.JPanel implements ActionListen
 				
 				txtEstado.setText("error");
 				// Error de precio
-				
-			} catch(ParseException e) {
-				txtEstado.setText("error de fecha");
-				// Error de fecha
 				
 			} catch(Exception e) {
 				txtEstado.setText("error de base");

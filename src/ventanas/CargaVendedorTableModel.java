@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package ventanas;
 
 import java.util.List;
@@ -9,8 +7,8 @@ import java.util.Vector;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
+import controlador.Sistema;
 import persistencia.CargaVendedorView;
 
 
@@ -91,57 +89,39 @@ public class CargaVendedorTableModel extends AbstractTableModel implements Table
 	
 	@Override
 	public boolean isCellEditable(int row, int col) {
-	     switch (col) {
-	         case 8:
-	             return true;
-	         default:
-	             return false;
-	      }
+		
+		return col == 8;
 	}
 	
 	@Override
 	public void tableChanged(TableModelEvent e) {
-        int row = e.getFirstRow();
-        int column = e.getColumn();
-        TableModel model = (TableModel)e.getSource();
-        String columnName = model.getColumnName(column);
-        Object data = model.getValueAt(row, column);
 
     }
 	
-	/*
-     * Don't need to implement this method unless your table's
-     * data can change.
-     */
     public void setValueAt(Object value, int row, int col) {
-        if (true) {
-            System.out.println("Setting value at " + row + "," + col
-                               + " to " + value
-                               + " (an instance of "
-                               + value.getClass() + ")");
-        }
         
+    	fireTableCellUpdated(row, col);
+    	
+        System.out.println("Setting value at " + row + "," + col
+                           + " to " + value
+                           + " (an instance of "
+                           + value.getClass() + ")");
+       
+        /**
+         * Actualizamos el valor en el vector
+         */
         
-        System.out.println(value);
+        rows.get(row).setSalida(Integer.parseInt(value.toString()));
         
-//        Integer.parseInt((String)value)
-        rows.get(row).setSalida(Integer.parseInt((String)value));
-
-//        data[row][col] = value;
-        fireTableCellUpdated(row, col);
-
-        if (true) {
-            System.out.println("New value of data:");
-//            printDebugData();
-        }
+        /**
+         * Actualizamos el valor en la colocacion actual
+         */
+        
+        Sistema.getInstance().actualizarColocacion(rows);
     }
 
 	public Vector<CargaVendedorView> getRows() {
+		
 		return rows;
 	}
-    
-    
-
-
-
 }

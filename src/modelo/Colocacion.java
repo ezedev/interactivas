@@ -1,13 +1,13 @@
 package modelo;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Vector;
 
 import persistencia.CargaVendedorView;
 
 public class Colocacion {
 
-	private int id;
 	private Date fecha;
 	private Vector<ItemColocacion> items;
 	private Edicion edicion;
@@ -16,27 +16,11 @@ public class Colocacion {
 		super();
 		this.fecha = fecha;
 		this.edicion = edicion;
+		this.items = new Vector<ItemColocacion>();
 	}
 	
 	public Colocacion() {
 		super();
-	}
-
-	public void crearItem(Vendedor vendedor, int cantidadEntrega) {
-		
-		ItemColocacion itemColocacion = new ItemColocacion(cantidadEntrega, 0, vendedor);
-		
-		this.items.add(itemColocacion);
-	}
-	
-
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Date getFecha() {
@@ -63,6 +47,15 @@ public class Colocacion {
 		this.edicion = edicion;
 	}
 
+	public void crearItem(Vendedor vendedor, int cantidadEntrega, int cantidadDevolucion) {
+		
+		ItemColocacion itemColocacion = new ItemColocacion();
+		itemColocacion.setVendedor(vendedor);
+		itemColocacion.setCantidadEntrega(cantidadEntrega);
+		itemColocacion.setCantidadDevolucion(cantidadDevolucion);
+		this.items.add(itemColocacion);
+	}
+	
 	public void crearItems(Vector<CargaVendedorView> cargas) {
 		
 		Vector<ItemColocacion> items = new Vector<ItemColocacion>();
@@ -81,39 +74,38 @@ public class Colocacion {
 		this.setItems(items);
 		
 	}
-
-	// TODO rever
-//	public int aplicarPauta (String nombrePauta, String codigoVendedor){
-//		int totalAdicional=0;
-//		
-////		ItemColocacion it = buscarItemVendedorEdicion (codigoVendedor,codigoEdicion);
-//	
-//		switch (nombrePauta){
-//		
-//		case "Agotado":
-//			PautaAgotado pa = new PautaAgotado ();
-//			totalAdicional = pa.getCantidad(it.getCantidadEntrega(), it.getCantidadDevolucion());
-//			break;
-//		case "Exceso":
-//			PautaExceso pe = new PautaExceso ();
-//			totalAdicional = pe.getCantidad(it.getCantidadEntrega(), it.getCantidadDevolucion());
-//			break;
-//		case "Zona":
-//			PautaZona pz = new PautaZona ();
-//			totalAdicional = pz.getCantidad(it.getCantidadEntrega(), it.getCantidadDevolucion());
-//			break;
-//		default:
-//			System.out.println("Nombre de Pauta mal ingresado");
-//			break;
-//		}
-//		return totalAdicional;
-//	}
 	
-//	public ItemColocacion buscarItemVendedorEdicion (String codigoEdicion, String codigoVendedor ){
-//		for (int i=0; i< this.items.size(); i++){
-//			if (this.items.get(i).getVendedor().sosVendedor(codigoVendedor) && this.items.get(i).getEdicion().SosEdicion(codigoEdicion))
-//				return this.items.get(i);
-//		}
-//		return null;
-//	}
+	public void actualizarCantidadesEntrega(Vector<CargaVendedorView> cargas) {
+		
+		for(CargaVendedorView carga : cargas) {
+			
+			for(ItemColocacion itemColocacion : this.items) {
+				
+				if(itemColocacion.getVendedor().sosVendedor(carga.getCodigoVendedor())) {
+					
+					itemColocacion.setCantidadEntrega(carga.getSalida());
+				}
+			}
+		}
+	}
+	
+	public Vector<CargaVendedorView> getCantidadesEntrega() {
+		
+		Vector<CargaVendedorView> cargas = new Vector<CargaVendedorView>();
+		
+		for(ItemColocacion itemColocacion : this.items) {
+
+			CargaVendedorView carga = new CargaVendedorView();
+			carga.setSalida(itemColocacion.getCantidadEntrega());
+			carga.setCodigoVendedor(itemColocacion.getVendedor().getCodigo());
+			cargas.add(carga);
+		}
+		
+		return cargas;
+	}
+
+	public void aplicarPauta(Pauta pauta, Map<String, Object> parametrosPauta) {
+		
+		pauta.aplicar(this, parametrosPauta);
+	}
 }

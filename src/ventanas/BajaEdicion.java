@@ -280,9 +280,9 @@ public class BajaEdicion extends javax.swing.JPanel implements ActionListener{
 				boolean borradoExitoso = Sistema.getInstance().bajaEdicion(txtCodigo.getText());
 				
 				if (!borradoExitoso) {
-					Utils.mostrarError(this, "No se pudo eliminar la edición porque hay un proceso de colocación en curso.");
+					Utils.mostrarError(this, "No se pudo eliminar la ediciï¿½n porque hay un proceso de colocaciï¿½n en curso.");
 				}else{
-					Utils.mostrarExito(this, "Se eliminó la edición exitosamente");
+					Utils.mostrarExito(this, "Se eliminï¿½ la ediciï¿½n exitosamente");
 				}
 				
 //				System.out.println("toque borrar");

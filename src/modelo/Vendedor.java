@@ -8,7 +8,6 @@ public abstract class Vendedor {
 	public final static String TIPO_REVISTERO_EXCLUSIVO = "R";
 	public final static String TIPO_DIARIERIO_REVISTERO = "A";
 	
-	private int id;
 	protected String codigo;
 	protected String direccion;
 	protected Vector<Publicacion> publicaciones;
@@ -88,17 +87,5 @@ public abstract class Vendedor {
 		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	
-	
-	
+	}	
 }

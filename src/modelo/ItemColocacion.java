@@ -41,4 +41,11 @@ public class ItemColocacion {
 		this.vendedor = vendedor;
 	}
 	
+	public ReporteColocacionView toView(){
+		ReporteColocacionView reporteView = new ReporteColocacionView();
+		reporteView.setCantDevuelta(cantidadDevolucion);
+		reporteView.setCantEntregada(cantidadEntrega);
+		reporteView.setVendedor(vendedor.getDireccion());
+		return reporteView;
+	}
 }

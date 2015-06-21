@@ -2,8 +2,8 @@ package modelo;
 
 public class Modulo {
 	
-	public static final String MODULO_COLOCACION = "M-COLOCACION";
-	public static final String MODULO_EDICIONES = "M-EDICIONES";
+	public static final String MODULO_COLOCACION = "COLOCACIONES";
+	public static final String MODULO_EDICIONES = "EDICIONES";
 	
 	private String codigo;
 	private String descripcion;

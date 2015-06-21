@@ -28,18 +28,12 @@ public abstract class Publicacion {
 		this.tema = tema;
 		this.subtema = subtema;
 		this.publico = publico;
-		this.ediciones = new Vector <Edicion> ();
 		this.idioma = idioma;
 		this.paisDeOrigen = paisDeOrigen;
 	}
 	
 	public Publicacion() {
 		
-	}
-
-	public Vector<Edicion> getEdiciones() {
-		Edicion buscarEdicionXPublicacion = EdicionesMapper.getInstance().buscarEdicionXPublicacion(Utils.getFechaSalida(), this.codigo);
-		return ediciones;
 	}
 
 	public void setEdiciones(Vector<Edicion> ediciones) {
@@ -109,8 +103,17 @@ public abstract class Publicacion {
 	public void setPaisDeOrigen(String paisDeOrigen) {
 		this.paisDeOrigen = paisDeOrigen;
 	}
-
-	public abstract Vector <Edicion> obtenerUltimas3 ();
 	
+	public Vector<Edicion> getEdiciones() {
+		
+		if(this.ediciones == null) {
+			
+			this.ediciones = EdicionesMapper.getInstance().findByPublicacion(this.codigo);
+		}
+		
+		return ediciones;
+	}
 
+	public abstract Vector <Edicion> obtenerEdicionesAnteriores(int cantidad);
+	
 }

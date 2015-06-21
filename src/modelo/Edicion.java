@@ -2,14 +2,16 @@ package modelo;
 
 import java.util.Date;
 
+import persistencia.ColocacionesMapper;
+
 public class Edicion{
 
-	private int id;
 	private String codigo;
 	private String tituloTapa;
 	private Date fechaSalida;
 	private float precio;
 	private Publicacion publicacion;
+	private Colocacion colocacion;
 
 	public Edicion() {
 		
@@ -61,6 +63,26 @@ public class Edicion{
 	public void setPublicacion(Publicacion publicacion) {
 		this.publicacion = publicacion;
 	}
+	
+	public boolean estaColocada() {
+		
+		return this.getColocacion() != null;
+	}
+	
+	public Colocacion getColocacion() {
+
+		if(this.colocacion == null) { 
+		
+			this.colocacion = ColocacionesMapper.getInstance().getInstance().find(this.fechaSalida, this.codigo);
+		}
+		
+		return this.colocacion;
+	}
+
+	public void setColocacion(Colocacion colocacion) {
+		this.colocacion = colocacion;
+	}
+
 	public boolean SosEdicion (String c){
 		return this.codigo.equals(c);
 	}
@@ -68,13 +90,4 @@ public class Edicion{
 	public EdicionView toView() {
 		return new EdicionView(codigo, tituloTapa, fechaSalida, precio, publicacion);
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 }

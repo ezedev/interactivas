@@ -40,14 +40,15 @@ public class ZonasMapper {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("SELECT codigo, nombre FROM [dbo].[zona]");
+			PreparedStatement s = conn.prepareStatement("SELECT codigo, nombre, coeficiente FROM [dbo].[zona]");
 			ResultSet rs = s.executeQuery();				
 		
 			while(rs.next()) {
 			
 				Zona zona = new Zona();
-				zona.setCodigo(rs.getString("zona"));
+				zona.setCodigo(rs.getString("codigo"));
 				zona.setNombre(rs.getString("nombre"));
+				zona.setCoeficiente(rs.getFloat("coeficiente"));
 				zonas.add(zona);
 			}
 			
@@ -69,15 +70,16 @@ public class ZonasMapper {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("SELECT codigo, nombre FROM [dbo].[zona] WHERE codigo = ?");
+			PreparedStatement s = conn.prepareStatement("SELECT codigo, nombre, coeficiente FROM [dbo].[zona] WHERE codigo = ?");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();				
 		
 			if(rs.next()) {
 
 				zona = new Zona();
-				zona.setCodigo(rs.getString("zona"));
-				zona.setNombre(rs.getString("nombre"));				
+				zona.setCodigo(rs.getString("codigo"));
+				zona.setNombre(rs.getString("nombre"));
+				zona.setCoeficiente(rs.getFloat("coeficiente"));
 			}
 			
 		} catch(SQLException e) {

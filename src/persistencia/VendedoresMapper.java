@@ -14,6 +14,7 @@ import modelo.PublicacionDiario;
 import modelo.PublicacionRevista;
 import modelo.RevisteroExclusivo;
 import modelo.Vendedor;
+import modelo.Zona;
 
 public class VendedoresMapper {
 
@@ -91,7 +92,12 @@ public class VendedoresMapper {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("SELECT id, codigo, direccion, tipo, zona_id FROM [dbo].[vendedor] WHERE codigo = ?");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT codigo, direccion, tipo, codigo_zona " + 
+				"FROM [dbo].[vendedor] " + 
+				"WHERE codigo = ?"
+			);
+			
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();				
 		
@@ -101,23 +107,28 @@ public class VendedoresMapper {
 				
 				if(tipo.equals(Vendedor.TIPO_DIARIERIO_EXCLUSIVO)) {
 					
+					Zona zona = ZonasMapper.getInstance().find(rs.getString("codigo_zona"));
+					
 					vendedor = new DiarieroExclusivo(
-						rs.getString("codigo"), rs.getString("direccion"), null, null
+						rs.getString("codigo"), rs.getString("direccion"), null, zona
 					);
 					
 				} else if(tipo.equals(Vendedor.TIPO_REVISTERO_EXCLUSIVO)) {				
 
+					Zona zona = ZonasMapper.getInstance().find(rs.getString("codigo_zona"));
+					
 					vendedor = new RevisteroExclusivo(
-						rs.getString("codigo"), rs.getString("direccion"), null, null
+						rs.getString("codigo"), rs.getString("direccion"), null, zona
 					);
 					
 				} else if(tipo.equals(Vendedor.TIPO_DIARIERIO_REVISTERO)) {
 					
+					Zona zona = ZonasMapper.getInstance().find(rs.getString("codigo_zona"));
+					
 					vendedor = new DiarieroRevistero(
-						rs.getString("codigo"), rs.getString("direccion"), null, null
+						rs.getString("codigo"), rs.getString("direccion"), null, zona
 					);
 				}
-				vendedor.setId(rs.getInt("id"));
 			}
 			
 		} catch(SQLException e) {
@@ -130,39 +141,7 @@ public class VendedoresMapper {
 		return vendedor;
 	}
 	
-	public Vendedor byId(int id) {
-		
-		Vendedor vendedor = null;
-		
-		Connection conn = PoolConnection.getInstance().getConnection();
-			
-		try {
-			
-			PreparedStatement s = conn.prepareStatement("SELECT codigo FROM [dbo].[vendedor] WHERE id = ?");
-			s.setInt(1, id);
-			ResultSet rs = s.executeQuery();				
-		
-			if(rs.next()) {
-				
-				vendedor = VendedoresMapper.getInstance().find(rs.getString("codigo"));
-
-			}
-			
-		} catch(SQLException e) {
-			
-			e.printStackTrace();
-		}
-		
-		PoolConnection.getInstance().realeaseConnection(conn);		
-		
-		return vendedor;
-	}
-	
-	
-	
-	
-	
-public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
+	public Vector<Vendedor> findVendedoresXPublicacion(String codPublicacion) {
 		
 		Vector<Vendedor> vendedores = new Vector<Vendedor>();
 		
@@ -170,7 +149,13 @@ public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
 			
 		try {
 			
-			PreparedStatement s = conn.prepareStatement("select v.tipo , v.direccion , v.codigo FROM vendedor_publicacion vp INNER JOIN vendedor v ON (vp.vendedor_id = v.id) INNER JOIN publicacion p ON (vp.publicacion_id = p.id) WHERE p.codigo = ?");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT v.tipo , v.direccion , v.codigo, v.codigo_zona " + 
+				"FROM vendedor_publicacion vp " + 
+			    "INNER JOIN vendedor v ON vp.codigo_vendedor = v.codigo " + 
+				"INNER JOIN publicacion p ON vp.codigo_publicacion = p.codigo " + 
+			    "WHERE p.codigo = ?");
+			
 			s.setString(1, codPublicacion);
 			ResultSet rs = s.executeQuery();				
 		
@@ -180,22 +165,29 @@ public Vector<Vendedor> findVendedoresXPublicacion (String codPublicacion) {
 				
 				if(tipo.equals(Vendedor.TIPO_DIARIERIO_EXCLUSIVO)) {
 					
+					Zona zona = ZonasMapper.getInstance().find(rs.getString("codigo_zona"));
+					
 					Vendedor vendedor = new DiarieroExclusivo(
-						rs.getString("codigo"), rs.getString("direccion"), null, null
-					);
+						rs.getString("codigo"), rs.getString("direccion"), null, zona
+					);					
+					
 					vendedores.add(vendedor);
 					
 				} else if(tipo.equals(Vendedor.TIPO_REVISTERO_EXCLUSIVO)) {				
 
+					Zona zona = ZonasMapper.getInstance().find(rs.getString("zona"));
+					
 					Vendedor vendedor = new RevisteroExclusivo(
-							rs.getString("codigo"), rs.getString("direccion"), null, null
+						rs.getString("codigo"), rs.getString("direccion"), null, zona
 					);
 					vendedores.add(vendedor);
 					
 				} else if(tipo.equals(Vendedor.TIPO_DIARIERIO_REVISTERO)) {
 					
+					Zona zona = ZonasMapper.getInstance().find(rs.getString("zona"));
+					
 					Vendedor vendedor = new DiarieroRevistero(
-							rs.getString("codigo"), rs.getString("direccion"), null, null
+						rs.getString("codigo"), rs.getString("direccion"), null, zona
 					);
 					vendedores.add(vendedor);
 				}

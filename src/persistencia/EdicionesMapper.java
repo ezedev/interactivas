@@ -27,7 +27,7 @@ public class EdicionesMapper {
 		return instance;
 	}
 
-	public Vector<Edicion> findAll() {
+	public Vector<Edicion> findByPublicacion(String codPublicacion) {
 
 		Vector<Edicion> ediciones = new Vector<Edicion>();
 
@@ -35,8 +35,14 @@ public class EdicionesMapper {
 
 		try {
 
-			PreparedStatement s = conn
-					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM [dbo].[edicion]");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT codigo, titulo, fecha_salida, precio, codigo_publicacion " + 
+				"FROM [dbo].[edicion] " + 
+				"WHERE codigo_publicacion = ? " +
+				"ORDER BY fecha_salida ASC"
+			);
+			
+			s.setString(1, codPublicacion);
 			ResultSet rs = s.executeQuery();
 
 			while (rs.next()) {
@@ -46,8 +52,12 @@ public class EdicionesMapper {
 				edicion.setTituloTapa(rs.getString("titulo"));
 				edicion.setFechaSalida(rs.getDate("fecha_salida"));
 				edicion.setPrecio(rs.getFloat("precio"));
-//				edicion.setColocacion(ColocacionesMapper.getInstance().);
-				// TODO ver buscar colocacion
+				
+				Publicacion publicacion = PublicacionesMapper.getInstance().find(
+					rs.getString("codigo_publicacion")
+				);
+				
+				edicion.setPublicacion(publicacion);
 				ediciones.add(edicion);
 			}
 
@@ -70,14 +80,13 @@ public class EdicionesMapper {
 		try {
 
 			PreparedStatement s = conn
-					.prepareStatement("SELECT id, codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ? order by fecha_salida desc");
+					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio FROM edicion WHERE codigo = ? order by fecha_salida desc");
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 
 			if (rs.next()) {
 
 				edicion = new Edicion();
-				edicion.setId(rs.getInt("id"));
 				edicion.setCodigo(codigo);
 				edicion.setTituloTapa(rs.getString("titulo"));
 				edicion.setFechaSalida(rs.getDate("fecha_salida"));
@@ -94,71 +103,23 @@ public class EdicionesMapper {
 		return edicion;
 	}
 
-//	public Edicion byId(int id) {
-//
-//		Edicion edicion = null;
-//
-//		Connection conn = PoolConnection.getInstance().getConnection();
-//
-//		try {
-//
-//			PreparedStatement s = conn
-//					.prepareStatement("SELECT codigo, titulo, fecha_salida, precio, publicacion_id FROM edicion WHERE id = ? order by fecha_salida desc");
-//			s.setInt(1, id);
-//			ResultSet rs = s.executeQuery();
-//
-//			if (rs.next()) {
-//				edicion = new Edicion(rs.getString("codigo"),
-//						rs.getString("titulo"), rs.getDate("fecha_salida"),
-//						rs.getFloat("precio"), PublicacionesMapper
-//								.getInstance()
-//								.byId(rs.getInt("publicacion_id")));
-//			}
-//
-//		} catch (SQLException e) {
-//
-//			e.printStackTrace();
-//		}
-//
-//		PoolConnection.getInstance().realeaseConnection(conn);
-//
-//		return edicion;
-//	}
-
-	// private Edicion fromRs(ResultSet rs) {
-	// return new Edicion(rs.getString("codigo"), rs.getString("titulo"),
-	// rs.getDate("fecha_salida"), rs.getFloat("precio"),
-	// PublicacionesMapper.getInstance().find(""));
-	// }
-
 	public void insert(Edicion edicion) {
 
 		Connection conn = PoolConnection.getInstance().getConnection();
 
 		try {
 
-			PreparedStatement statementSelect = conn
-					.prepareStatement("SELECT id FROM [dbo].publicacion WHERE codigo = ?");
-			statementSelect.setString(1, edicion.getPublicacion().getCodigo());
-			ResultSet rs = statementSelect.executeQuery();
+			PreparedStatement statementInsert = conn.prepareStatement("INSERT INTO dbo.[edicion] ("
+						+ "codigo, titulo, fecha_salida, precio, codigo_publicacion"
+						+ ") VALUES (?, ?, ?, ?, ?)");
 
-			if (rs.next()) {
-
-				int publicacionId = rs.getInt("id");
-
-				PreparedStatement statementInsert = conn
-						.prepareStatement("INSERT INTO dbo.[edicion] ("
-								+ "codigo, titulo, fecha_salida, precio, publicacion_id"
-								+ ") VALUES (?, ?, ?, ?, ?)");
-
-				statementInsert.setString(1, edicion.getCodigo());
-				statementInsert.setString(2, edicion.getTituloTapa());
-				statementInsert.setDate(3, new java.sql.Date(edicion
-						.getFechaSalida().getTime()));
-				statementInsert.setFloat(4, edicion.getPrecio());
-				statementInsert.setInt(5, publicacionId);
-				statementInsert.execute();
-			}
+			statementInsert.setString(1, edicion.getCodigo());
+			statementInsert.setString(2, edicion.getTituloTapa());
+			statementInsert.setDate(3, new java.sql.Date(edicion
+					.getFechaSalida().getTime()));
+			statementInsert.setFloat(4, edicion.getPrecio());
+			statementInsert.setString(5, edicion.getPublicacion().getCodigo());
+			statementInsert.execute();
 
 		} catch (SQLException e) {
 
@@ -212,27 +173,32 @@ public class EdicionesMapper {
 		PoolConnection.getInstance().realeaseConnection(conn);
 	}
 
-	public Edicion buscarEdicionXPublicacion(Date fechaSalida,
-			String codPublicacion) {
-		// TODO Auto-generated method stub
+	public Edicion findByFechaAndPublicacion(Date fechaSalida, String codPublicacion) {
+
 		Edicion edicion = null;
 
 		Connection conn = PoolConnection.getInstance().getConnection();
 
 		try {
 
-			PreparedStatement s = conn
-					.prepareStatement("SELECT e.titulo, e.codigo FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? AND e.fecha_salida = ?");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT codigo, titulo, codigo_publicacion " + 
+				"FROM edicion " +  
+				"WHERE codigo_publicacion = ? AND fecha_salida = ?"
+			);
+			
 			s.setString(1, codPublicacion);
 			s.setDate(2, new java.sql.Date(fechaSalida.getTime()));
 			ResultSet rs = s.executeQuery();
 
 			if (rs.next()) {
 
+				Publicacion publicacion = PublicacionesMapper.getInstance().find(rs.getString("codigo_publicacion"));
+				
 				edicion = new Edicion();
-				edicion.setTituloTapa(rs.getString("titulo"));
 				edicion.setCodigo(rs.getString("codigo"));
-
+				edicion.setTituloTapa(rs.getString("titulo"));
+				edicion.setPublicacion(publicacion);
 			}
 
 		} catch (SQLException e) {
@@ -254,19 +220,29 @@ public class EdicionesMapper {
 
 		try {
 
-			PreparedStatement s = conn
-					.prepareStatement("SELECT e.codigo, e.titulo, e.fecha_salida, e.precio, e.publicacion_id FROM edicion e"
-							+ " JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? order by fecha_salida asc");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT codigo, titulo, fecha_salida, precio, codigo_publicacion " + 
+				"FROM edicion " +  
+				"WHERE codigo_publicacion = ? " + 
+				"ORDER BY fecha_salida asc"
+			);
+			
 			s.setString(1, codigo);
 			ResultSet rs = s.executeQuery();
 			
-			Edicion element = null;
+			Edicion edicion = null;
 
 			while (rs.next()) {
-				element = new Edicion(rs.getString("codigo"),
-						rs.getString("titulo"), rs.getDate("fecha_salida"),
-						rs.getFloat("precio"), null);
-				result.add(element);
+				
+				edicion = new Edicion(
+					rs.getString("codigo"),
+					rs.getString("titulo"), 
+					rs.getDate("fecha_salida"),
+					rs.getFloat("precio"), 
+					null
+				);
+				
+				result.add(edicion);
 			}
 
 		} catch (SQLException e) {
@@ -288,7 +264,8 @@ public class EdicionesMapper {
 		try {
 			
 		
-			PreparedStatement s = conn.prepareStatement("SELECT * FROM edicion e JOIN publicacion p on p.id = e.publicacion_id WHERE p.codigo = ? AND e.fecha_salida = ?");
+			PreparedStatement s = conn.prepareStatement(
+				"SELECT * FROM edicion WHERE codigo_publicacion = ? AND fecha_salida = ?");
 			s.setString(1, codPublicacion);
 			s.setDate(2, new java.sql.Date(fechaSalida.getTime()));
 			//.setDate(2,new java.sql.Date(fechaSalida.getDate()));
@@ -303,8 +280,6 @@ public class EdicionesMapper {
 				edicion.setFechaSalida(rs.getDate("fecha_salida"));
 				edicion.setPrecio(rs.getFloat("precio"));
 				
-				
-				//edicion.setPublicacion(rs.getString("titulo"));
 				return edicion;
 			}
 			
