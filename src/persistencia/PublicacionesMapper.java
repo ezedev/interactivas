@@ -132,7 +132,8 @@ public class PublicacionesMapper {
 					);
 				}
 				
-				publicacion.setEdiciones(EdicionesMapper.getInstance().buscarEdicionesDePublicacion(codigo));
+				// Se eliminó porque ya lo tiene el getter de Publicacion.ediciones (lazy fetch)
+//				publicacion.setEdiciones(EdicionesMapper.getInstance().buscarEdicionesDePublicacion(codigo));
 			}
 			
 		} catch(SQLException e) {

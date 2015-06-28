@@ -31,14 +31,15 @@ public class Sistema {
 	
 	private static Sistema instancia;
 	private Vector<Publicacion> publicaciones;
-	private Vector<Edicion> ediciones;
+	private Vector<Pauta> pautasActivas;
 	private Usuario usuarioAutenticado;
 	private Colocacion colocacionActual;
 	
 	private Sistema() {
 		super();
-		this.ediciones = new Vector<Edicion>();
-		this.publicaciones = new Vector<Publicacion>();
+		// Se necesitan todas; las ediciones están en las publicaciones y son lazy fetch
+		this.publicaciones = PublicacionesMapper.getInstance().findAll();
+		this.pautasActivas = PautasMapper.getInstance().findAll();
 	}
 	
 	public String getFechaSalida(){
@@ -105,6 +106,12 @@ public class Sistema {
 		for (Vendedor vendedor : vendedores) {
 			
 			mapa.put(vendedor, new Vector<ItemColocacion>());
+			
+			/**
+			 * Creamos el item por cada vendedor
+			 */
+			
+			this.colocacionActual.crearItem(vendedor, 0, 0);
 		}
 		
 		/**
@@ -156,7 +163,6 @@ public class Sistema {
 					carga.setCarga3(item.getCantidadEntrega());
 					carga.setDevolucion3(item.getCantidadDevolucion());
 					carga.setSalida(item.getCantidadEntrega());
-					this.colocacionActual.crearItem(vendedor, item.getCantidadEntrega(), 0);
 					break;
 				case 2:
 					carga.setCarga2(item.getCantidadEntrega());
@@ -172,6 +178,8 @@ public class Sistema {
 			cargas.add(carga);
 		}
 		
+		this.colocacionActual.actualizarCantidadesEntrega(cargas);
+		
 		return cargas;
 	}
 	
@@ -183,12 +191,6 @@ public class Sistema {
 	public Vector<CargaVendedorView> aplicarPauta(String codigo, Map<String, Object> parametrosPauta) {
 		
 		Vector<CargaVendedorView> cantidadesEntrega = new Vector<CargaVendedorView>();
-		
-		/**
-		 * Obtenemos las pautas activas, estas hay que cargarlas en cache...
-		 */
-		
-		Vector<Pauta> pautasActivas = PautasMapper.getInstance().findAll();
 		
 		/**
 		 * Buscamos la pauta que selecciono el usuario
@@ -216,12 +218,10 @@ public class Sistema {
 	}
 	
 	public boolean confirmarColocacion() {
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+		
+		// Para actualizar el caché.
+		Edicion edicion = buscarEdicion(colocacionActual.getEdicion().getCodigo());
+		edicion.setColocacion(colocacionActual);
 		
 		return ColocacionesMapper.getInstance().insert(colocacionActual);
 	}
@@ -231,7 +231,7 @@ public class Sistema {
 		Vector<ComboItem> pautasItems = new Vector <ComboItem>();
 		pautasItems.add(new ComboItem("XXX", "<ninguna>"));
 		
-		for (Pauta pauta : PautasMapper.getInstance().findAll()) {
+		for (Pauta pauta : this.pautasActivas) {
 			
 			if(pauta.estasActiva()) {
 			
@@ -258,7 +258,7 @@ public class Sistema {
 	
 		Vector<ComboItem> publicacionesItems = new Vector <ComboItem>();
 		
-		for (Publicacion publicacion : PublicacionesMapper.getInstance().findAll()) {
+		for (Publicacion publicacion : this.publicaciones) {
 			
 			publicacionesItems.add(new ComboItem (String.valueOf(publicacion.getCodigo()), publicacion.getTitulo()));
 			
@@ -275,7 +275,7 @@ public class Sistema {
 			{
 				nuevaEdicion = new Edicion(codigo,tituloTapa,fechaDeSalida,precio, publicacion);
 				
-				ediciones.add(nuevaEdicion);
+				publicacion.getEdiciones().add(nuevaEdicion);
 				
 				EdicionesMapper.getInstance().insert(nuevaEdicion);
 			}
@@ -288,7 +288,7 @@ public class Sistema {
 		Publicacion publicacion = buscarPublicacion(CodPublicacion);
 		if(publicacion != null)
 		{
-			for(Edicion edicion: ediciones)
+			for(Edicion edicion: publicacion.getEdiciones())
 			{
 				if(edicion.getCodigo().equals(codigo))
 				{
@@ -338,6 +338,8 @@ public class Sistema {
 			
 			if(!edicion.estaColocada()) {
 				
+				edicion.getPublicacion().getEdiciones().remove(edicion);
+				
 				EdicionesMapper.getInstance().delete(edicion);
 				
 				resultadoExitoso = true;
@@ -383,10 +385,11 @@ public class Sistema {
 
 	private Edicion buscarEdicion (String codigo){
 		
-		for(Edicion edicion: ediciones){
-			
-			if (edicion.getCodigo().equals(codigo))
-				return edicion;
+		for(Publicacion publicacion: this.publicaciones) {
+			for(Edicion edicion: publicacion.getEdiciones()){
+				if (edicion.getCodigo().equals(codigo))
+					return edicion;
+			}
 		}
 		
 		return null;

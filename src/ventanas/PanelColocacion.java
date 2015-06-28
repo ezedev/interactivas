@@ -341,9 +341,7 @@ public class PanelColocacion extends javax.swing.JPanel implements ActionListene
 
 			/**
 			 * Procesar la colocacion con los datos ingresados 
-			 */			
-			
-			Vector<CargaVendedorView> rows = ((CargaVendedorTableModel)vendedoresTable.getModel()).getRows();
+			 */
 			
 			boolean resultadoExitoso = Sistema.getInstance().confirmarColocacion();
 			

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
+import modelo.Colocacion;
 import modelo.ItemColocacion;
 import modelo.Vendedor;
 
@@ -67,32 +68,4 @@ public class ItemsColocacionMapper {
 		return items;
 
 	}
-
-	public void insert(ItemColocacion itemColocacion, Date fecha, String codEdicion) {
-
-		Connection conn = PoolConnection.getInstance().getConnection();
-
-		try {
-
-			PreparedStatement statementInsert = conn.prepareStatement(
-				"INSERT INTO dbo.item_colocacion ("+ 
-				"fecha_colocacion, codigo_edicion, codigo_vendedor, cantidad_entregada, cantidad_devuelta)" + 
-				"VALUES (?, ?, ?, ?, ?)");
-
-			statementInsert.setDate(1, new java.sql.Date(fecha.getTime()));
-			statementInsert.setString(2, codEdicion);
-			Vendedor vendedor = VendedoresMapper.getInstance().find(itemColocacion.getVendedor().getCodigo());
-			statementInsert.setString(3, vendedor.getCodigo());
-			statementInsert.setInt(4, itemColocacion.getCantidadEntrega());
-			statementInsert.setInt(5, itemColocacion.getCantidadDevolucion());
-			statementInsert.execute();
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-		PoolConnection.getInstance().realeaseConnection(conn);
-	}
-
 }

@@ -89,7 +89,18 @@ public class ColocacionesMapper {
 				 
 			for (ItemColocacion itemColocacion : colocacion.getItems()) {
 				
-				ItemsColocacionMapper.getInstance().insert(itemColocacion, colocacion.getFecha(), colocacion.getEdicion().getCodigo());
+				PreparedStatement statementInsertItem = conn.prepareStatement(
+						"INSERT INTO dbo.item_colocacion ("+ 
+						"fecha_colocacion, codigo_edicion, codigo_vendedor, cantidad_entregada, cantidad_devuelta)" + 
+						"VALUES (?, ?, ?, ?, ?)");
+
+				statementInsertItem.setDate(1, new java.sql.Date(colocacion.getFecha().getTime()));
+				statementInsertItem.setString(2, colocacion.getEdicion().getCodigo());
+				Vendedor vendedor = VendedoresMapper.getInstance().find(itemColocacion.getVendedor().getCodigo());
+				statementInsertItem.setString(3, vendedor.getCodigo());
+				statementInsertItem.setInt(4, itemColocacion.getCantidadEntrega());
+				statementInsertItem.setInt(5, itemColocacion.getCantidadDevolucion());
+				statementInsertItem.executeUpdate();
 			}
 
 		} catch (SQLException e) {
