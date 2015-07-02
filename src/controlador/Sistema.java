@@ -382,7 +382,32 @@ public class Sistema {
 		}
 		return reportesView;
 	}
+	
+	public Vector<CargaVendedorView> buscarColocacion(Date fechaSalida, String codEdicion) {
+		
+		Vector<CargaVendedorView> cargas = new Vector<CargaVendedorView>();
+		
+		this.colocacionActual = ColocacionesMapper.getInstance().find(fechaSalida, codEdicion);
+		
+		for(ItemColocacion item : this.colocacionActual.getItems()) {
+			
+			CargaVendedorView carga = new CargaVendedorView();
+			carga.setCodigoVendedor(item.getVendedor().getCodigo());
+			carga.setDireccionVendedor(item.getVendedor().getDireccion());
+			carga.setDevolucion(item.getCantidadDevolucion());
+			cargas.add(carga);
+		}
+		
+		return cargas;
+	}
 
+	public void confirmarDevolucion(Vector<CargaVendedorView> cargas) {
+		
+		this.colocacionActual.actualizarCantidadesDevolucion(cargas);
+		
+		ColocacionesMapper.getInstance().update(colocacionActual);
+	}
+	
 	private Edicion buscarEdicion (String codigo){
 		
 		for(Publicacion publicacion: this.publicaciones) {

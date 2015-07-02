@@ -175,5 +175,30 @@ public class ColocacionesMapper {
 		return colocaciones;
 	}
 	
-	
+	public void update(Colocacion colocacion) {
+		
+		Connection conn = PoolConnection.getInstance().getConnection();
+		
+		for(ItemColocacion item : colocacion.getItems()) {
+		
+			try {
+			
+				PreparedStatement stmt = conn.prepareStatement(
+					"UPDATE [dbo].[item_colocacion] SET cantidad_devuelta = ? " + 
+					"WHERE fecha_colocacion = ? AND codigo_edicion = ? AND codigo_vendedor = ?");
+				
+				stmt.setInt(1, item.getCantidadDevolucion());
+				stmt.setDate(2, new java.sql.Date(colocacion.getFecha().getTime()));
+				stmt.setString(3, colocacion.getEdicion().getCodigo());
+				stmt.setString(4, item.getVendedor().getCodigo());
+				stmt.executeUpdate();
+				
+			} catch(Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+		PoolConnection.getInstance().realeaseConnection(conn);
+	}
 }

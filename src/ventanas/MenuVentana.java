@@ -85,6 +85,7 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener,
 	
 				menuItemCargarDevoluciones = new JMenuItem();
 				menuItemCargarDevoluciones.setText("Cargar devoluciones");
+				menuItemCargarDevoluciones.addActionListener(this);
 				
 				menuReporte = new JMenuItem();
 				menuReporte.setText("Reporte de colocaciones");
@@ -158,8 +159,10 @@ public class MenuVentana extends javax.swing.JFrame implements MenuListener,
 		 else if (event.getSource() == this.menuReporte) {
 			getContentPane().removeAll();
 			getContentPane().add(new PanelReporte());
-		}
-		else if (event.getSource() == this.itemAltaEdicion) {
+		} else if(event.getSource() == this.menuItemCargarDevoluciones) {
+			getContentPane().removeAll();
+			getContentPane().add(new PanelDevolucion());
+		} else if (event.getSource() == this.itemAltaEdicion) {
 			getContentPane().removeAll();
 			getContentPane().add(new panelAltaEdicion());
 		} else if (event.getSource() == this.itemModEdicion) {

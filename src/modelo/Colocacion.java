@@ -89,6 +89,20 @@ public class Colocacion {
 		}
 	}
 	
+	public void actualizarCantidadesDevolucion(Vector<CargaVendedorView> cargas) {
+		
+		for(CargaVendedorView carga : cargas) {
+			
+			for(ItemColocacion itemColocacion : this.items) {
+				
+				if(itemColocacion.getVendedor().sosVendedor(carga.getCodigoVendedor())) {
+					
+					itemColocacion.setCantidadDevolucion(carga.getDevolucion());
+				}
+			}
+		}
+	}	
+	
 	public Vector<CargaVendedorView> getCantidadesEntrega() {
 		
 		Vector<CargaVendedorView> cargas = new Vector<CargaVendedorView>();

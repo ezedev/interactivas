@@ -18,6 +18,7 @@ public class CargaVendedorView {
 	private int carga3;
 	private int devolucion3;
 	private int salida;
+	private int devolucion;
 	
 	
 	/**
@@ -230,4 +231,11 @@ public class CargaVendedorView {
 		this.salida = salida;
 	}
 
+	public int getDevolucion() {
+		return devolucion;
+	}
+
+	public void setDevolucion(int devolucion) {
+		this.devolucion = devolucion;
+	}
 }
